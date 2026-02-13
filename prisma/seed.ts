@@ -1,7 +1,24 @@
+import "dotenv/config";
 import { PrismaClient } from "../src/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 
-const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! });
+function getDirectDatabaseUrl(): string {
+  const url = process.env.DATABASE_URL!;
+  // If it's a prisma+postgres proxy URL, extract the direct URL from the api_key
+  if (url.includes("prisma+postgres://")) {
+    const apiKey = url.split("api_key=")[1];
+    let padded = apiKey;
+    const rem = padded.length % 4;
+    if (rem > 0) padded += "=".repeat(4 - rem);
+    const decoded = JSON.parse(
+      Buffer.from(padded, "base64url").toString("utf-8"),
+    );
+    return decoded.databaseUrl;
+  }
+  return url;
+}
+
+const adapter = new PrismaPg({ connectionString: getDirectDatabaseUrl() });
 const prisma = new PrismaClient({ adapter });
 
 const SOURCES = [
