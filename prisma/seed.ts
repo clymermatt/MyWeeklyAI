@@ -41,8 +41,8 @@ const SOURCES = [
     url: "https://openai.com/blog/rss.xml",
   },
   {
-    name: "Anthropic Blog",
-    url: "https://www.anthropic.com/rss.xml",
+    name: "Anthropic News",
+    url: "https://www.anthropic.com/news/rss.xml",
   },
   {
     name: "Google AI Blog",
