@@ -1,6 +1,7 @@
 import "dotenv/config";
 import { PrismaClient } from "../src/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
+import pg from "pg";
 
 function getDirectDatabaseUrl(): string {
   const url = process.env.DATABASE_URL!;
@@ -18,7 +19,8 @@ function getDirectDatabaseUrl(): string {
   return url;
 }
 
-const adapter = new PrismaPg({ connectionString: getDirectDatabaseUrl() });
+const pool = new pg.Pool({ connectionString: getDirectDatabaseUrl() });
+const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
 const SOURCES = [
