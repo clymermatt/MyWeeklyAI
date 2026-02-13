@@ -3,7 +3,11 @@ import { render } from "@react-email/components";
 import WeeklyBriefEmail from "./weekly-brief-template";
 import type { BriefOutput } from "@/types/brief";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+function getResend() {
+  const key = process.env.RESEND_API_KEY;
+  if (!key) throw new Error("RESEND_API_KEY is not set — skipping email send");
+  return new Resend(key);
+}
 
 export async function sendWeeklyBrief({
   to,
@@ -33,6 +37,7 @@ export async function sendWeeklyBrief({
     }),
   );
 
+  const resend = getResend();
   const { error } = await resend.emails.send({
     from: "ContextBrief <noreply@contextbrief.com>",
     to,

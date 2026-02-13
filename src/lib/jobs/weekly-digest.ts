@@ -48,14 +48,7 @@ export async function runWeeklyDigest(): Promise<DigestResult> {
     try {
       const brief = await generateBrief(user.contextProfile, newsItems);
 
-      await sendWeeklyBrief({
-        to: user.email,
-        userName: user.name ?? undefined,
-        brief,
-        periodStart,
-        periodEnd,
-      });
-
+      // Store the digest in DB regardless of email sending
       await prisma.weeklyDigest.create({
         data: {
           userId: user.id,
@@ -65,7 +58,21 @@ export async function runWeeklyDigest(): Promise<DigestResult> {
         },
       });
 
-      emailsSent++;
+      // Try sending email (may fail if RESEND_API_KEY not set)
+      try {
+        await sendWeeklyBrief({
+          to: user.email,
+          userName: user.name ?? undefined,
+          brief,
+          periodStart,
+          periodEnd,
+        });
+        emailsSent++;
+      } catch (emailErr) {
+        const msg = emailErr instanceof Error ? emailErr.message : "Unknown email error";
+        console.log(`Email skipped for ${user.email}: ${msg}`);
+        errors.push(`Email skipped for ${user.email}: ${msg}`);
+      }
     } catch (err) {
       errors.push(
         `User ${user.email}: ${err instanceof Error ? err.message : "Unknown error"}`,

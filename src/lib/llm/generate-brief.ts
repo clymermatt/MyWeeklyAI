@@ -62,8 +62,11 @@ export async function generateBrief(
     messages: [{ role: "user", content: prompt }],
   });
 
-  const text =
+  let text =
     message.content[0].type === "text" ? message.content[0].text : "";
+
+  // Strip markdown code fences if present
+  text = text.replace(/^```(?:json)?\s*\n?/i, "").replace(/\n?```\s*$/i, "").trim();
 
   const parsed = JSON.parse(text) as BriefOutput;
 

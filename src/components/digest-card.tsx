@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import type { BriefOutput, BriefItem } from "@/types/brief";
 
 interface DigestProps {
@@ -81,11 +82,41 @@ export default function DigestCard({ digest }: DigestProps) {
       {expanded && (
         <div className="space-y-6 border-t border-gray-100 px-6 py-4">
           <ItemSection title="What Dropped" items={brief.whatDropped} />
-          <ItemSection
-            title="Relevant To You"
-            items={brief.relevantToYou}
-            showRelevance
-          />
+          <div>
+            <div className="mb-2 flex items-center gap-2">
+              <h3 className="font-semibold text-gray-900">Relevant To You</h3>
+              <Link
+                href="/dashboard/profile"
+                className="text-xs text-blue-500 hover:text-blue-600"
+                title="Changes apply to your next digest"
+              >
+                Edit profile &rarr;
+              </Link>
+              <span className="text-xs text-gray-400">
+                (changes apply next week)
+              </span>
+            </div>
+            <ul className="space-y-3">
+              {brief.relevantToYou.map((item, i) => (
+                <li key={i}>
+                  <a
+                    href={item.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm font-medium text-blue-600 hover:text-blue-700"
+                  >
+                    {item.title}
+                  </a>
+                  <p className="mt-0.5 text-sm text-gray-600">{item.summary}</p>
+                  {item.relevanceNote && (
+                    <p className="mt-0.5 text-xs italic text-gray-400">
+                      {item.relevanceNote}
+                    </p>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
           <ItemSection
             title="What To Test"
             items={brief.whatToTest}
