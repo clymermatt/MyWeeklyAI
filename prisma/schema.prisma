@@ -24,6 +24,7 @@ model User {
   contextProfile ContextProfile?
   subscription   Subscription?
   weeklyDigests  WeeklyDigest[]
+  bookmarks      Bookmark[]
 }
 
 model Account {
@@ -95,13 +96,14 @@ model Subscription {
 }
 
 model Source {
-  id        String     @id @default(cuid())
+  id        String         @id @default(cuid())
   name      String
-  type      SourceType @default(RSS)
-  url       String     @unique
-  active    Boolean    @default(true)
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
+  type      SourceType     @default(RSS)
+  category  SourceCategory @default(INDUSTRY_NEWS)
+  url       String         @unique
+  active    Boolean        @default(true)
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
 
   newsItems NewsItem[]
 }
@@ -124,12 +126,14 @@ model WeeklyDigest {
   id          String   @id @default(cuid())
   userId      String
   briefJson   Json
+  isFree      Boolean  @default(false)
   periodStart DateTime
   periodEnd   DateTime
   sentAt      DateTime @default(now())
   createdAt   DateTime @default(now())
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bookmarks Bookmark[]
 
   @@index([userId, periodEnd])
 }
@@ -145,6 +149,23 @@ model JobRun {
   createdAt DateTime  @default(now())
 
   @@index([jobName, startedAt])
+}
+
+model Bookmark {
+  id        String   @id @default(cuid())
+  userId    String
+  url       String
+  title     String
+  summary   String   @db.Text
+  source    String?
+  digestId  String?
+  createdAt DateTime @default(now())
+
+  user   User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  digest WeeklyDigest? @relation(fields: [digestId], references: [id], onDelete: SetNull)
+
+  @@unique([userId, url])
+  @@index([userId, createdAt])
 }
 
 // ─── Enums ──────────────────────────────────────────────────────────────────
@@ -164,6 +185,12 @@ enum SubscriptionStatus {
 enum SourceType {
   RSS
   API
+}
+
+enum SourceCategory {
+  INDUSTRY_NEWS
+  AI_LAB
+  RESEARCH_ANALYSIS
 }
 
 enum JobStatus {

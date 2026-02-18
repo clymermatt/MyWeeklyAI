@@ -17,12 +17,14 @@ export default async function DashboardPage() {
     }),
   ]);
 
+  const isActive = subscription?.status === "ACTIVE";
+
   return (
     <div className="space-y-8">
       <div>
         <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
         <p className="mt-1 text-sm text-gray-600">
-          Welcome back, {session!.user!.name || session!.user!.email}
+          Welcome back, {session!.user!.name?.split(" ")[0] || session!.user!.email}
         </p>
       </div>
 
@@ -60,10 +62,10 @@ export default async function DashboardPage() {
 
         {/* Subscription Card */}
         <div className="rounded-lg border border-gray-200 bg-white p-6">
-          <h2 className="text-sm font-medium text-gray-500">Subscription</h2>
-          {subscription?.status === "ACTIVE" ? (
+          <h2 className="text-sm font-medium text-gray-500">Plan</h2>
+          {isActive ? (
             <div className="mt-2">
-              <p className="text-lg font-semibold text-green-600">Active</p>
+              <p className="text-lg font-semibold text-green-600">Pro</p>
               <p className="mt-1 text-sm text-gray-600">
                 Renews{" "}
                 {subscription.currentPeriodEnd?.toLocaleDateString() ?? "—"}
@@ -77,9 +79,10 @@ export default async function DashboardPage() {
             </div>
           ) : (
             <div className="mt-2">
-              <p className="text-lg font-semibold text-gray-400">Inactive</p>
+              <p className="text-lg font-semibold text-gray-900">Free</p>
               <p className="mt-1 text-sm text-gray-600">
-                Subscribe to receive weekly AI briefs
+                You get the weekly &ldquo;What Dropped&rdquo; section.
+                Upgrade to unlock personalized picks and action items.
               </p>
               <div className="mt-4">
                 <SubscriptionButton />
@@ -91,7 +94,7 @@ export default async function DashboardPage() {
         {/* Recent Digests Card */}
         <div className="rounded-lg border border-gray-200 bg-white p-6">
           <h2 className="text-sm font-medium text-gray-500">
-            Recent Digests
+            Recent Briefings
           </h2>
           {recentDigests.length > 0 ? (
             <div className="mt-2">
@@ -106,12 +109,12 @@ export default async function DashboardPage() {
             <div className="mt-2">
               <p className="text-lg font-semibold text-gray-400">None yet</p>
               <p className="mt-1 text-sm text-gray-600">
-                Your first brief will arrive after subscribing
+                Your first brief will arrive this Sunday
               </p>
             </div>
           )}
           <Link
-            href="/dashboard/digests"
+            href="/dashboard/briefings"
             className="mt-4 inline-block text-sm font-medium text-blue-600 hover:text-blue-700"
           >
             View all &rarr;

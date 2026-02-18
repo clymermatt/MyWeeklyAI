@@ -16,7 +16,7 @@ export default async function DashboardLayout({
         <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4">
           <div className="flex items-center gap-8">
             <Link
-              href="/dashboard"
+              href="/"
               className="text-lg font-bold text-gray-900"
             >
               ContextBrief
@@ -32,13 +32,19 @@ export default async function DashboardLayout({
                 href="/dashboard/profile"
                 className="text-sm text-gray-600 hover:text-gray-900"
               >
-                Context Profile
+                My Profile
               </Link>
               <Link
-                href="/dashboard/digests"
+                href="/dashboard/briefings"
                 className="text-sm text-gray-600 hover:text-gray-900"
               >
-                Digests
+                My Briefings
+              </Link>
+              <Link
+                href="/dashboard/saved"
+                className="text-sm text-gray-600 hover:text-gray-900"
+              >
+                Saved
               </Link>
             </div>
           </div>
