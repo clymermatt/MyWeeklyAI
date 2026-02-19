@@ -119,6 +119,85 @@ const SOURCES: { name: string; url: string; category: SourceCategory }[] = [
     url: "https://news.mit.edu/rss/topic/artificial-intelligence2",
     category: "RESEARCH_ANALYSIS",
   },
+  // ── Industry-Vertical AI Coverage ──
+  // SaaS & Software
+  {
+    name: "The New Stack",
+    url: "https://thenewstack.io/feed/",
+    category: "INDUSTRY_NEWS",
+  },
+  {
+    name: "SaaStr",
+    url: "https://www.saastr.com/feed/",
+    category: "INDUSTRY_NEWS",
+  },
+  // Fintech / Financial Services
+  {
+    name: "PYMNTS - AI",
+    url: "https://www.pymnts.com/category/artificial-intelligence-2/feed/",
+    category: "INDUSTRY_NEWS",
+  },
+  {
+    name: "TechCrunch - Fintech",
+    url: "https://techcrunch.com/category/fintech/feed/",
+    category: "INDUSTRY_NEWS",
+  },
+  // Healthcare / Life Sciences
+  {
+    name: "Fierce Healthcare",
+    url: "https://www.fiercehealthcare.com/rss/xml",
+    category: "INDUSTRY_NEWS",
+  },
+  {
+    name: "Fierce Biotech",
+    url: "https://www.fiercebiotech.com/rss/xml",
+    category: "INDUSTRY_NEWS",
+  },
+  // Cybersecurity
+  {
+    name: "Dark Reading",
+    url: "https://www.darkreading.com/rss.xml",
+    category: "INDUSTRY_NEWS",
+  },
+  {
+    name: "SecurityWeek",
+    url: "https://www.securityweek.com/feed/",
+    category: "INDUSTRY_NEWS",
+  },
+  // E-commerce & Retail
+  {
+    name: "Retail Dive - Technology",
+    url: "https://www.retaildive.com/feeds/topic/technology/",
+    category: "INDUSTRY_NEWS",
+  },
+  // Legal & LegalTech
+  {
+    name: "Artificial Lawyer",
+    url: "https://www.artificiallawyer.com/feed/",
+    category: "INDUSTRY_NEWS",
+  },
+  // Media & Entertainment
+  {
+    name: "The Hollywood Reporter - AI",
+    url: "https://www.hollywoodreporter.com/t/ai-3/feed/",
+    category: "INDUSTRY_NEWS",
+  },
+  {
+    name: "Variety",
+    url: "https://variety.com/feed/",
+    category: "INDUSTRY_NEWS",
+  },
+  // Education & EdTech
+  {
+    name: "EdSurge",
+    url: "https://www.edsurge.com/articles_rss",
+    category: "INDUSTRY_NEWS",
+  },
+  {
+    name: "eSchool News",
+    url: "https://www.eschoolnews.com/feed/",
+    category: "INDUSTRY_NEWS",
+  },
 ];
 
 async function main() {
