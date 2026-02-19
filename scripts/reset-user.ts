@@ -35,22 +35,32 @@ async function main() {
   console.log("Users:");
   users.forEach((u, i) => console.log(`  ${i + 1}. ${u.email} (${u.name ?? "no name"})`));
 
-  // Reset the first user (adjust if needed)
+  // Fully delete the first user and all related data
   const user = users[0];
-  console.log(`\nResetting user: ${user.email}`);
+  console.log(`\nDeleting user entirely: ${user.email}`);
 
+  // Delete child records first (order matters for foreign keys)
   const deleted = await Promise.all([
     prisma.subscription.deleteMany({ where: { userId: user.id } }),
     prisma.contextProfile.deleteMany({ where: { userId: user.id } }),
     prisma.weeklyDigest.deleteMany({ where: { userId: user.id } }),
     prisma.bookmark.deleteMany({ where: { userId: user.id } }),
+    prisma.account.deleteMany({ where: { userId: user.id } }),
+    prisma.session.deleteMany({ where: { userId: user.id } }),
   ]);
 
   console.log(`  Subscriptions deleted: ${deleted[0].count}`);
   console.log(`  Context profiles deleted: ${deleted[1].count}`);
   console.log(`  Weekly digests deleted: ${deleted[2].count}`);
   console.log(`  Bookmarks deleted: ${deleted[3].count}`);
-  console.log("\nDone! User is now a fresh free account.");
+  console.log(`  Accounts deleted: ${deleted[4].count}`);
+  console.log(`  Sessions deleted: ${deleted[5].count}`);
+
+  // Now delete the user record
+  await prisma.user.delete({ where: { id: user.id } });
+  console.log(`  User record deleted`);
+
+  console.log("\nDone! User completely removed — next sign-in will create a fresh account.");
 }
 
 main()

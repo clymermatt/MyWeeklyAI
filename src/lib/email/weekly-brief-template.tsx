@@ -9,7 +9,6 @@ import {
   Link,
   Hr,
   Preview,
-  Img,
 } from "@react-email/components";
 import type { BriefOutput, BriefItem, FreeBriefStored } from "@/types/brief";
 
@@ -140,21 +139,15 @@ export default function WeeklyBriefEmail({
             borderRadius: "8px",
           }}
         >
-          <Section style={{ marginBottom: "4px" }}>
-            <Img
-              src={`${process.env.NEXT_PUBLIC_APP_URL || "https://www.myweekly.ai"}/icon.svg`}
-              width="32"
-              height="32"
-              alt="My Weekly AI"
-              style={{ display: "inline-block", verticalAlign: "middle", marginRight: "10px" }}
-            />
-            <Heading
-              as="h1"
-              style={{ color: "#111827", fontSize: "24px", display: "inline-block", verticalAlign: "middle", margin: "0" }}
-            >
-              My Weekly AI
-            </Heading>
-          </Section>
+          <Heading
+            style={{
+              color: "#9333ea",
+              fontSize: "24px",
+              marginBottom: "4px",
+            }}
+          >
+            My Weekly AI
+          </Heading>
           <Text style={{ color: "#6b7280", fontSize: "14px", marginTop: "0" }}>
             {userName ? `Hi ${userName}, here's` : "Here's"} your{" "}
             {isFree ? "free " : ""}weekly AI brief for {periodStart} &ndash;{" "}

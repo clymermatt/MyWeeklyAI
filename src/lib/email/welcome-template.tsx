@@ -9,7 +9,6 @@ import {
   Link,
   Hr,
   Preview,
-  Img,
 } from "@react-email/components";
 
 interface WelcomeEmailProps {
@@ -36,30 +35,23 @@ export default function WelcomeEmail({ userName }: WelcomeEmailProps) {
             borderRadius: "8px",
           }}
         >
-          <Section style={{ marginBottom: "4px" }}>
-            <Img
-              src={`${appUrl}/icon.svg`}
-              width="32"
-              height="32"
-              alt="My Weekly AI"
-              style={{ display: "inline-block", verticalAlign: "middle", marginRight: "10px" }}
-            />
-            <Heading
-              as="h1"
-              style={{ color: "#111827", fontSize: "24px", display: "inline-block", verticalAlign: "middle", margin: "0" }}
-            >
-              My Weekly AI
-            </Heading>
-          </Section>
+          <Heading
+            style={{
+              color: "#9333ea",
+              fontSize: "24px",
+              marginBottom: "4px",
+            }}
+          >
+            My Weekly AI
+          </Heading>
 
           <Text style={{ color: "#374151", fontSize: "16px", lineHeight: "1.6" }}>
-            {userName ? `Hi ${userName}, welcome` : "Welcome"} to My Weekly AI!
+            {userName ? `${userName}, welcome` : "Welcome"} to My Weekly AI!
           </Text>
 
           <Text style={{ color: "#374151", fontSize: "14px", lineHeight: "1.6" }}>
-            Every week, we curate the most important AI news and tailor it to
-            your role, industry, and goals — so you stay informed without the
-            noise.
+            Every week, we cut through the noise and bring you the AI news that
+            actually matters — tailored to your role, industry, and goals.
           </Text>
 
           <Hr style={{ borderColor: "#e5e7eb", margin: "24px 0" }} />
@@ -72,9 +64,12 @@ export default function WelcomeEmail({ userName }: WelcomeEmailProps) {
               Get your first briefing now
             </Heading>
             <Text style={{ color: "#374151", fontSize: "14px", lineHeight: "1.6" }}>
-              Complete your context profile so we know what matters to you. Once
-              you do, we&apos;ll generate your first personalized briefing
-              instantly — no waiting until Sunday.
+              Complete your context profile so we know what to focus on. Once you
+              do, we&apos;ll generate your first briefing right away — no need to
+              wait until Sunday.
+            </Text>
+            <Text style={{ color: "#374151", fontSize: "14px", lineHeight: "1.6" }}>
+              After that, expect your briefing in your inbox every Sunday morning.
             </Text>
           </Section>
 
@@ -91,7 +86,7 @@ export default function WelcomeEmail({ userName }: WelcomeEmailProps) {
                 textDecoration: "none",
               }}
             >
-              Complete Your Profile
+              Complete my profile &rarr;
             </Link>
           </Section>
 
