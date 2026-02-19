@@ -1,20 +1,112 @@
 import { prisma } from "@/lib/prisma";
 import { runIngestion } from "@/lib/ingestion/ingest";
 import { generateBrief } from "@/lib/llm/generate-brief";
+import { generateFreeBrief } from "@/lib/llm/generate-brief";
+import { rankNewsForUser } from "@/lib/llm/relevance-scorer";
 import { sendWeeklyBrief } from "@/lib/email/send";
+import type { BriefOutput } from "@/types/brief";
+import { freeBriefToBriefOutput } from "@/types/brief";
 
 export interface DigestResult {
-  usersProcessed: number;
+  freeUsersProcessed: number;
+  paidUsersProcessed: number;
   emailsSent: number;
   errors: string[];
+}
+
+/** Extract all article URLs from a stored brief */
+function extractUrlsFromBrief(briefJson: unknown): Set<string> {
+  const urls = new Set<string>();
+  const brief = briefJson as BriefOutput;
+  if (!brief) return urls;
+  for (const item of brief.whatDropped ?? []) urls.add(item.url);
+  for (const item of brief.relevantToYou ?? []) urls.add(item.url);
+  for (const item of brief.whatToTest ?? []) urls.add(item.url);
+  return urls;
 }
 
 export async function runWeeklyDigest(): Promise<DigestResult> {
   // Step 1: Run ingestion first to get fresh news
   await runIngestion();
 
-  // Step 2: Fetch all users with active subscriptions and a context profile
-  const users = await prisma.user.findMany({
+  const periodEnd = new Date();
+  const periodStart = new Date();
+  periodStart.setDate(periodStart.getDate() - 7);
+
+  // Step 2: Fetch news items from the past 7 days (with source category)
+  const allNewsItems = await prisma.newsItem.findMany({
+    where: {
+      publishedAt: { gte: periodStart },
+    },
+    include: { source: { select: { name: true, category: true } } },
+    orderBy: { publishedAt: "desc" },
+    take: 200,
+  });
+
+  const industryItems = allNewsItems.filter((i) => i.source.category === "INDUSTRY_NEWS");
+  const labItems = allNewsItems.filter((i) => i.source.category === "AI_LAB");
+
+  let emailsSent = 0;
+  const errors: string[] = [];
+
+  // ── Phase A: Generate shared free brief (1 Claude call) ──
+  const freeBrief = await generateFreeBrief(industryItems, labItems);
+  const freeBriefFull = freeBriefToBriefOutput(freeBrief);
+  // Store subsections alongside the full shape for rendering
+  const freeBriefJson = {
+    ...freeBriefFull,
+    industryNews: freeBrief.industryNews,
+    labUpdates: freeBrief.labUpdates,
+  };
+
+  // ── Phase B: Free users (have profile, no ACTIVE subscription) ──
+  const freeUsers = await prisma.user.findMany({
+    where: {
+      contextProfile: { isNot: null },
+      OR: [
+        { subscription: null },
+        { subscription: { status: { not: "ACTIVE" } } },
+      ],
+    },
+    include: { contextProfile: true },
+  });
+
+  for (const user of freeUsers) {
+    try {
+      await prisma.weeklyDigest.create({
+        data: {
+          userId: user.id,
+          briefJson: JSON.parse(JSON.stringify(freeBriefJson)),
+          isFree: true,
+          periodStart,
+          periodEnd,
+        },
+      });
+
+      try {
+        await sendWeeklyBrief({
+          to: user.email,
+          userName: user.name ?? undefined,
+          brief: freeBriefJson,
+          isFree: true,
+          periodStart,
+          periodEnd,
+        });
+        emailsSent++;
+      } catch (emailErr) {
+        const msg = emailErr instanceof Error ? emailErr.message : "Unknown email error";
+        console.log(`Email skipped for ${user.email}: ${msg}`);
+        errors.push(`Email skipped for ${user.email}: ${msg}`);
+      }
+    } catch (err) {
+      errors.push(
+        `Free user ${user.email}: ${err instanceof Error ? err.message : "Unknown error"}`,
+      );
+    }
+  }
+
+  // ── Phase C: Paid users (ACTIVE subscription + profile) ──
+  const paidUsers = await prisma.user.findMany({
     where: {
       subscription: { status: "ACTIVE" },
       contextProfile: { isNot: null },
@@ -25,45 +117,50 @@ export async function runWeeklyDigest(): Promise<DigestResult> {
     },
   });
 
-  const periodEnd = new Date();
-  const periodStart = new Date();
-  periodStart.setDate(periodStart.getDate() - 7);
-
-  // Step 3: Fetch news items from the past 7 days
-  const newsItems = await prisma.newsItem.findMany({
-    where: {
-      publishedAt: { gte: periodStart },
-    },
-    orderBy: { publishedAt: "desc" },
-    take: 100,
-  });
-
-  let emailsSent = 0;
-  const errors: string[] = [];
-
-  // Step 4: For each user, generate a personalized brief and send email
-  for (const user of users) {
+  for (const user of paidUsers) {
     if (!user.contextProfile) continue;
 
     try {
-      const brief = await generateBrief(user.contextProfile, newsItems);
+      // Dedup: get URLs from the user's last 2 digests
+      const recentDigests = await prisma.weeklyDigest.findMany({
+        where: { userId: user.id },
+        orderBy: { createdAt: "desc" },
+        take: 2,
+        select: { briefJson: true },
+      });
 
-      // Store the digest in DB regardless of email sending
+      const previousUrls = new Set<string>();
+      for (const d of recentDigests) {
+        for (const url of extractUrlsFromBrief(d.briefJson)) {
+          previousUrls.add(url);
+        }
+      }
+
+      // Filter out previously featured articles
+      const freshItems = allNewsItems.filter((item) => !previousUrls.has(item.url));
+
+      // Rank and select the most relevant items for this user
+      const rankedItems = rankNewsForUser(freshItems, user.contextProfile);
+
+      const brief = await generateBrief(user.contextProfile, rankedItems);
+
+      // Store the digest in DB
       await prisma.weeklyDigest.create({
         data: {
           userId: user.id,
           briefJson: JSON.parse(JSON.stringify(brief)),
+          isFree: false,
           periodStart,
           periodEnd,
         },
       });
 
-      // Try sending email (may fail if RESEND_API_KEY not set)
       try {
         await sendWeeklyBrief({
           to: user.email,
           userName: user.name ?? undefined,
           brief,
+          isFree: false,
           periodStart,
           periodEnd,
         });
@@ -81,7 +178,8 @@ export async function runWeeklyDigest(): Promise<DigestResult> {
   }
 
   return {
-    usersProcessed: users.length,
+    freeUsersProcessed: freeUsers.length,
+    paidUsersProcessed: paidUsers.length,
     emailsSent,
     errors,
   };

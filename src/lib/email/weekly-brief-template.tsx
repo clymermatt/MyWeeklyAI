@@ -10,10 +10,11 @@ import {
   Hr,
   Preview,
 } from "@react-email/components";
-import type { BriefOutput, BriefItem } from "@/types/brief";
+import type { BriefOutput, BriefItem, FreeBriefStored } from "@/types/brief";
 
 interface WeeklyBriefEmailProps {
-  brief: BriefOutput;
+  brief: BriefOutput | FreeBriefStored;
+  isFree?: boolean;
   periodStart: string;
   periodEnd: string;
   userName?: string;
@@ -41,6 +42,17 @@ function ItemList({
           >
             {item.title}
           </Link>
+          {item.source && (
+            <Text
+              style={{
+                color: "#9ca3af",
+                fontSize: "12px",
+                margin: "2px 0 0",
+              }}
+            >
+              {item.source}
+            </Text>
+          )}
           <Text style={{ color: "#374151", fontSize: "14px", margin: "4px 0" }}>
             {item.summary}
           </Text>
@@ -62,8 +74,50 @@ function ItemList({
   );
 }
 
+function LockedSection({ title }: { title: string }) {
+  return (
+    <Section
+      style={{
+        backgroundColor: "#f3f4f6",
+        borderRadius: "8px",
+        padding: "24px",
+        textAlign: "center" as const,
+      }}
+    >
+      <Heading
+        as="h2"
+        style={{
+          color: "#9ca3af",
+          fontSize: "18px",
+          marginBottom: "8px",
+        }}
+      >
+        {title}
+      </Heading>
+      <Text style={{ color: "#9ca3af", fontSize: "14px", margin: "0 0 16px" }}>
+        This section is personalized for Pro subscribers.
+      </Text>
+      <Link
+        href={`${process.env.NEXT_PUBLIC_APP_URL || "https://www.myweekly.ai"}/dashboard`}
+        style={{
+          backgroundColor: "#2563eb",
+          color: "#ffffff",
+          padding: "10px 24px",
+          borderRadius: "6px",
+          fontSize: "14px",
+          fontWeight: 600,
+          textDecoration: "none",
+        }}
+      >
+        Upgrade to Pro
+      </Link>
+    </Section>
+  );
+}
+
 export default function WeeklyBriefEmail({
   brief,
+  isFree = false,
   periodStart,
   periodEnd,
   userName,
@@ -72,7 +126,8 @@ export default function WeeklyBriefEmail({
     <Html>
       <Head />
       <Preview>
-        Your weekly AI brief for {periodStart} - {periodEnd}
+        Your {isFree ? "free " : ""}weekly AI brief for {periodStart} -{" "}
+        {periodEnd}
       </Preview>
       <Body style={{ backgroundColor: "#f9fafb", fontFamily: "sans-serif" }}>
         <Container
@@ -87,54 +142,103 @@ export default function WeeklyBriefEmail({
           <Heading
             style={{ color: "#111827", fontSize: "24px", marginBottom: "4px" }}
           >
-            ContextBrief
+            My Weekly AI
           </Heading>
           <Text style={{ color: "#6b7280", fontSize: "14px", marginTop: "0" }}>
-            {userName ? `Hi ${userName}, here's` : "Here's"} your weekly AI
-            brief for {periodStart} &ndash; {periodEnd}.
+            {userName ? `Hi ${userName}, here's` : "Here's"} your{" "}
+            {isFree ? "free " : ""}weekly AI brief for {periodStart} &ndash;{" "}
+            {periodEnd}.
           </Text>
 
           <Hr style={{ borderColor: "#e5e7eb", margin: "24px 0" }} />
 
-          <Heading
-            as="h2"
-            style={{ color: "#111827", fontSize: "18px", marginBottom: "12px" }}
-          >
-            What Dropped
-          </Heading>
-          <ItemList items={brief.whatDropped} />
+          {isFree && "industryNews" in brief ? (
+            <>
+              <Heading
+                as="h2"
+                style={{ color: "#111827", fontSize: "18px", marginBottom: "12px" }}
+              >
+                Industry News
+              </Heading>
+              <ItemList items={(brief as FreeBriefStored).industryNews} />
 
-          <Hr style={{ borderColor: "#e5e7eb", margin: "24px 0" }} />
+              <Hr style={{ borderColor: "#e5e7eb", margin: "24px 0" }} />
 
-          <Heading
-            as="h2"
-            style={{ color: "#111827", fontSize: "18px", marginBottom: "12px" }}
-          >
-            Relevant To You
-          </Heading>
-          <ItemList items={brief.relevantToYou} showRelevance />
+              <Heading
+                as="h2"
+                style={{ color: "#111827", fontSize: "18px", marginBottom: "12px" }}
+              >
+                AI Lab Announcements
+              </Heading>
+              <ItemList items={(brief as FreeBriefStored).labUpdates} />
 
-          <Hr style={{ borderColor: "#e5e7eb", margin: "24px 0" }} />
+              <Hr style={{ borderColor: "#e5e7eb", margin: "24px 0" }} />
 
-          <Heading
-            as="h2"
-            style={{ color: "#111827", fontSize: "18px", marginBottom: "12px" }}
-          >
-            What To Test This Week
-          </Heading>
-          <ItemList items={brief.whatToTest} showRelevance />
+              <LockedSection title="Relevant To You" />
+              <Hr style={{ borderColor: "#e5e7eb", margin: "24px 0" }} />
+              <LockedSection title="What To Test This Week" />
+            </>
+          ) : isFree ? (
+            <>
+              <Heading
+                as="h2"
+                style={{ color: "#111827", fontSize: "18px", marginBottom: "12px" }}
+              >
+                What Dropped
+              </Heading>
+              <ItemList items={brief.whatDropped} />
 
-          <Hr style={{ borderColor: "#e5e7eb", margin: "24px 0" }} />
+              <Hr style={{ borderColor: "#e5e7eb", margin: "24px 0" }} />
 
-          <Heading
-            as="h2"
-            style={{ color: "#6b7280", fontSize: "16px", marginBottom: "8px" }}
-          >
-            What We Filtered Out
-          </Heading>
-          <Text style={{ color: "#9ca3af", fontSize: "13px" }}>
-            {brief.ignoreSummary}
-          </Text>
+              <LockedSection title="Relevant To You" />
+              <Hr style={{ borderColor: "#e5e7eb", margin: "24px 0" }} />
+              <LockedSection title="What To Test This Week" />
+            </>
+          ) : (
+            <>
+              <Heading
+                as="h2"
+                style={{
+                  color: "#111827",
+                  fontSize: "18px",
+                  marginBottom: "12px",
+                }}
+              >
+                Relevant To You
+              </Heading>
+              <ItemList items={brief.relevantToYou} showRelevance />
+
+              <Hr style={{ borderColor: "#e5e7eb", margin: "24px 0" }} />
+
+              <Heading
+                as="h2"
+                style={{
+                  color: "#111827",
+                  fontSize: "18px",
+                  marginBottom: "12px",
+                }}
+              >
+                What To Test This Week
+              </Heading>
+              <ItemList items={brief.whatToTest} showRelevance />
+
+              <Hr style={{ borderColor: "#e5e7eb", margin: "24px 0" }} />
+
+              <Heading
+                as="h2"
+                style={{
+                  color: "#6b7280",
+                  fontSize: "16px",
+                  marginBottom: "8px",
+                }}
+              >
+                What We Filtered Out
+              </Heading>
+              <Text style={{ color: "#9ca3af", fontSize: "13px" }}>
+                {brief.ignoreSummary}
+              </Text>
+            </>
+          )}
 
           <Hr style={{ borderColor: "#e5e7eb", margin: "24px 0" }} />
 
@@ -145,7 +249,7 @@ export default function WeeklyBriefEmail({
               textAlign: "center" as const,
             }}
           >
-            Powered by ContextBrief &middot; Curated by Claude
+            Powered by My Weekly AI &middot; Curated by Claude
           </Text>
         </Container>
       </Body>

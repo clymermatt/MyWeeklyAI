@@ -17,7 +17,7 @@ export default async function AdminLayout({
         <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4">
           <div className="flex items-center gap-8">
             <Link href="/admin" className="text-lg font-bold text-gray-900">
-              ContextBrief <span className="text-xs font-normal text-red-500">Admin</span>
+              My Weekly AI <span className="text-xs font-normal text-red-500">Admin</span>
             </Link>
             <div className="flex gap-6">
               <Link

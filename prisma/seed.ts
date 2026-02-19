@@ -23,38 +23,101 @@ const pool = new pg.Pool({ connectionString: getDirectDatabaseUrl() });
 const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
-const SOURCES = [
+type SourceCategory = "INDUSTRY_NEWS" | "AI_LAB" | "RESEARCH_ANALYSIS";
+
+const SOURCES: { name: string; url: string; category: SourceCategory }[] = [
+  // ── Industry News ──
   {
     name: "The Verge - AI",
     url: "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml",
+    category: "INDUSTRY_NEWS",
   },
   {
     name: "TechCrunch - AI",
     url: "https://techcrunch.com/category/artificial-intelligence/feed/",
-  },
-  {
-    name: "MIT Technology Review - AI",
-    url: "https://www.technologyreview.com/topic/artificial-intelligence/feed",
-  },
-  {
-    name: "OpenAI Blog",
-    url: "https://openai.com/blog/rss.xml",
-  },
-  {
-    name: "Anthropic News",
-    url: "https://www.anthropic.com/news/rss.xml",
-  },
-  {
-    name: "Google AI Blog",
-    url: "https://blog.google/technology/ai/rss/",
+    category: "INDUSTRY_NEWS",
   },
   {
     name: "Ars Technica - AI",
     url: "https://feeds.arstechnica.com/arstechnica/technology-lab",
+    category: "INDUSTRY_NEWS",
   },
   {
     name: "VentureBeat - AI",
     url: "https://venturebeat.com/category/ai/feed/",
+    category: "INDUSTRY_NEWS",
+  },
+  {
+    name: "IEEE Spectrum - AI",
+    url: "https://spectrum.ieee.org/feeds/topic/artificial-intelligence.rss",
+    category: "INDUSTRY_NEWS",
+  },
+  // ── AI Lab ──
+  {
+    name: "OpenAI Blog",
+    url: "https://openai.com/blog/rss.xml",
+    category: "AI_LAB",
+  },
+  {
+    name: "Anthropic News",
+    url: "https://www.anthropic.com/news/rss.xml",
+    category: "AI_LAB",
+  },
+  {
+    name: "Google AI Blog",
+    url: "https://blog.google/technology/ai/rss/",
+    category: "AI_LAB",
+  },
+  {
+    name: "Google DeepMind",
+    url: "https://deepmind.google/blog/rss.xml",
+    category: "AI_LAB",
+  },
+  {
+    name: "Microsoft Research",
+    url: "https://www.microsoft.com/en-us/research/feed/",
+    category: "AI_LAB",
+  },
+  {
+    name: "NVIDIA Technical Blog",
+    url: "https://developer.nvidia.com/blog/feed/",
+    category: "AI_LAB",
+  },
+  {
+    name: "Hugging Face Blog",
+    url: "https://huggingface.co/blog/feed.xml",
+    category: "AI_LAB",
+  },
+  // ── Research & Analysis ──
+  {
+    name: "MIT Technology Review - AI",
+    url: "https://www.technologyreview.com/topic/artificial-intelligence/feed",
+    category: "RESEARCH_ANALYSIS",
+  },
+  {
+    name: "Import AI",
+    url: "https://importai.substack.com/feed",
+    category: "RESEARCH_ANALYSIS",
+  },
+  {
+    name: "AI Alignment Forum",
+    url: "https://www.alignmentforum.org/feed.xml",
+    category: "RESEARCH_ANALYSIS",
+  },
+  {
+    name: "The Gradient",
+    url: "https://thegradient.pub/rss/",
+    category: "RESEARCH_ANALYSIS",
+  },
+  {
+    name: "Interconnects AI",
+    url: "https://www.interconnects.ai/feed",
+    category: "RESEARCH_ANALYSIS",
+  },
+  {
+    name: "MIT News - AI",
+    url: "https://news.mit.edu/rss/topic/artificial-intelligence2",
+    category: "RESEARCH_ANALYSIS",
   },
 ];
 
@@ -64,8 +127,8 @@ async function main() {
   for (const source of SOURCES) {
     await prisma.source.upsert({
       where: { url: source.url },
-      create: { name: source.name, url: source.url, type: "RSS", active: true },
-      update: { name: source.name },
+      create: { name: source.name, url: source.url, type: "RSS", category: source.category, active: true },
+      update: { name: source.name, category: source.category },
     });
     console.log(`  Upserted: ${source.name}`);
   }

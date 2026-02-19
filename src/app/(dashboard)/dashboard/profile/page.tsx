@@ -4,7 +4,7 @@ export default function ProfilePage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Context Profile</h1>
+        <h1 className="text-2xl font-bold text-gray-900">My Profile</h1>
         <p className="mt-1 text-sm text-gray-600">
           Tell us about your role, tools, and interests so we can personalize
           your weekly AI brief.

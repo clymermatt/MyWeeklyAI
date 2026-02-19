@@ -23,7 +23,8 @@ export async function POST(req: Request) {
         error:
           result.errors.length > 0 ? result.errors.join("\n") : null,
         metrics: {
-          usersProcessed: result.usersProcessed,
+          freeUsersProcessed: result.freeUsersProcessed,
+          paidUsersProcessed: result.paidUsersProcessed,
           emailsSent: result.emailsSent,
           errorCount: result.errors.length,
         },
