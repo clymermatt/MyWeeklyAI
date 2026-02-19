@@ -86,7 +86,7 @@ export default async function HomePage() {
                 2
               </div>
               <h3 className="mt-4 font-semibold text-gray-900">
-                Claude curates your brief
+                AI curates your brief
               </h3>
               <p className="mt-2 text-sm text-gray-600">
                 Every week, AI reads hundreds of articles and picks what&apos;s
