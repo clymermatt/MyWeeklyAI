@@ -58,11 +58,7 @@ const SOURCES: { name: string; url: string; category: SourceCategory }[] = [
     url: "https://openai.com/blog/rss.xml",
     category: "AI_LAB",
   },
-  {
-    name: "Anthropic News",
-    url: "https://www.anthropic.com/news/rss.xml",
-    category: "AI_LAB",
-  },
+  // Anthropic has no official RSS feed; their news is covered by industry sources
   {
     name: "Google AI Blog",
     url: "https://blog.google/technology/ai/rss/",

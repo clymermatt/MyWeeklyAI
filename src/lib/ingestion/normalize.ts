@@ -10,6 +10,28 @@ export interface NormalizedItem {
 }
 
 /**
+ * Extracts a plain string title from an RSS item.
+ * Some feeds (e.g. Fierce Healthcare/Biotech) wrap titles in <a> tags,
+ * which rss-parser returns as nested objects instead of strings.
+ */
+function extractTitle(title: unknown): string | undefined {
+  if (typeof title === "string") return title;
+  if (title && typeof title === "object") {
+    // Fierce-style: { a: [{ _: "Title Text", $: { href: "..." } }] }
+    const obj = title as Record<string, unknown>;
+    if ("a" in obj) {
+      const anchor = obj.a;
+      if (Array.isArray(anchor) && anchor[0]?._) {
+        return String(anchor[0]._);
+      }
+    }
+    // Fallback: try to extract any nested text
+    if ("_" in obj && typeof obj._ === "string") return obj._;
+  }
+  return undefined;
+}
+
+/**
  * AI relevance keywords — if none of these appear in the title, summary,
  * or tags, the article is unlikely to be about AI and gets filtered out.
  * Uses word-boundary matching to avoid false positives.
@@ -52,6 +74,7 @@ export function normalizeItems(
   opts: { skipAIFilter?: boolean } = {},
 ): NormalizedItem[] {
   return items
+    .map((item) => ({ ...item, title: extractTitle(item.title) }))
     .filter((item) => item.title && item.link)
     .filter((item) => {
       if (opts.skipAIFilter) return true;

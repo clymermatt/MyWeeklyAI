@@ -1,9 +1,14 @@
 import RSSParser from "rss-parser";
 
-const parser = new RSSParser();
+const parser = new RSSParser({
+  headers: {
+    "User-Agent": "ContextBrief/1.0 (RSS Reader)",
+    Accept: "application/rss+xml, application/xml, text/xml, */*",
+  },
+});
 
 export interface RawFeedItem {
-  title?: string;
+  title?: string | Record<string, unknown>;
   link?: string;
   pubDate?: string;
   contentSnippet?: string;
