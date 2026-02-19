@@ -228,7 +228,7 @@ export default async function HomePage() {
               </ul>
               <div className="mt-8">
                 <Link
-                  href="/auth/signin"
+                  href="/auth/signin?plan=pro"
                   className="block rounded-lg bg-purple-600 py-2.5 text-center text-sm font-medium text-white hover:bg-purple-700 transition-colors"
                 >
                   Start Pro — 7 Days Free
@@ -285,7 +285,7 @@ export default async function HomePage() {
               Get your free brief
             </Link>
             <Link
-              href="/auth/signin"
+              href="/auth/signin?plan=pro"
               className="rounded-lg bg-white px-6 py-3 text-sm font-medium text-purple-600 hover:bg-purple-50 transition-colors"
             >
               Start Pro — 7 Days Free

@@ -9,6 +9,7 @@ import {
   Link,
   Hr,
   Preview,
+  Img,
 } from "@react-email/components";
 
 interface WelcomeEmailProps {
@@ -35,11 +36,21 @@ export default function WelcomeEmail({ userName }: WelcomeEmailProps) {
             borderRadius: "8px",
           }}
         >
-          <Heading
-            style={{ color: "#111827", fontSize: "24px", marginBottom: "4px" }}
-          >
-            My Weekly AI
-          </Heading>
+          <Section style={{ marginBottom: "4px" }}>
+            <Img
+              src={`${appUrl}/icon.svg`}
+              width="32"
+              height="32"
+              alt="My Weekly AI"
+              style={{ display: "inline-block", verticalAlign: "middle", marginRight: "10px" }}
+            />
+            <Heading
+              as="h1"
+              style={{ color: "#111827", fontSize: "24px", display: "inline-block", verticalAlign: "middle", margin: "0" }}
+            >
+              My Weekly AI
+            </Heading>
+          </Section>
 
           <Text style={{ color: "#374151", fontSize: "16px", lineHeight: "1.6" }}>
             {userName ? `Hi ${userName}, welcome` : "Welcome"} to My Weekly AI!
@@ -71,7 +82,7 @@ export default function WelcomeEmail({ userName }: WelcomeEmailProps) {
             <Link
               href={`${appUrl}/dashboard/profile`}
               style={{
-                backgroundColor: "#2563eb",
+                backgroundColor: "#9333ea",
                 color: "#ffffff",
                 padding: "12px 32px",
                 borderRadius: "6px",
@@ -93,7 +104,7 @@ export default function WelcomeEmail({ userName }: WelcomeEmailProps) {
               textAlign: "center" as const,
             }}
           >
-            Powered by My Weekly AI &middot; Curated by Claude
+            Powered by My Weekly AI &middot; Curated by AI
           </Text>
         </Container>
       </Body>

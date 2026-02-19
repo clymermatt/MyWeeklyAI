@@ -2,9 +2,17 @@ import { signIn } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 
-export default async function SignInPage() {
+export default async function SignInPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ plan?: string }>;
+}) {
   const session = await auth();
   if (session) redirect("/dashboard");
+
+  const params = await searchParams;
+  const redirectTo =
+    params.plan === "pro" ? "/dashboard?upgrade=pro" : "/dashboard";
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50">
@@ -22,7 +30,7 @@ export default async function SignInPage() {
           <form
             action={async () => {
               "use server";
-              await signIn("google", { redirectTo: "/dashboard" });
+              await signIn("google", { redirectTo });
             }}
           >
             <button
@@ -65,7 +73,7 @@ export default async function SignInPage() {
               "use server";
               await signIn("resend", {
                 email: formData.get("email") as string,
-                redirectTo: "/dashboard",
+                redirectTo,
               });
             }}
             className="space-y-3"

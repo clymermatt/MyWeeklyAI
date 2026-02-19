@@ -9,6 +9,7 @@ import {
   Link,
   Hr,
   Preview,
+  Img,
 } from "@react-email/components";
 import type { BriefOutput, BriefItem, FreeBriefStored } from "@/types/brief";
 
@@ -34,7 +35,7 @@ function ItemList({
           <Link
             href={item.url}
             style={{
-              color: "#1d4ed8",
+              color: "#9333ea",
               fontSize: "16px",
               fontWeight: 600,
               textDecoration: "none",
@@ -100,7 +101,7 @@ function LockedSection({ title }: { title: string }) {
       <Link
         href={`${process.env.NEXT_PUBLIC_APP_URL || "https://www.myweekly.ai"}/dashboard`}
         style={{
-          backgroundColor: "#2563eb",
+          backgroundColor: "#9333ea",
           color: "#ffffff",
           padding: "10px 24px",
           borderRadius: "6px",
@@ -139,11 +140,21 @@ export default function WeeklyBriefEmail({
             borderRadius: "8px",
           }}
         >
-          <Heading
-            style={{ color: "#111827", fontSize: "24px", marginBottom: "4px" }}
-          >
-            My Weekly AI
-          </Heading>
+          <Section style={{ marginBottom: "4px" }}>
+            <Img
+              src={`${process.env.NEXT_PUBLIC_APP_URL || "https://www.myweekly.ai"}/icon.svg`}
+              width="32"
+              height="32"
+              alt="My Weekly AI"
+              style={{ display: "inline-block", verticalAlign: "middle", marginRight: "10px" }}
+            />
+            <Heading
+              as="h1"
+              style={{ color: "#111827", fontSize: "24px", display: "inline-block", verticalAlign: "middle", margin: "0" }}
+            >
+              My Weekly AI
+            </Heading>
+          </Section>
           <Text style={{ color: "#6b7280", fontSize: "14px", marginTop: "0" }}>
             {userName ? `Hi ${userName}, here's` : "Here's"} your{" "}
             {isFree ? "free " : ""}weekly AI brief for {periodStart} &ndash;{" "}
@@ -249,7 +260,7 @@ export default function WeeklyBriefEmail({
               textAlign: "center" as const,
             }}
           >
-            Powered by My Weekly AI &middot; Curated by Claude
+            Powered by My Weekly AI &middot; Curated by AI
           </Text>
         </Container>
       </Body>

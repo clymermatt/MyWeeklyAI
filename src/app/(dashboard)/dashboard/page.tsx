@@ -3,9 +3,14 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import SubscriptionButton from "@/components/subscription-button";
 
-export default async function DashboardPage() {
+export default async function DashboardPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ upgrade?: string; subscription?: string }>;
+}) {
   const session = await auth();
   const userId = session!.user!.id!;
+  const params = await searchParams;
 
   const [profile, subscription, recentDigests] = await Promise.all([
     prisma.contextProfile.findUnique({ where: { userId } }),
@@ -18,6 +23,9 @@ export default async function DashboardPage() {
   ]);
 
   const isActive = subscription?.status === "ACTIVE";
+  const showUpgradeBanner = params.upgrade === "pro" && !isActive;
+
+  const needsProfile = !profile;
 
   return (
     <div className="space-y-8">
@@ -28,12 +36,59 @@ export default async function DashboardPage() {
         </p>
       </div>
 
+      {needsProfile && (
+        <div className="rounded-lg border-2 border-amber-400 bg-amber-50 px-6 py-4">
+          <div className="flex items-center gap-3">
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-amber-400 text-sm font-bold text-white">
+              1
+            </span>
+            <div className="flex-1">
+              <p className="font-medium text-gray-900">
+                Set up your context profile to get your first brief
+              </p>
+              <p className="mt-0.5 text-sm text-gray-600">
+                Takes about 2 minutes. Your first brief will be delivered instantly to your inbox.
+              </p>
+            </div>
+            <Link
+              href="/dashboard/profile"
+              className="shrink-0 rounded-lg bg-purple-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-purple-700 transition-colors"
+            >
+              Set up profile
+            </Link>
+          </div>
+        </div>
+      )}
+
+      {showUpgradeBanner && (
+        <div className="rounded-lg border-2 border-purple-600 bg-purple-50 p-6 text-center">
+          <h2 className="text-lg font-bold text-gray-900">
+            Start your 7-day free trial
+          </h2>
+          <p className="mt-2 text-sm text-gray-600">
+            Get personalized AI briefings tailored to your role and industry.
+            No charge for 7 days — cancel anytime.
+          </p>
+          <div className="mt-4">
+            <SubscriptionButton />
+          </div>
+        </div>
+      )}
+
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {/* Context Profile Card */}
-        <div className="rounded-lg border border-gray-200 bg-white p-6">
-          <h2 className="text-sm font-medium text-gray-500">
-            Context Profile
-          </h2>
+        <div className={`rounded-lg p-6 ${needsProfile ? "border-2 border-amber-400 bg-amber-50/30" : "border border-gray-200 bg-white"}`}>
+          <div className="flex items-center justify-between">
+            <h2 className="text-sm font-medium text-gray-500">
+              Context Profile
+            </h2>
+            {needsProfile && (
+              <span className="relative flex h-3 w-3">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber-400 opacity-75" />
+                <span className="relative inline-flex h-3 w-3 rounded-full bg-amber-500" />
+              </span>
+            )}
+          </div>
           {profile ? (
             <div className="mt-2">
               <p className="text-lg font-semibold text-green-600">Complete</p>
@@ -45,10 +100,10 @@ export default async function DashboardPage() {
           ) : (
             <div className="mt-2">
               <p className="text-lg font-semibold text-amber-600">
-                Not set up
+                Action needed
               </p>
               <p className="mt-1 text-sm text-gray-600">
-                Create your profile to get personalized briefs
+                Create your profile to get your first brief delivered instantly to your inbox, then each following Sunday.
               </p>
             </div>
           )}
@@ -81,8 +136,9 @@ export default async function DashboardPage() {
             <div className="mt-2">
               <p className="text-lg font-semibold text-gray-900">Free</p>
               <p className="mt-1 text-sm text-gray-600">
-                You get the weekly &ldquo;What Dropped&rdquo; section.
-                Upgrade to unlock personalized picks and action items.
+                You get the weekly &ldquo;Industry News&rdquo; section.
+                Upgrade to Pro and unlock personalized picks and action
+                items tailored to your role.
               </p>
               <div className="mt-4">
                 <SubscriptionButton />
@@ -109,7 +165,7 @@ export default async function DashboardPage() {
             <div className="mt-2">
               <p className="text-lg font-semibold text-gray-400">None yet</p>
               <p className="mt-1 text-sm text-gray-600">
-                Your first brief will arrive this Sunday
+                Complete your profile to get your first brief instantly
               </p>
             </div>
           )}

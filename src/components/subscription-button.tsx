@@ -26,7 +26,7 @@ export default function SubscriptionButton() {
       disabled={loading}
       className="rounded-lg bg-purple-600 px-6 py-2.5 text-sm font-medium text-white hover:bg-purple-700 disabled:opacity-50 transition-colors"
     >
-      {loading ? "Loading..." : "Subscribe"}
+      {loading ? "Loading..." : "Try Pro for 7 Days Free"}
     </button>
   );
 }
