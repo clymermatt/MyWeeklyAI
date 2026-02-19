@@ -56,7 +56,7 @@ export default async function LandingPage({
       {/* Source logos */}
       <section className="px-4 pb-16">
         <p className="text-center text-sm text-gray-400 mb-6">
-          Curated from sources you trust
+          Curated from 20+ industry labs and publications
         </p>
         <div className="mx-auto flex max-w-3xl items-center justify-center gap-x-8 grayscale opacity-50">
           <Image src="/logos/openai.svg" alt="OpenAI" width={88} height={25} />
