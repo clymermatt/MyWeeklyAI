@@ -280,13 +280,13 @@ export default async function HomePage() {
           <div className="mt-8 flex items-center justify-center gap-4">
             <Link
               href="/auth/signin"
-              className="rounded-lg bg-white px-6 py-3 text-sm font-medium text-purple-600 hover:bg-purple-50 transition-colors"
+              className="rounded-lg border border-purple-400 px-6 py-3 text-sm font-medium text-white hover:bg-purple-700 transition-colors"
             >
               Get your free brief
             </Link>
             <Link
               href="/auth/signin"
-              className="rounded-lg border border-purple-400 px-6 py-3 text-sm font-medium text-white hover:bg-purple-700 transition-colors"
+              className="rounded-lg bg-white px-6 py-3 text-sm font-medium text-purple-600 hover:bg-purple-50 transition-colors"
             >
               Start Pro
             </Link>
