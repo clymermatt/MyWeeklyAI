@@ -199,6 +199,8 @@ const SOURCES: { name: string; url: string; category: SourceCategory }[] = [
 async function main() {
   console.log("Seeding sources...");
 
+  const activeUrls = new Set(SOURCES.map((s) => s.url));
+
   for (const source of SOURCES) {
     await prisma.source.upsert({
       where: { url: source.url },
@@ -206,6 +208,15 @@ async function main() {
       update: { name: source.name, category: source.category },
     });
     console.log(`  Upserted: ${source.name}`);
+  }
+
+  // Deactivate any sources no longer in the seed list
+  const deactivated = await prisma.source.updateMany({
+    where: { url: { notIn: [...activeUrls] } },
+    data: { active: false },
+  });
+  if (deactivated.count > 0) {
+    console.log(`  Deactivated ${deactivated.count} removed source(s).`);
   }
 
   console.log("Done seeding.");
