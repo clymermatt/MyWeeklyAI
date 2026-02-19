@@ -177,11 +177,11 @@ export default async function HomePage() {
               <ul className="mt-6 space-y-3 text-sm text-gray-700">
                 <li className="flex items-start gap-2">
                   <span className="mt-0.5 text-green-600">&#10003;</span>
-                  &quot;What Dropped&quot; section — top AI news of the week
+                  Top AI news of the week, curated from 20+ industry publications
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="mt-0.5 text-green-600">&#10003;</span>
-                  Weekly email every Sunday
+                  Weekly email every Sunday - your first delivered TODAY
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="mt-0.5 text-green-600">&#10003;</span>
