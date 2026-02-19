@@ -2,7 +2,7 @@ import RSSParser from "rss-parser";
 
 const parser = new RSSParser({
   headers: {
-    "User-Agent": "ContextBrief/1.0 (RSS Reader)",
+    "User-Agent": "MyWeeklyAI/1.0 (RSS Reader)",
     Accept: "application/rss+xml, application/xml, text/xml, */*",
   },
 });
