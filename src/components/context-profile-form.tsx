@@ -153,7 +153,7 @@ function SelectField({
         <select
           value=""
           onChange={(e) => onChange(e.target.value)}
-          className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+          className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500"
         >
           <option value="">{placeholder}</option>
           {options.map((opt) => (
@@ -201,13 +201,13 @@ function TagInput({
         {value.map((tag) => (
           <span
             key={tag}
-            className="inline-flex items-center gap-1 rounded-full bg-blue-50 px-3 py-1 text-sm text-blue-700"
+            className="inline-flex items-center gap-1 rounded-full bg-purple-50 px-3 py-1 text-sm text-purple-700"
           >
             {tag}
             <button
               type="button"
               onClick={() => onChange(value.filter((t) => t !== tag))}
-              className="text-blue-400 hover:text-blue-600"
+              className="text-purple-400 hover:text-purple-600"
             >
               &times;
             </button>
@@ -221,7 +221,7 @@ function TagInput({
               key={s}
               type="button"
               onClick={() => addTag(s)}
-              className="rounded-full border border-gray-200 bg-gray-50 px-3.5 py-1.5 text-xs text-gray-600 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-700 transition-colors"
+              className="rounded-full border border-gray-200 bg-gray-50 px-3.5 py-1.5 text-xs text-gray-600 hover:border-purple-300 hover:bg-purple-50 hover:text-purple-700 transition-colors"
             >
               + {s}
             </button>
@@ -240,7 +240,7 @@ function TagInput({
             }
           }}
           placeholder={placeholder}
-          className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+          className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500"
         />
         <button
           type="button"
@@ -419,7 +419,7 @@ export default function ContextProfileForm() {
         <button
           type="submit"
           disabled={saving || !profile.roleTitle || !profile.industry || profile.goals.length === 0}
-          className="rounded-lg bg-blue-600 px-6 py-2.5 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50 transition-colors"
+          className="rounded-lg bg-purple-600 px-6 py-2.5 text-sm font-medium text-white hover:bg-purple-700 disabled:opacity-50 transition-colors"
         >
           {saving ? "Saving..." : "Save Profile"}
         </button>

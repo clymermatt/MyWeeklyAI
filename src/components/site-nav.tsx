@@ -66,7 +66,7 @@ export default async function SiteNav() {
         ) : (
           <Link
             href="/auth/signin"
-            className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 transition-colors"
+            className="rounded-lg bg-purple-600 px-4 py-2 text-sm font-medium text-white hover:bg-purple-700 transition-colors"
           >
             Sign In
           </Link>

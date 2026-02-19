@@ -24,7 +24,7 @@ export default function SubscriptionButton() {
     <button
       onClick={handleSubscribe}
       disabled={loading}
-      className="rounded-lg bg-blue-600 px-6 py-2.5 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50 transition-colors"
+      className="rounded-lg bg-purple-600 px-6 py-2.5 text-sm font-medium text-white hover:bg-purple-700 disabled:opacity-50 transition-colors"
     >
       {loading ? "Loading..." : "Subscribe"}
     </button>

@@ -34,7 +34,7 @@ export default async function AdminJobsPage() {
                       run.status === "SUCCESS"
                         ? "bg-green-50 text-green-700"
                         : run.status === "RUNNING"
-                          ? "bg-blue-50 text-blue-700"
+                          ? "bg-purple-50 text-purple-700"
                           : "bg-red-50 text-red-700"
                     }`}
                   >

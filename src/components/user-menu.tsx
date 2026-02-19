@@ -29,7 +29,7 @@ export default function UserMenu({ name, plan }: UserMenuProps) {
         className="flex items-center gap-1 text-sm text-gray-600 hover:text-gray-900"
       >
         Hi, {name}
-        <span className={`rounded px-1.5 py-0.5 text-xs font-medium ${plan === "Pro" ? "bg-blue-100 text-blue-700" : "bg-gray-100 text-gray-500"}`}>
+        <span className={`rounded px-1.5 py-0.5 text-xs font-medium ${plan === "Pro" ? "bg-purple-100 text-purple-700" : "bg-gray-100 text-gray-500"}`}>
           {plan}
         </span>
         <svg

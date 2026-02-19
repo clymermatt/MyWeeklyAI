@@ -27,14 +27,14 @@ export default async function HomePage() {
             {session ? (
               <Link
                 href="/dashboard"
-                className="rounded-lg bg-blue-600 px-6 py-3 text-sm font-medium text-white hover:bg-blue-700 transition-colors"
+                className="rounded-lg bg-purple-600 px-6 py-3 text-sm font-medium text-white hover:bg-purple-700 transition-colors"
               >
                 Go to Dashboard
               </Link>
             ) : (
               <Link
                 href="/auth/signin"
-                className="rounded-lg bg-blue-600 px-6 py-3 text-sm font-medium text-white hover:bg-blue-700 transition-colors"
+                className="rounded-lg bg-purple-600 px-6 py-3 text-sm font-medium text-white hover:bg-purple-700 transition-colors"
               >
                 Get your free brief
               </Link>
@@ -70,7 +70,7 @@ export default async function HomePage() {
           </h2>
           <div className="mt-12 grid gap-8 sm:grid-cols-3">
             <div className="text-center">
-              <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 text-sm font-bold text-blue-700">
+              <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-purple-100 text-sm font-bold text-purple-700">
                 1
               </div>
               <h3 className="mt-4 font-semibold text-gray-900">
@@ -82,7 +82,7 @@ export default async function HomePage() {
               </p>
             </div>
             <div className="text-center">
-              <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 text-sm font-bold text-blue-700">
+              <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-purple-100 text-sm font-bold text-purple-700">
                 2
               </div>
               <h3 className="mt-4 font-semibold text-gray-900">
@@ -94,7 +94,7 @@ export default async function HomePage() {
               </p>
             </div>
             <div className="text-center">
-              <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 text-sm font-bold text-blue-700">
+              <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-purple-100 text-sm font-bold text-purple-700">
                 3
               </div>
               <h3 className="mt-4 font-semibold text-gray-900">
@@ -201,7 +201,7 @@ export default async function HomePage() {
                 </Link>
               </div>
             </div>
-            <div className="rounded-lg border-2 border-blue-600 p-6">
+            <div className="rounded-lg border-2 border-purple-600 p-6">
               <h3 className="text-lg font-bold text-gray-900">Pro</h3>
               <p className="mt-1 text-sm text-gray-500">$5 / month</p>
               <ul className="mt-6 space-y-3 text-sm text-gray-700">
@@ -229,7 +229,7 @@ export default async function HomePage() {
               <div className="mt-8">
                 <Link
                   href="/auth/signin"
-                  className="block rounded-lg bg-blue-600 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-700 transition-colors"
+                  className="block rounded-lg bg-purple-600 py-2.5 text-center text-sm font-medium text-white hover:bg-purple-700 transition-colors"
                 >
                   Start Pro
                 </Link>
@@ -269,24 +269,24 @@ export default async function HomePage() {
       </section>
 
       {/* Bottom CTA */}
-      <section className="bg-blue-600 px-4 py-20 text-center">
+      <section className="bg-purple-600 px-4 py-20 text-center">
         <div className="mx-auto max-w-2xl">
           <h2 className="text-3xl font-bold text-white">
             Your personalized filter for the AI firehose
           </h2>
-          <p className="mt-4 text-blue-100">
+          <p className="mt-4 text-purple-100">
             Set up your context profile in 2 minutes and get your first brief today.
           </p>
           <div className="mt-8 flex items-center justify-center gap-4">
             <Link
               href="/auth/signin"
-              className="rounded-lg bg-white px-6 py-3 text-sm font-medium text-blue-600 hover:bg-blue-50 transition-colors"
+              className="rounded-lg bg-white px-6 py-3 text-sm font-medium text-purple-600 hover:bg-purple-50 transition-colors"
             >
               Get your free brief
             </Link>
             <Link
               href="/auth/signin"
-              className="rounded-lg border border-blue-400 px-6 py-3 text-sm font-medium text-white hover:bg-blue-700 transition-colors"
+              className="rounded-lg border border-purple-400 px-6 py-3 text-sm font-medium text-white hover:bg-purple-700 transition-colors"
             >
               Start Pro
             </Link>

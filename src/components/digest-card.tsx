@@ -44,7 +44,7 @@ function ItemSection({
                 href={item.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm font-medium text-blue-600 hover:text-blue-700"
+                className="text-sm font-medium text-purple-600 hover:text-purple-700"
               >
                 {item.title}
               </a>
@@ -94,7 +94,7 @@ function LockedSectionPlaceholder({ title }: { title: string }) {
         </p>
         <Link
           href="/dashboard"
-          className="rounded-md bg-blue-600 px-4 py-1.5 text-xs font-medium text-white hover:bg-blue-700"
+          className="rounded-md bg-purple-600 px-4 py-1.5 text-xs font-medium text-white hover:bg-purple-700"
         >
           Upgrade to unlock
         </Link>
@@ -177,14 +177,14 @@ export default function DigestCard({
           ) : (
             <>
               {/* Relevant To You — shown first as the primary value */}
-              <div className="rounded-lg border border-blue-100 bg-blue-50/50 p-4">
+              <div className="rounded-lg border border-purple-100 bg-purple-50/50 p-4">
                 <div className="mb-3 flex items-center gap-2">
-                  <h3 className="font-semibold text-blue-900">
+                  <h3 className="font-semibold text-purple-900">
                     Relevant To You
                   </h3>
                   <Link
                     href="/dashboard/profile"
-                    className="text-xs text-blue-500 hover:text-blue-600"
+                    className="text-xs text-purple-500 hover:text-purple-600"
                     title="Changes apply to your next digest"
                   >
                     Edit profile &rarr;
@@ -201,7 +201,7 @@ export default function DigestCard({
                           href={item.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-sm font-medium text-blue-700 hover:text-blue-800"
+                          className="text-sm font-medium text-purple-700 hover:text-purple-800"
                         >
                           {item.title}
                         </a>
@@ -209,7 +209,7 @@ export default function DigestCard({
                           {item.summary}
                         </p>
                         {item.relevanceNote && (
-                          <p className="mt-1 text-xs text-blue-600/70">
+                          <p className="mt-1 text-xs text-purple-600/70">
                             Why this matters to you: {item.relevanceNote}
                           </p>
                         )}

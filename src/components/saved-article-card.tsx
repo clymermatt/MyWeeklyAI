@@ -49,7 +49,7 @@ export default function SavedArticleCard({
             href={url}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm font-medium text-blue-600 hover:text-blue-700"
+            className="text-sm font-medium text-purple-600 hover:text-purple-700"
           >
             {title}
           </a>

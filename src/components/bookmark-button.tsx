@@ -52,7 +52,7 @@ export default function BookmarkButton({
         e.stopPropagation();
         toggle();
       }}
-      className="shrink-0 p-1 text-gray-400 hover:text-blue-600 transition-colors"
+      className="shrink-0 p-1 text-gray-400 hover:text-purple-600 transition-colors"
       title={bookmarked ? "Remove bookmark" : "Save article"}
       aria-label={bookmarked ? "Remove bookmark" : "Save article"}
     >
@@ -62,7 +62,7 @@ export default function BookmarkButton({
         fill={bookmarked ? "currentColor" : "none"}
         stroke="currentColor"
         strokeWidth={2}
-        className={`h-4 w-4 ${bookmarked ? "text-blue-600" : ""}`}
+        className={`h-4 w-4 ${bookmarked ? "text-purple-600" : ""}`}
       >
         <path
           strokeLinecap="round"

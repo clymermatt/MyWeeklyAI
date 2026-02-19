@@ -67,7 +67,7 @@ export default async function AdminSourcesPage() {
           </select>
           <button
             type="submit"
-            className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+            className="rounded-lg bg-purple-600 px-4 py-2 text-sm font-medium text-white hover:bg-purple-700"
           >
             Add
           </button>
@@ -113,7 +113,7 @@ export default async function AdminSourcesPage() {
                       <input type="hidden" name="active" value={String(source.active)} />
                       <button
                         type="submit"
-                        className="text-xs text-blue-600 hover:text-blue-700"
+                        className="text-xs text-purple-600 hover:text-purple-700"
                       >
                         {source.active ? "Disable" : "Enable"}
                       </button>

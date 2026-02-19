@@ -91,7 +91,7 @@ export default function BriefingsPageClient({
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Search articles across all briefings..."
-          className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 pl-10 text-sm text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+          className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 pl-10 text-sm text-gray-900 placeholder-gray-400 focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500"
         />
         <svg
           className="absolute left-3 top-2.5 h-4 w-4 text-gray-400"
@@ -122,7 +122,7 @@ export default function BriefingsPageClient({
           </span>
           <button
             onClick={() => setSearchQuery("")}
-            className="text-blue-600 hover:text-blue-700"
+            className="text-purple-600 hover:text-purple-700"
           >
             Clear
           </button>
