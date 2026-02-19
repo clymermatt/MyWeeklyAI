@@ -81,6 +81,7 @@ export async function POST(req: Request) {
       const sub = event.data.object as Stripe.Subscription;
       const statusMap: Record<string, "ACTIVE" | "CANCELED" | "PAST_DUE"> = {
         active: "ACTIVE",
+        trialing: "ACTIVE",
         canceled: "CANCELED",
         past_due: "PAST_DUE",
       };
