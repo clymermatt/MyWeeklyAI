@@ -155,7 +155,7 @@ export default async function LandingPage({
             </div>
             <div className="rounded-lg border-2 border-purple-600 p-6">
               <h3 className="text-lg font-bold text-gray-900">Pro</h3>
-              <p className="mt-1 text-sm text-gray-500">$5 / month</p>
+              <p className="mt-1 text-sm text-gray-500">$5/mo after 7-day free trial</p>
               <ul className="mt-6 space-y-3 text-sm text-gray-700">
                 <li className="flex items-start gap-2">
                   <span className="mt-0.5 text-green-600">&#10003;</span>
