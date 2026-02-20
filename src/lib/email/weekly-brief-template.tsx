@@ -146,13 +146,24 @@ export default function WeeklyBriefEmail({
               marginBottom: "4px",
             }}
           >
-            My Weekly AI
+            My Weekly AI | {periodStart} &ndash; {periodEnd}
           </Heading>
-          <Text style={{ color: "#6b7280", fontSize: "14px", marginTop: "0" }}>
-            {userName ? `Hi ${userName}, here's` : "Here's"} your{" "}
-            {isFree ? "free " : ""}weekly AI brief for {periodStart} &ndash;{" "}
-            {periodEnd}.
+          <Text style={{ color: "#374151", fontSize: "14px", lineHeight: "1.6", marginTop: "12px" }}>
+            No hype, no noise, no one-size-fits-all roundups. Every week we
+            surface the AI developments, tools, and ideas that matter to you —
+            so you spend less time scrolling and more time applying AI to your
+            actual work.
           </Text>
+          <Link
+            href={`${process.env.NEXT_PUBLIC_APP_URL || "https://www.myweekly.ai"}/dashboard`}
+            style={{
+              color: "#9333ea",
+              fontSize: "14px",
+              textDecoration: "underline",
+            }}
+          >
+            Go to my dashboard
+          </Link>
 
           <Hr style={{ borderColor: "#e5e7eb", margin: "24px 0" }} />
 
@@ -253,7 +264,7 @@ export default function WeeklyBriefEmail({
               textAlign: "center" as const,
             }}
           >
-            Powered by My Weekly AI &middot; Curated by AI
+            Powered by My Weekly AI
           </Text>
         </Container>
       </Body>
