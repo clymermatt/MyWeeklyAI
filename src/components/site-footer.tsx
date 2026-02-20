@@ -29,7 +29,7 @@ export default function SiteFooter() {
         <div className="grid gap-8 sm:grid-cols-3">
           <div>
             <h3 className="text-sm font-semibold text-gray-900">
-              Browse by Role
+              AI Topics by Job Role
             </h3>
             <ul className="mt-4 space-y-2">
               {roleLinks.map((link) => (
@@ -47,7 +47,7 @@ export default function SiteFooter() {
 
           <div>
             <h3 className="text-sm font-semibold text-gray-900">
-              Browse by Industry
+              AI Topics by Industry
             </h3>
             <ul className="mt-4 space-y-2">
               {industryLinks.map((link) => (
