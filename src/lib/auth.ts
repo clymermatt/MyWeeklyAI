@@ -4,6 +4,7 @@ import Resend from "next-auth/providers/resend";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@/lib/prisma";
 import { sendWelcomeEmail } from "@/lib/email/send";
+import { Resend as ResendClient } from "resend";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -16,6 +17,34 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     Resend({
       apiKey: process.env.RESEND_API_KEY,
       from: "My Weekly AI <onboarding@resend.dev>",
+      async sendVerificationRequest({ identifier: email, url }) {
+        const resend = new ResendClient(process.env.RESEND_API_KEY);
+        await resend.emails.send({
+          from: "My Weekly AI <onboarding@resend.dev>",
+          to: email,
+          subject: "Sign in to My Weekly AI",
+          html: `
+            <body style="background-color:#f9fafb;font-family:sans-serif;padding:40px 0">
+              <table width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;margin:0 auto;background-color:#ffffff;border-radius:8px;padding:32px">
+                <tr><td>
+                  <h1 style="color:#9333ea;font-size:24px;margin:0 0 16px">My Weekly AI</h1>
+                  <p style="color:#374151;font-size:16px;line-height:1.6;margin:0 0 24px">
+                    Click the button below to sign in to your account.
+                  </p>
+                  <table cellpadding="0" cellspacing="0"><tr><td style="border-radius:6px;background-color:#9333ea">
+                    <a href="${url}" style="display:inline-block;padding:12px 32px;color:#ffffff;font-size:14px;font-weight:600;text-decoration:none">
+                      Sign in to My Weekly AI
+                    </a>
+                  </td></tr></table>
+                  <p style="color:#9ca3af;font-size:12px;line-height:1.6;margin:24px 0 0">
+                    If you didn&apos;t request this email, you can safely ignore it.
+                  </p>
+                </td></tr>
+              </table>
+            </body>
+          `,
+        });
+      },
     }),
   ],
   pages: {
