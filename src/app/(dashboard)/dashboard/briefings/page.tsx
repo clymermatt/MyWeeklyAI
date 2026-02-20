@@ -6,7 +6,7 @@ export default async function DigestsPage() {
   const session = await auth();
   const userId = session!.user!.id!;
 
-  const [digests, bookmarks] = await Promise.all([
+  const [digests, bookmarks, profile] = await Promise.all([
     prisma.weeklyDigest.findMany({
       where: { userId },
       orderBy: { sentAt: "desc" },
@@ -16,6 +16,7 @@ export default async function DigestsPage() {
       where: { userId },
       select: { url: true },
     }),
+    prisma.contextProfile.findUnique({ where: { userId } }),
   ]);
 
   const serializedDigests = digests.map((d) => ({
@@ -29,10 +30,20 @@ export default async function DigestsPage() {
 
   const bookmarkedUrls = bookmarks.map((b) => b.url);
 
+  const profileTerms = profile
+    ? [
+        profile.roleTitle,
+        profile.industry,
+        ...profile.tools,
+        ...profile.focusTopics,
+      ].filter((t): t is string => !!t)
+    : [];
+
   return (
     <BriefingsPageClient
       initialDigests={serializedDigests}
       bookmarkedUrls={bookmarkedUrls}
+      profileTerms={profileTerms}
     />
   );
 }

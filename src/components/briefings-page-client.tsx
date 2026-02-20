@@ -16,11 +16,13 @@ interface SerializedDigest {
 interface BriefingsPageClientProps {
   initialDigests: SerializedDigest[];
   bookmarkedUrls: string[];
+  profileTerms?: string[];
 }
 
 export default function BriefingsPageClient({
   initialDigests,
   bookmarkedUrls: initialBookmarkedUrls,
+  profileTerms = [],
 }: BriefingsPageClientProps) {
   const [digests, setDigests] = useState(initialDigests);
   const [bookmarkedSet, setBookmarkedSet] = useState(
@@ -143,6 +145,7 @@ export default function BriefingsPageClient({
               digest={digest}
               bookmarkedUrls={bookmarkedSet}
               onBookmarkToggle={handleBookmarkToggle}
+              profileTerms={profileTerms}
             />
           ))}
         </div>

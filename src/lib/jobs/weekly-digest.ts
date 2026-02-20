@@ -156,6 +156,14 @@ export async function runWeeklyDigest(): Promise<DigestResult> {
       });
 
       try {
+        const profile = user.contextProfile!;
+        const profileTerms = [
+          profile.roleTitle,
+          profile.industry,
+          ...profile.tools,
+          ...profile.focusTopics,
+        ].filter((t): t is string => !!t);
+
         await sendWeeklyBrief({
           to: user.email,
           userName: user.name ?? undefined,
@@ -163,6 +171,7 @@ export async function runWeeklyDigest(): Promise<DigestResult> {
           isFree: false,
           periodStart,
           periodEnd,
+          profileTerms,
         });
         emailsSent++;
       } catch (emailErr) {

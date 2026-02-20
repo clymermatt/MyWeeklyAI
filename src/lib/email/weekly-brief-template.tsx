@@ -18,14 +18,51 @@ interface WeeklyBriefEmailProps {
   periodStart: string;
   periodEnd: string;
   userName?: string;
+  profileTerms?: string[];
+}
+
+function highlightTerms(text: string, terms: string[]) {
+  if (!terms.length) return text;
+
+  // Expand compound terms into individual words too (e.g. "SaaS & Software" → "SaaS", "Software")
+  const allTerms = new Set<string>();
+  for (const term of terms) {
+    allTerms.add(term);
+    for (const part of term.split(/[\s&,/]+/)) {
+      if (part.length >= 3) allTerms.add(part);
+    }
+  }
+
+  // Build regex matching any term (case-insensitive, whole word)
+  // Sort longest first so longer matches take priority
+  const sorted = [...allTerms].sort((a, b) => b.length - a.length);
+  const escaped = sorted.map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+  const regex = new RegExp(`\\b(${escaped.join("|")})\\b`, "gi");
+
+  const parts = text.split(regex);
+  if (parts.length === 1) return text;
+
+  // split with a capture group puts matches at odd indices (1, 3, 5...)
+  return parts.map((part, i) => {
+    if (i % 2 === 1) {
+      return (
+        <span key={i} style={{ color: "#9333ea", fontWeight: 600, fontStyle: "normal" }}>
+          {part}
+        </span>
+      );
+    }
+    return part;
+  });
 }
 
 function ItemList({
   items,
   showRelevance,
+  profileTerms = [],
 }: {
   items: BriefItem[];
   showRelevance?: boolean;
+  profileTerms?: string[];
 }) {
   return (
     <>
@@ -65,7 +102,7 @@ function ItemList({
                 margin: "4px 0",
               }}
             >
-              Why this matters to you: {item.relevanceNote}
+              Why this matters to you: {highlightTerms(item.relevanceNote, profileTerms)}
             </Text>
           )}
         </Section>
@@ -121,6 +158,7 @@ export default function WeeklyBriefEmail({
   periodStart,
   periodEnd,
   userName,
+  profileTerms = [],
 }: WeeklyBriefEmailProps) {
   return (
     <Html>
@@ -139,15 +177,47 @@ export default function WeeklyBriefEmail({
             borderRadius: "8px",
           }}
         >
-          <Heading
+          <table cellPadding="0" cellSpacing="0" style={{ width: "100%" }}>
+            <tr>
+              <td>
+                <Heading
+                  style={{
+                    color: "#9333ea",
+                    fontSize: "24px",
+                    marginBottom: "0",
+                    display: "inline",
+                  }}
+                >
+                  My Weekly AI
+                </Heading>
+                <span
+                  style={{
+                    display: "inline-block",
+                    marginLeft: "10px",
+                    padding: "2px 10px",
+                    borderRadius: "9999px",
+                    fontSize: "12px",
+                    fontWeight: 600,
+                    verticalAlign: "middle",
+                    ...(isFree
+                      ? { backgroundColor: "#f3f4f6", color: "#6b7280" }
+                      : { backgroundColor: "#f3e8ff", color: "#9333ea" }),
+                  }}
+                >
+                  {isFree ? "Free" : "Pro"}
+                </span>
+              </td>
+            </tr>
+          </table>
+          <Text
             style={{
-              color: "#9333ea",
-              fontSize: "24px",
-              marginBottom: "4px",
+              color: "#6b7280",
+              fontSize: "14px",
+              margin: "4px 0 0",
             }}
           >
-            My Weekly AI - {periodStart} to {periodEnd}
-          </Heading>
+            {periodStart} to {periodEnd}
+          </Text>
           <Text style={{ color: "#374151", fontSize: "14px", lineHeight: "1.6", marginTop: "12px" }}>
             No hype, no noise, no one-size-fits-all roundups. Every week we
             surface the AI developments, tools, and ideas that matter to you —
@@ -189,7 +259,7 @@ export default function WeeklyBriefEmail({
 
               <Hr style={{ borderColor: "#e5e7eb", margin: "24px 0" }} />
 
-              <LockedSection title="Relevant To You" />
+              <LockedSection title="News Relevant to You" />
               <Hr style={{ borderColor: "#e5e7eb", margin: "24px 0" }} />
               <LockedSection title="What To Test This Week" />
             </>
@@ -199,43 +269,52 @@ export default function WeeklyBriefEmail({
                 as="h2"
                 style={{ color: "#111827", fontSize: "18px", marginBottom: "12px" }}
               >
-                What Dropped
+                Industry News
               </Heading>
               <ItemList items={brief.whatDropped} />
 
               <Hr style={{ borderColor: "#e5e7eb", margin: "24px 0" }} />
 
-              <LockedSection title="Relevant To You" />
+              <LockedSection title="News Relevant to You" />
               <Hr style={{ borderColor: "#e5e7eb", margin: "24px 0" }} />
               <LockedSection title="What To Test This Week" />
             </>
           ) : (
             <>
-              <Heading
-                as="h2"
+              <Section
                 style={{
-                  color: "#111827",
-                  fontSize: "18px",
-                  marginBottom: "12px",
+                  backgroundColor: "#faf5ff",
+                  borderRadius: "8px",
+                  padding: "20px",
+                  border: "1px solid #e9d5ff",
                 }}
               >
-                Relevant To You
-              </Heading>
-              <ItemList items={brief.relevantToYou} showRelevance />
+                <Heading
+                  as="h2"
+                  style={{
+                    color: "#581c87",
+                    fontSize: "18px",
+                    marginBottom: "12px",
+                  }}
+                >
+                  News Relevant to You
+                </Heading>
+                <ItemList items={brief.relevantToYou} showRelevance profileTerms={profileTerms} />
 
-              <Hr style={{ borderColor: "#e5e7eb", margin: "24px 0" }} />
+                <Hr style={{ borderColor: "#e9d5ff", margin: "20px 0" }} />
 
-              <Heading
-                as="h2"
-                style={{
-                  color: "#111827",
-                  fontSize: "18px",
-                  marginBottom: "12px",
-                }}
-              >
-                What To Test This Week
-              </Heading>
-              <ItemList items={brief.whatToTest} showRelevance />
+                <Heading
+                  as="h2"
+                  style={{
+                    color: "#581c87",
+                    fontSize: "18px",
+                    marginBottom: "12px",
+                  }}
+                >
+                  What To Test This Week
+                </Heading>
+                <ItemList items={brief.whatToTest} showRelevance profileTerms={profileTerms} />
+              </Section>
 
               <Hr style={{ borderColor: "#e5e7eb", margin: "24px 0" }} />
 

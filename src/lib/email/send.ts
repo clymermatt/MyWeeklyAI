@@ -17,6 +17,7 @@ export async function sendWeeklyBrief({
   isFree = false,
   periodStart,
   periodEnd,
+  profileTerms = [],
 }: {
   to: string;
   userName?: string;
@@ -24,6 +25,7 @@ export async function sendWeeklyBrief({
   isFree?: boolean;
   periodStart: Date;
   periodEnd: Date;
+  profileTerms?: string[];
 }) {
   const html = await render(
     WeeklyBriefEmail({
@@ -38,6 +40,7 @@ export async function sendWeeklyBrief({
         day: "numeric",
       }),
       userName,
+      profileTerms,
     }),
   );
 

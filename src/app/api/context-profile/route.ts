@@ -128,6 +128,13 @@ async function generateInstantBriefing(
   });
 
   try {
+    const profileTerms = [
+      profile.roleTitle,
+      profile.industry,
+      ...profile.tools,
+      ...profile.focusTopics,
+    ].filter((t): t is string => !!t);
+
     await sendWeeklyBrief({
       to: user.email,
       userName: user.name ?? undefined,
@@ -135,6 +142,7 @@ async function generateInstantBriefing(
       isFree,
       periodStart,
       periodEnd,
+      profileTerms,
     });
   } catch (emailErr) {
     console.error("Instant briefing email failed:", emailErr);
