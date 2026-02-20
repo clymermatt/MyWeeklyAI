@@ -22,7 +22,8 @@ export default async function DashboardPage({
     }),
   ]);
 
-  const isActive = subscription?.status === "ACTIVE";
+  const justSubscribed = params.subscription === "success";
+  const isActive = subscription?.status === "ACTIVE" || justSubscribed;
   const showUpgradeBanner = params.upgrade === "pro" && !isActive;
 
   const needsProfile = !profile;

@@ -7,12 +7,12 @@ export default async function SignInPage({
 }: {
   searchParams: Promise<{ plan?: string }>;
 }) {
-  const session = await auth();
-  if (session) redirect("/dashboard");
-
   const params = await searchParams;
   const redirectTo =
-    params.plan === "pro" ? "/dashboard?upgrade=pro" : "/dashboard";
+    params.plan === "pro" ? "/api/stripe/checkout" : "/dashboard";
+
+  const session = await auth();
+  if (session) redirect(redirectTo);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50">

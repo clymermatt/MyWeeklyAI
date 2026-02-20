@@ -19,21 +19,52 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       from: "My Weekly AI <onboarding@resend.dev>",
       async sendVerificationRequest({ identifier: email, url }) {
         const resend = new ResendClient(process.env.RESEND_API_KEY);
+
+        // Determine persona from callback URL and existing account
+        const isProSignup = url.includes("stripe") || url.includes("plan%3Dpro");
+        const existingUser = await prisma.user.findUnique({ where: { email } });
+
+        let subject: string;
+        let heading: string;
+        let body: string;
+        let buttonText: string;
+
+        if (existingUser) {
+          // Returning user
+          subject = "Sign in to My Weekly AI";
+          heading = "Welcome back!";
+          body = "Click the button below to sign in to your account.";
+          buttonText = "Sign in to My Weekly AI";
+        } else if (isProSignup) {
+          // New user — Pro trial
+          subject = "Welcome to My Weekly AI — let's get you set up";
+          heading = "Let\u2019s get you started!";
+          body = "Sign in to set up your 7-day free trial and get your first personalized AI briefing today.";
+          buttonText = "Start my free trial";
+        } else {
+          // New user — Free
+          subject = "Welcome to My Weekly AI — let's get you set up";
+          heading = "Welcome to My Weekly AI!";
+          body = "Sign in to set up your profile and get your first brief today.";
+          buttonText = "Get started";
+        }
+
         await resend.emails.send({
           from: "My Weekly AI <onboarding@resend.dev>",
           to: email,
-          subject: "Sign in to My Weekly AI",
+          subject,
           html: `
             <body style="background-color:#f9fafb;font-family:sans-serif;padding:40px 0">
               <table width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;margin:0 auto;background-color:#ffffff;border-radius:8px;padding:32px">
                 <tr><td>
                   <h1 style="color:#9333ea;font-size:24px;margin:0 0 16px">My Weekly AI</h1>
+                  <h2 style="color:#111827;font-size:20px;margin:0 0 8px">${heading}</h2>
                   <p style="color:#374151;font-size:16px;line-height:1.6;margin:0 0 24px">
-                    Click the button below to sign in to your account.
+                    ${body}
                   </p>
                   <table cellpadding="0" cellspacing="0"><tr><td style="border-radius:6px;background-color:#9333ea">
                     <a href="${url}" style="display:inline-block;padding:12px 32px;color:#ffffff;font-size:14px;font-weight:600;text-decoration:none">
-                      Sign in to My Weekly AI
+                      ${buttonText}
                     </a>
                   </td></tr></table>
                   <p style="color:#9ca3af;font-size:12px;line-height:1.6;margin:24px 0 0">
@@ -49,6 +80,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   ],
   pages: {
     signIn: "/auth/signin",
+    verifyRequest: "/auth/verify-request",
   },
   events: {
     async createUser({ user }) {

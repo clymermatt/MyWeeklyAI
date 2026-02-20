@@ -1,8 +1,14 @@
+import Link from "next/link";
 import ContextProfileForm from "@/components/context-profile-form";
 
 export default function ProfilePage() {
   return (
     <div className="space-y-6">
+      <nav className="text-sm text-gray-500">
+        <Link href="/dashboard" className="hover:text-purple-600">My Dashboard</Link>
+        <span className="mx-2">/</span>
+        <span className="text-gray-900">My Profile</span>
+      </nav>
       <div>
         <h1 className="text-2xl font-bold text-gray-900">My Profile</h1>
         <p className="mt-1 text-sm text-gray-600">

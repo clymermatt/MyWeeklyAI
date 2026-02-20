@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import SavedArticleCard from "@/components/saved-article-card";
@@ -13,6 +14,11 @@ export default async function SavedPage() {
 
   return (
     <div className="space-y-6">
+      <nav className="text-sm text-gray-500">
+        <Link href="/dashboard" className="hover:text-purple-600">My Dashboard</Link>
+        <span className="mx-2">/</span>
+        <span className="text-gray-900">Saved Articles</span>
+      </nav>
       <div>
         <h1 className="text-2xl font-bold text-gray-900">Saved Articles</h1>
         <p className="mt-1 text-sm text-gray-600">

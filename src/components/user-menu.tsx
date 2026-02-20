@@ -47,18 +47,11 @@ export default function UserMenu({ name, plan }: UserMenuProps) {
       {open && (
         <div className="absolute right-0 mt-2 w-48 rounded-lg border border-gray-200 bg-white py-1 shadow-lg">
           <Link
-            href="/dashboard/profile"
+            href="/dashboard"
             onClick={() => setOpen(false)}
             className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
           >
-            My Profile
-          </Link>
-          <Link
-            href="/dashboard#subscription"
-            onClick={() => setOpen(false)}
-            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
-          >
-            Subscription Plan
+            My Dashboard
           </Link>
         </div>
       )}
