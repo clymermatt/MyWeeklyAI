@@ -146,7 +146,7 @@ export default function WeeklyBriefEmail({
               marginBottom: "4px",
             }}
           >
-            My Weekly AI | {periodStart} &ndash; {periodEnd}
+            My Weekly AI - {periodStart} to {periodEnd}
           </Heading>
           <Text style={{ color: "#374151", fontSize: "14px", lineHeight: "1.6", marginTop: "12px" }}>
             No hype, no noise, no one-size-fits-all roundups. Every week we
