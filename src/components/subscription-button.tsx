@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-export default function SubscriptionButton() {
+export default function SubscriptionButton({ variant = "primary" }: { variant?: "primary" | "outline" }) {
   const [loading, setLoading] = useState(false);
 
   const handleSubscribe = async () => {
@@ -24,7 +24,11 @@ export default function SubscriptionButton() {
     <button
       onClick={handleSubscribe}
       disabled={loading}
-      className="rounded-lg bg-purple-600 px-6 py-2.5 text-sm font-medium text-white hover:bg-purple-700 disabled:opacity-50 transition-colors"
+      className={`rounded-lg px-6 py-2.5 text-sm font-medium disabled:opacity-50 transition-colors ${
+        variant === "outline"
+          ? "border border-purple-600 text-purple-600 hover:bg-purple-50"
+          : "bg-purple-600 text-white hover:bg-purple-700"
+      }`}
     >
       {loading ? "Loading..." : "Try Pro for 7 Days Free"}
     </button>

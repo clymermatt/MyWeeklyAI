@@ -143,7 +143,7 @@ export default async function DashboardPage({
                 items tailored to your role.
               </p>
               <div className="mt-4">
-                <SubscriptionButton />
+                <SubscriptionButton variant="outline" />
               </div>
             </div>
           )}
