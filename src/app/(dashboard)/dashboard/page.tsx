@@ -125,8 +125,9 @@ export default async function DashboardPage({
             <div className="mt-2">
               <p className="text-lg font-semibold text-green-600">Pro</p>
               <p className="mt-1 text-sm text-gray-600">
-                Renews{" "}
-                {subscription.currentPeriodEnd?.toLocaleDateString() ?? "—"}
+                {subscription?.currentPeriodEnd
+                  ? `Renews ${subscription.currentPeriodEnd.toLocaleDateString()}`
+                  : "7-day free trial started"}
               </p>
               <a
                 href="/api/stripe/portal"

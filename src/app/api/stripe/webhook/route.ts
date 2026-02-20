@@ -37,18 +37,29 @@ export async function POST(req: Request) {
       const userId = session.metadata?.userId;
       if (!userId || !session.subscription || !session.customer) break;
 
+      const sub = await stripe.subscriptions.retrieve(
+        session.subscription as string,
+      );
+      const periodEnd = sub.trial_end
+        ? new Date(sub.trial_end * 1000)
+        : sub.current_period_end
+          ? new Date(sub.current_period_end * 1000)
+          : null;
+
       await prisma.subscription.upsert({
         where: { userId },
         create: {
           userId,
           stripeCustomerId: session.customer as string,
           stripeSubscriptionId: session.subscription as string,
-          status: "ACTIVE",
+          status: sub.status === "trialing" ? "ACTIVE" : "ACTIVE",
+          currentPeriodEnd: periodEnd,
         },
         update: {
           stripeCustomerId: session.customer as string,
           stripeSubscriptionId: session.subscription as string,
           status: "ACTIVE",
+          currentPeriodEnd: periodEnd,
         },
       });
       break;
