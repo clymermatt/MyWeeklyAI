@@ -64,7 +64,7 @@ export default function SiteFooter() {
           </div>
 
           <div>
-            <h3 className="text-sm font-semibold text-gray-900">Product</h3>
+            <h3 className="text-sm font-semibold text-gray-900">My Weekly AI</h3>
             <ul className="mt-4 space-y-2">
               <li>
                 <Link
@@ -76,18 +76,26 @@ export default function SiteFooter() {
               </li>
               <li>
                 <Link
-                  href="/auth/signin"
+                  href="/dashboard/profile"
                   className="text-sm text-gray-600 hover:text-gray-900"
                 >
-                  Sign In
+                  My Profile
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/#pricing"
+                  href="/dashboard/briefings"
                   className="text-sm text-gray-600 hover:text-gray-900"
                 >
-                  Pricing
+                  My Briefings
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/dashboard/saved"
+                  className="text-sm text-gray-600 hover:text-gray-900"
+                >
+                  My Saved Articles
                 </Link>
               </li>
             </ul>
