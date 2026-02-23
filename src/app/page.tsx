@@ -6,8 +6,61 @@ import SiteNav from "@/components/site-nav";
 export default async function HomePage() {
   const session = await auth();
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        name: "My Weekly AI",
+        url: process.env.NEXT_PUBLIC_APP_URL || "https://myweeklyai.com",
+        description:
+          "A personalized weekly AI news digest, tailored to your role, tools, and interests.",
+      },
+      {
+        "@type": "WebSite",
+        name: "My Weekly AI",
+        url: process.env.NEXT_PUBLIC_APP_URL || "https://myweeklyai.com",
+        description:
+          "A personalized weekly AI news digest, tailored to your role, tools, and interests.",
+      },
+      {
+        "@type": "FAQPage",
+        mainEntity: [
+          {
+            "@type": "Question",
+            name: "What is My Weekly AI?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "My Weekly AI is a personalized AI news digest delivered weekly. It filters hundreds of AI articles to surface only what's relevant to your role, industry, and interests — so you spend less time scrolling and more time applying AI to your work.",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "How is My Weekly AI different from other AI newsletters?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "Unlike generic AI roundups, My Weekly AI personalizes every brief based on your context profile — your role, industry, tools, and focus topics. Each brief includes a 'What to Test' section with actionable experiments you can try at work that week.",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "How much does My Weekly AI cost?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "My Weekly AI offers a free tier with curated top AI news delivered every Sunday, plus a Pro plan at $9.99/month (with a 7-day free trial) that adds personalized picks, actionable experiments, and advanced filtering.",
+            },
+          },
+        ],
+      },
+    ],
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <SiteNav />
 
       {/* Hero */}
@@ -98,12 +151,27 @@ export default async function HomePage() {
                 3
               </div>
               <h3 className="mt-4 font-semibold text-gray-900">
-                Read it Sunday morning
+                Get it Sunday morning
               </h3>
               <p className="mt-2 text-sm text-gray-600">
-                A concise email with what dropped, what&apos;s relevant to you,
+                A concise brief with what dropped, what&apos;s relevant to you,
                 and what to try this week.
               </p>
+              <div className="mt-3 flex justify-center gap-2">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700">
+                  <svg className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M3 4a2 2 0 00-2 2v1.161l8.441 4.221a1.25 1.25 0 001.118 0L19 7.162V6a2 2 0 00-2-2H3z" />
+                    <path d="M19 8.839l-7.556 3.778a2.75 2.75 0 01-2.888 0L1 8.839V14a2 2 0 002 2h14a2 2 0 002-2V8.839z" />
+                  </svg>
+                  Email
+                </span>
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700">
+                  <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z" />
+                  </svg>
+                  Telegram
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -156,6 +224,92 @@ export default async function HomePage() {
                 Set focus topics to go deeper and avoid topics to skip entirely.
                 Your brief adapts to what matters right now.
               </p>
+            </div>
+          </div>
+
+          {/* Mock brief preview */}
+          <div className="mt-12">
+            <p className="mb-4 text-center text-sm text-gray-500">
+              Here&apos;s what a personalized brief actually looks like:
+            </p>
+            <div className="mx-auto max-w-2xl rounded-lg border border-purple-100 bg-purple-50/50 p-5">
+              <h3 className="mb-3 text-sm font-semibold text-purple-900">
+                News Relevant to You
+              </h3>
+              <ul className="space-y-4">
+                <li>
+                  <p className="text-sm font-medium text-purple-700">
+                    Google Introduces Gemini-Powered Contract Review for Workspace
+                  </p>
+                  <p className="mt-0.5 text-sm text-gray-700">
+                    Google added AI-driven clause analysis and risk flagging
+                    directly inside Google Docs, targeting legal and compliance
+                    teams.
+                  </p>
+                  <p className="mt-1 text-xs italic text-gray-500">
+                    Why this matters to you: Directly relevant to your{" "}
+                    <span className="font-semibold text-purple-600">
+                      LegalTech
+                    </span>{" "}
+                    focus — this could reshape how{" "}
+                    <span className="font-semibold text-purple-600">
+                      contract review
+                    </span>{" "}
+                    workflows integrate with tools your team already uses.
+                  </p>
+                </li>
+                <li>
+                  <p className="text-sm font-medium text-purple-700">
+                    New Study: AI Content Tools Now Used by 62% of Marketing Teams
+                  </p>
+                  <p className="mt-0.5 text-sm text-gray-700">
+                    Adoption of AI writing assistants hit a tipping point across
+                    mid-market companies, with most teams using them for first
+                    drafts and SEO.
+                  </p>
+                  <p className="mt-1 text-xs italic text-gray-500">
+                    Why this matters to you: As a{" "}
+                    <span className="font-semibold text-purple-600">
+                      Content Strategist
+                    </span>
+                    , this signals that AI-assisted{" "}
+                    <span className="font-semibold text-purple-600">
+                      content
+                    </span>{" "}
+                    creation is now table stakes — worth evaluating your
+                    team&apos;s current workflow.
+                  </p>
+                </li>
+              </ul>
+              <div className="mt-4 border-t border-purple-200 pt-4">
+                <h3 className="mb-3 text-sm font-semibold text-purple-900">
+                  What To Test This Week
+                </h3>
+                <ul className="space-y-4">
+                  <li>
+                    <p className="text-sm font-medium text-purple-700">
+                      Try Clause-Level Redlining in Google Docs with Gemini
+                    </p>
+                    <p className="mt-0.5 text-sm text-gray-700">
+                      Upload a sample NDA to the new Gemini sidebar and compare
+                      its flagged clauses against your team&apos;s standard
+                      playbook.
+                    </p>
+                    <p className="mt-1 text-xs italic text-gray-500">
+                      Why this matters to you: A quick way to benchmark whether
+                      Google&apos;s{" "}
+                      <span className="font-semibold text-purple-600">
+                        contract review
+                      </span>{" "}
+                      catches the same risks your current{" "}
+                      <span className="font-semibold text-purple-600">
+                        LegalTech
+                      </span>{" "}
+                      stack does.
+                    </p>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
@@ -246,7 +400,7 @@ export default async function HomePage() {
             <div>
               <p className="text-3xl font-bold text-gray-900">200+</p>
               <p className="mt-1 text-sm text-gray-600">
-                AI sources analyzed weekly
+                AI articles analyzed weekly
               </p>
             </div>
             <div>

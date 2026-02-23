@@ -39,6 +39,17 @@ export async function generateMetadata({
   return {
     title: page.meta.title,
     description: page.meta.description,
+    openGraph: {
+      title: page.meta.title,
+      description: page.meta.description,
+    },
+    twitter: {
+      title: page.meta.title,
+      description: page.meta.description,
+    },
+    alternates: {
+      canonical: `/for/${slug}`,
+    },
   };
 }
 
@@ -51,8 +62,52 @@ export default async function LandingPage({
   const page = getLandingPage(slug);
   if (!page) notFound();
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "FAQPage",
+        mainEntity: page.painPoints.map((point) => ({
+          "@type": "Question",
+          name: point.title,
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: `${point.description} My Weekly AI solves this by delivering a personalized AI news brief tailored for ${page.label} professionals every week.`,
+          },
+        })),
+      },
+      {
+        "@type": "Product",
+        name: `My Weekly AI for ${page.label}`,
+        description: page.meta.description,
+        brand: { "@type": "Organization", name: "My Weekly AI" },
+        offers: [
+          {
+            "@type": "Offer",
+            name: "Free",
+            price: "0",
+            priceCurrency: "USD",
+            description:
+              "Weekly AI news digest curated from 20+ publications",
+          },
+          {
+            "@type": "Offer",
+            name: "Pro",
+            price: "9.99",
+            priceCurrency: "USD",
+            description: `Personalized AI brief filtered for ${page.label} with actionable experiments`,
+          },
+        ],
+      },
+    ],
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* Hero */}
       <section className="px-4 py-20 text-center">
         <div className="mx-auto max-w-3xl">

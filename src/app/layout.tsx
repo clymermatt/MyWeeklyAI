@@ -14,9 +14,31 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "My Weekly AI — Personalized AI News Digest",
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_APP_URL || "https://myweeklyai.com"
+  ),
+  title: {
+    default: "My Weekly AI — Personalized AI News Digest",
+    template: "%s | My Weekly AI",
+  },
   description:
     "A personalized weekly AI news digest, tailored to your role, tools, and interests.",
+  openGraph: {
+    type: "website",
+    siteName: "My Weekly AI",
+    title: "My Weekly AI — Personalized AI News Digest",
+    description:
+      "A personalized weekly AI news digest, tailored to your role, tools, and interests.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "My Weekly AI — Personalized AI News Digest",
+    description:
+      "A personalized weekly AI news digest, tailored to your role, tools, and interests.",
+  },
+  alternates: {
+    canonical: "/",
+  },
 };
 
 export default function RootLayout({
