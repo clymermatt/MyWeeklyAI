@@ -68,6 +68,7 @@ export async function deliverBrief({
         isFree,
         periodStart,
         periodEnd,
+        profileTerms,
       });
       await sendTelegramMessage(user.telegramChatId!, text);
       result.telegramSent = true;
