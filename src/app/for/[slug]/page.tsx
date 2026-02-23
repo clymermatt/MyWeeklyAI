@@ -2,7 +2,27 @@ import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
+import React from "react";
 import { getLandingPage, allSlugs } from "@/lib/landing-content";
+
+function highlightTerms(text: string, terms: string[]): React.ReactNode {
+  if (!terms.length) return text;
+  const pattern = new RegExp(
+    `\\b(${terms.map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|")})\\b`,
+    "gi"
+  );
+  const parts = text.split(pattern);
+  return parts.map((part, i) => {
+    if (terms.some((t) => t.toLowerCase() === part.toLowerCase())) {
+      return (
+        <span key={i} className="font-semibold text-purple-600">
+          {part}
+        </span>
+      );
+    }
+    return part;
+  });
+}
 
 export function generateStaticParams() {
   return allSlugs.map((slug) => ({ slug }));
@@ -109,6 +129,61 @@ export default async function LandingPage({
                 </p>
               </div>
             ))}
+          </div>
+
+          {/* Mock brief preview */}
+          <div className="mt-14">
+            <p className="mb-4 text-center text-sm text-gray-500">
+              Here&apos;s what a personalized brief looks like for {page.label}:
+            </p>
+            <div className="mx-auto max-w-2xl rounded-lg border border-purple-100 bg-purple-50/50 p-5">
+              <h3 className="mb-3 text-sm font-semibold text-purple-900">
+                News Relevant to You
+              </h3>
+              <ul className="space-y-4">
+                {page.mockBrief.relevantToYou.map((item) => (
+                  <li key={item.title}>
+                    <p className="text-sm font-medium text-purple-700">
+                      {item.title}
+                    </p>
+                    <p className="mt-0.5 text-sm text-gray-700">
+                      {item.summary}
+                    </p>
+                    <p className="mt-1 text-xs italic text-gray-500">
+                      Why this matters to you:{" "}
+                      {highlightTerms(
+                        item.relevanceNote,
+                        page.mockBrief.highlightTerms
+                      )}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-4 border-t border-purple-200 pt-4">
+                <h3 className="mb-3 text-sm font-semibold text-purple-900">
+                  What To Test This Week
+                </h3>
+                <ul className="space-y-4">
+                  {page.mockBrief.whatToTest.map((item) => (
+                    <li key={item.title}>
+                      <p className="text-sm font-medium text-purple-700">
+                        {item.title}
+                      </p>
+                      <p className="mt-0.5 text-sm text-gray-700">
+                        {item.summary}
+                      </p>
+                      <p className="mt-1 text-xs italic text-gray-500">
+                        Why this matters to you:{" "}
+                        {highlightTerms(
+                          item.relevanceNote,
+                          page.mockBrief.highlightTerms
+                        )}
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
       </section>

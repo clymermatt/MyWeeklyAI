@@ -20,6 +20,19 @@ export interface LandingPage {
   }[];
   whatYouGet: string[];
   cta: string;
+  mockBrief: {
+    highlightTerms: string[];
+    relevantToYou: {
+      title: string;
+      summary: string;
+      relevanceNote: string;
+    }[];
+    whatToTest: {
+      title: string;
+      summary: string;
+      relevanceNote: string;
+    }[];
+  };
 }
 
 const landingPages: Record<string, LandingPage> = {
@@ -81,6 +94,28 @@ const landingPages: Record<string, LandingPage> = {
       "Weekly experiments to try in your actual codebase",
     ],
     cta: "Get AI news that speaks your language",
+    mockBrief: {
+      highlightTerms: ["Claude API","TypeScript integrations","LLM routing","Production debugging","Agentic workflows"],
+      relevantToYou: [
+        {
+          title: "Anthropic Releases Claude 3.5 Sonnet with Extended Context — 200K Token Support",
+          summary: "Claude's latest model now handles 200K tokens natively, enabling longer code reviews and full codebase context in a single request. Streaming and batch processing APIs updated to match.",
+          relevanceNote: "Your Claude API integrations can now process entire microservice architectures without chunking, reducing the complexity of production debugging workflows.",
+        },
+        {
+          title: "OpenAI Announces GPT-4o Structured Outputs — Native JSON Schema Validation",
+          summary: "GPT-4o now enforces JSON schema validation at generation time, eliminating parsing failures and retry logic in agent pipelines. Available in API starting this week.",
+          relevanceNote: "Building agentic workflows gets simpler—your TypeScript integrations no longer need fallback parsers when the model guarantees schema-compliant responses.",
+        },
+      ],
+      whatToTest: [
+        {
+          title: "Test LLM routing logic in your CI/CD pipeline",
+          summary: "Implement a simple router that sends coding tasks to Claude for context-heavy work and GPT-4o for structured JSON output, then measure latency and cost per request type in staging. Track which model class wins for your specific workloads.",
+          relevanceNote: "This experiment surfaces whether your team's agentic workflows benefit from model specialization, potentially cutting both production debugging time and API spend.",
+        },
+      ],
+    },
   },
 
   "product-managers": {
@@ -139,6 +174,28 @@ const landingPages: Record<string, LandingPage> = {
       "Weekly talking points for stakeholder conversations",
     ],
     cta: "Get AI insights for your roadmap",
+    mockBrief: {
+      highlightTerms: ["AI capabilities roadmap","Competitive shipping velocity","User expectation shifts","Build vs. integrate decisions","Stakeholder alignment"],
+      relevantToYou: [
+        {
+          title: "Claude 3.5 Sonnet's 200K context window forces product teams to rethink document workflows",
+          summary: "Anthropic's latest model update enables processing of entire codebases and documents in a single prompt, shifting what's feasible to build in-product versus outsource. Teams using RAG pipelines are now reconsidering architecture decisions made just months ago.",
+          relevanceNote: "Your build vs. integrate decisions just got more complex—what you evaluated as 'partner integrations' six months ago might now belong on your AI capabilities roadmap.",
+        },
+        {
+          title: "Notion introduces AI-powered formula suggestions; Coda ships formula assistant the same week",
+          summary: "Both productivity platforms launched AI-assisted formula creation within days of each other, treating formula help as table-stakes rather than differentiation. User expectations for \"AI in spreadsheets\" have jumped dramatically.",
+          relevanceNote: "This user expectation shift is happening across your category too—watch your competitor shipping velocity, because what felt like a future-state feature last quarter is now expected at launch.",
+        },
+      ],
+      whatToTest: [
+        {
+          title: "Run a 'Should We Build This?' scorecard on your top 3 AI feature requests",
+          summary: "For each requested AI capability, score it against: build-time cost, user frequency, competitive moat, stakeholder readiness, and technical feasibility. Document your decision framework so stakeholder alignment conversations happen faster.",
+          relevanceNote: "A documented framework removes the guesswork from your competitive shipping velocity decisions and gives stakeholders confidence in your build vs. integrate trade-offs.",
+        },
+      ],
+    },
   },
 
   "ux-designers": {
@@ -197,6 +254,28 @@ const landingPages: Record<string, LandingPage> = {
       "Weekly experiments to try in your design workflow",
     ],
     cta: "Get AI news designed for designers",
+    mockBrief: {
+      highlightTerms: ["AI interaction patterns","Design tool evaluation","User trust & control","AI interface design"],
+      relevantToYou: [
+        {
+          title: "Figma Releases AI-Powered Component Suggestions—Early Access Now Live",
+          summary: "Figma's new AI feature auto-generates component variants based on your design system, reducing repetitive design work. The feature intelligently learns from your existing patterns and suggests contextually relevant variations.",
+          relevanceNote: "As someone tracking AI design tool evaluation, this update directly impacts your workflow—understanding how to leverage AI-generated components while maintaining design consistency is becoming essential for modern design systems.",
+        },
+        {
+          title: "OpenAI's ChatGPT Gets Redesigned UI with Explicit Reasoning Controls (January 2025)",
+          summary: "OpenAI overhauled ChatGPT's interface to surface its reasoning process, giving users explicit control over thinking depth and response transparency. The design prioritizes user trust & control by making AI decision-making more visible.",
+          relevanceNote: "This redesign exemplifies emerging AI interaction patterns that prioritize transparency—studying how OpenAI balances user control with simplicity will inform how you design trust into your own AI features.",
+        },
+      ],
+      whatToTest: [
+        {
+          title: "Test a Two-State Disclosure Pattern for AI Confidence Levels",
+          summary: "In one of your AI-enabled features, add a collapsible \"confidence indicator\" that expands to show the model's reasoning or data sources. Track whether users who access this information feel more or less confident in the AI's output.",
+          relevanceNote: "This experiment directly tests user trust & control—two core concerns in AI interface design—while giving you real data on whether transparency actually improves perceived reliability in your product.",
+        },
+      ],
+    },
   },
 
   "data-scientists": {
@@ -255,6 +334,28 @@ const landingPages: Record<string, LandingPage> = {
       "Weekly experiments worth running on your data",
     ],
     cta: "Get research that matters to your models",
+    mockBrief: {
+      highlightTerms: ["Model benchmarking","LLM evaluation","PyTorch workflows","Research reproducibility","Performance optimization"],
+      relevantToYou: [
+        {
+          title: "Anthropic Releases Claude 3.5 Sonnet with Improved Reasoning on MATH and SWE-Bench",
+          summary: "Claude 3.5 Sonnet shows 92% accuracy on MATH-500 and ranks in the 88th percentile on SWE-Bench, signaling a shift in how model benchmarking should account for reasoning-heavy tasks beyond traditional NLP metrics.",
+          relevanceNote: "Your LLM evaluation workflows need to shift beyond token accuracy—these new reasoning benchmarks directly impact how you should design your model benchmarking pipelines for production tasks.",
+        },
+        {
+          title: "PyTorch 2.4 Stable Released with Quantization Tooling and Distributed Training Improvements",
+          summary: "The latest PyTorch release includes native int8 quantization support and improved DistributedDataParallel for multi-GPU setups, cutting memory overhead by up to 40% in tested workflows.",
+          relevanceNote: "If your PyTorch workflows rely on large model training, the new quantization tooling gives you immediate performance optimization wins without rewriting your research reproducibility pipelines.",
+        },
+      ],
+      whatToTest: [
+        {
+          title: "Compare Quantized vs. Full-Precision Models on Your Dataset",
+          summary: "Take your current best-performing model, apply PyTorch's native int8 quantization, and benchmark inference latency and accuracy degradation on a held-out test set. Track the trade-offs in a simple spreadsheet.",
+          relevanceNote: "Model benchmarking at scale requires understanding quantization's real impact on your specific data—this experiment bridges the gap between research reproducibility and deployment-ready performance optimization.",
+        },
+      ],
+    },
   },
 
   "engineering-managers": {
@@ -313,6 +414,28 @@ const landingPages: Record<string, LandingPage> = {
       "Weekly talking points for team standups and planning",
     ],
     cta: "Lead your team's AI adoption",
+    mockBrief: {
+      highlightTerms: ["Team productivity","AI adoption","Engineering hiring","Skill development","Security compliance"],
+      relevantToYou: [
+        {
+          title: "GitHub Copilot Enterprise adoption hits 40% of Fortune 500 engineering teams",
+          summary: "New survey data shows enterprise adoption of GitHub Copilot has accelerated, with teams reporting 25-35% code review cycle time reduction. However, security and compliance concerns remain the top blocker for broader rollout.",
+          relevanceNote: "As you plan your team's AI tool adoption strategy, understanding the security compliance patterns from peer organizations helps you navigate the same vendor conversations your engineers are already asking about.",
+        },
+        {
+          title: "OpenAI announces GPT-4 API context window expansion; Claude 3.5 Sonnet emerges as preferred choice for code tasks",
+          summary: "With larger context windows now available, AI coding assistants can handle more complex codebases in a single session. Meanwhile, engineering teams are quietly shifting from ChatGPT to Anthropic's Claude for sensitive development workflows due to data residency policies.",
+          relevanceNote: "Your team productivity gains depend heavily on choosing the right tool for your stack, and understanding which platforms meet your security compliance requirements will save weeks of evaluation work.",
+        },
+      ],
+      whatToTest: [
+        {
+          title: "Run a 2-week AI adoption sprint with one sub-team using a unified tool selection",
+          summary: "Pick one team (backend, frontend, platform) and standardize them on a single AI assistant for 2 weeks. Measure code review velocity, merge time, and engineer satisfaction scores, then gather their feedback on what questions emerged during standups.",
+          relevanceNote: "This small experiment gives you real team productivity benchmarks and surfaces the skill development gaps and adoption blockers your engineers will raise at planning meetings, informing your org-wide rollout strategy.",
+        },
+      ],
+    },
   },
 
   "cto-vp-engineering": {
@@ -371,6 +494,28 @@ const landingPages: Record<string, LandingPage> = {
       "Weekly executive summary for board and leadership conversations",
     ],
     cta: "Get strategic AI intelligence",
+    mockBrief: {
+      highlightTerms: ["Build-vs-buy strategy","AI infrastructure costs","Competitive AI moves","LLM deployment patterns"],
+      relevantToYou: [
+        {
+          title: "OpenAI's o1 Model Release Shifts Build-vs-Buy Calculus for Enterprise Reasoning Tasks",
+          summary: "OpenAI released o1, a reasoning-focused model that outperforms GPT-4 on complex problem-solving, forcing engineering leaders to reassess whether to build custom reasoning layers or adopt pre-built solutions. Early benchmarks show 92% improvement on AIME math problems, with pricing at $15/1M input tokens.",
+          relevanceNote: "This changes your build-vs-buy strategy calculations for reasoning-heavy features—understanding o1's cost-to-capability ratio is critical before greenlit any internal R&D on similar capabilities.",
+        },
+        {
+          title: "Google Introduces Gemini 2.0 with Native Multimodal Planning; Microsoft Expands Copilot Stack for Engineering Teams",
+          summary: "Google's Gemini 2.0 adds native multimodal planning abilities, while Microsoft deepens its Copilot offerings for software development with tighter GitHub integration. Both moves signal where the AI infrastructure wars are heading and what your competitors are already deploying.",
+          relevanceNote: "Your competitive AI moves tracking should include how these platform shifts affect your org design patterns—knowing what Gemini 2.0 enables helps you decide whether to standardize on one platform or multi-vendor approach.",
+        },
+      ],
+      whatToTest: [
+        {
+          title: "Run a 2-week pilot comparing in-house fine-tuned model costs vs. OpenAI o1 API for your top 3 reasoning workflows",
+          summary: "Select your most expensive or frequent reasoning tasks (e.g., code review synthesis, architecture decision analysis, bug root-cause analysis), measure current latency and cost, then test o1's performance and per-request spend. Track total cost of ownership including prompt engineering time.",
+          relevanceNote: "This hands-on test directly informs your build-vs-buy strategy and AI infrastructure costs—you'll have real data to present to your board on whether to invest in internal capability or shift budget to API consumption.",
+        },
+      ],
+    },
   },
 
   "ceo-founders": {
@@ -429,6 +574,28 @@ const landingPages: Record<string, LandingPage> = {
       "Weekly executive summary for board and investor conversations",
     ],
     cta: "Get the AI brief built for founders",
+    mockBrief: {
+      highlightTerms: ["Competitive intelligence","AI-native go-to-market","Board-ready insights","Funding signals"],
+      relevantToYou: [
+        {
+          title: "OpenAI Launches GPT-4 Fine-tuning for Enterprise; Anthropic Closes $5B in Backing",
+          summary: "OpenAI expanded fine-tuning capabilities to GPT-4, enabling custom model training for enterprise workflows. Simultaneously, Anthropic secured $5B in Series C funding to scale Claude production and commercial partnerships.",
+          relevanceNote: "Both moves signal where competitive intelligence matters most—OpenAI is cementing enterprise lock-in while Anthropic's funding surge reshapes AI-native go-to-market dynamics in your space.",
+        },
+        {
+          title: "Figma Integrates AI-Powered Design Assistant; Competitors Rush Feature Parity",
+          summary: "Figma shipped an AI assistant for design workflows, prompting Adobe and Canva to accelerate similar releases. Market analysts note this marks the first major capability milestone where design tools become AI-native platforms.",
+          relevanceNote: "This is exactly the kind of board-ready insights you need—when incumbents move fast on AI features, it signals where your funding signals and investor conversations should focus.",
+        },
+      ],
+      whatToTest: [
+        {
+          title: "Run a 30-Day AI Tool Audit Against Your Top 3 Competitors",
+          summary: "Document which AI capabilities your competitors have shipped in the last quarter, which tools they're actively promoting, and how those features map to customer outcomes. Use this audit to stress-test your own product roadmap.",
+          relevanceNote: "This systematic competitive intelligence exercise directly informs both your funding signals narrative and board-ready insights you'll need for next quarter's conversations.",
+        },
+      ],
+    },
   },
 
   "marketing-managers": {
@@ -487,6 +654,28 @@ const landingPages: Record<string, LandingPage> = {
       "Weekly experiments to try on real campaigns",
     ],
     cta: "Get AI news that improves your campaigns",
+    mockBrief: {
+      highlightTerms: ["AI content generation","Campaign optimization","Ad performance analytics","Marketing automation","Tool evaluation"],
+      relevantToYou: [
+        {
+          title: "Google Ads Introduces AI-Powered Audience Expansion with Performance Max Updates",
+          summary: "Google rolled out enhanced AI targeting capabilities in Performance Max campaigns, allowing marketers to automatically expand audiences while maintaining conversion quality. The update includes new predictive bidding features that analyze historical campaign data in real-time.",
+          relevanceNote: "Your campaign optimization efforts just got a significant boost—these new audience expansion controls let you scale reach without manual A/B testing overhead.",
+        },
+        {
+          title: "Meta Releases Updated AI Studio for Ad Creative Generation Across All Campaign Types",
+          summary: "Meta's revised AI Studio now supports background removal, text overlay optimization, and multi-variant creative generation for organic and paid content. The tool integrates directly with Ads Manager, reducing production time from hours to minutes.",
+          relevanceNote: "This AI content generation update cuts your creative production cycle dramatically, freeing your team to focus on strategy rather than asset creation bottlenecks.",
+        },
+      ],
+      whatToTest: [
+        {
+          title: "Compare AI-Generated vs. Hand-Written Ad Copy Performance on Your Top 3 Product Lines",
+          summary: "Split your next campaign into two groups: one with AI-generated headlines and descriptions (using your platform's native AI tool), one with human-written copy. Run both for 1 week with identical budgets and targeting, then measure CTR, conversion rate, and cost-per-acquisition.",
+          relevanceNote: "This direct AI content generation comparison gives you concrete data on whether automation actually moves your campaign optimization metrics, rather than relying on platform claims.",
+        },
+      ],
+    },
   },
 
   "content-strategists": {
@@ -545,6 +734,28 @@ const landingPages: Record<string, LandingPage> = {
       "Weekly experiments to test in your content pipeline",
     ],
     cta: "Get AI news for content strategy",
+    mockBrief: {
+      highlightTerms: ["AI search optimization","Editorial workflows","Content velocity","SEO strategy","AI writing tools"],
+      relevantToYou: [
+        {
+          title: "Google's AI Overviews Now Show Source Attribution — Here's What Changes for SEO",
+          summary: "Google updated its AI Overviews feature to display source citations more prominently, shifting how content visibility works in search results. This change affects click-through rates and requires content strategists to reconsider keyword targeting and content structure.",
+          relevanceNote: "Your AI search optimization strategy needs to account for how AI summaries now credit sources—this directly impacts your content velocity and organic traffic planning.",
+        },
+        {
+          title: "Notion AI vs. Claude for Teams: Content Teams Pick Their Winner in Q1 2025 Showdown",
+          summary: "A new comparative analysis shows how major publishing teams are choosing between AI writing tools for bulk content production, with Notion AI winning on integration but Claude for Teams leading on output quality. The decision hinges on workflow integration versus editorial standards.",
+          relevanceNote: "As you evaluate AI writing tools for your editorial workflows, knowing where teams are landing helps you avoid costly tool switching and keeps your content velocity competitive.",
+        },
+      ],
+      whatToTest: [
+        {
+          title: "Test AI-First Outlines for 10 Cornerstone Articles and Measure Ranking Impact",
+          summary: "Use an AI tool to generate detailed topic outlines and FAQ clusters for your top 10 cornerstone pieces, then publish with minimal human restructuring. Track rankings, click-through rates, and time-to-publish over 6 weeks versus your standard process.",
+          relevanceNote: "This experiment directly tests whether AI search optimization and editorial workflows can coexist without sacrificing quality, while measuring real SEO strategy ROI.",
+        },
+      ],
+    },
   },
 
   "sales-revenue": {
@@ -603,6 +814,28 @@ const landingPages: Record<string, LandingPage> = {
       "Weekly experiments to try in your sales workflow",
     ],
     cta: "Get AI news that closes deals",
+    mockBrief: {
+      highlightTerms: ["Prospecting automation","Buyer behavior intelligence","Sales AI tools","Revenue forecasting","Competitive edge"],
+      relevantToYou: [
+        {
+          title: "Salesforce Einstein Copilot Gains Real-Time Deal Scoring — January 2025",
+          summary: "Salesforce expanded its Einstein Copilot with AI-driven deal scoring that analyzes buyer signals in real-time, helping reps prioritize high-intent prospects automatically. The feature integrates directly into Salesforce CRM workflows without manual data entry.",
+          relevanceNote: "Your prospecting automation toolset just got smarter—this closes the gap between lead volume and actual buyer behavior intelligence, letting you focus on deals most likely to close.",
+        },
+        {
+          title: "HubSpot Introduces AI-Powered Meeting Insights & Objection Detection — Late January 2025",
+          summary: "HubSpot rolled out AI meeting transcription with automatic objection flagging and next-step recommendations for sales reps. The tool surfaces buying signals missed in real-time conversations and routes insights directly to your CRM.",
+          relevanceNote: "Understanding shifting buyer behavior patterns is now automated—this competitive edge insight means your team stops guessing what prospects really need and starts acting on AI-detected intent signals.",
+        },
+      ],
+      whatToTest: [
+        {
+          title: "Test AI-Powered Lead Scoring Against Your Current Manual Process",
+          summary: "Run a two-week parallel test: feed your top 50 active prospects into an AI lead scoring tool (such as 6sense or Clearbit) and compare its priority rankings against your sales team's manual assessment. Track which scored leads convert fastest.",
+          relevanceNote: "This experiment directly measures whether AI prospecting automation can outpace human intuition—the results will show you exactly where your competitive edge lives and whether to invest in broader automation rollout.",
+        },
+      ],
+    },
   },
 
   "devops-engineers": {
@@ -661,6 +894,28 @@ const landingPages: Record<string, LandingPage> = {
       "Weekly experiments safe to try in staging environments",
     ],
     cta: "Get AI news for your infrastructure",
+    mockBrief: {
+      highlightTerms: ["AI ops automation","Infrastructure-as-code","Incident management","LLM inference","Production readiness"],
+      relevantToYou: [
+        {
+          title: "Datadog Announces Native AI Root Cause Analysis for Kubernetes Clusters",
+          summary: "Datadog released an AI-powered root cause analyzer that automatically correlates logs, metrics, and traces across Kubernetes deployments. The feature integrates directly into their incident workflows and reduces mean time to resolution by up to 40% in early customer tests.",
+          relevanceNote: "This directly accelerates your incident management workflows—AI ops automation like this helps your team spend less time in firefighting and more time on production readiness.",
+        },
+        {
+          title: "PagerDuty AI Event Intelligence Adds Terraform Drift Detection",
+          summary: "PagerDuty's AI layer now detects infrastructure-as-code drift in real-time by comparing running state against version control. Alerts are automatically deduplicated and contextualized with suggested remediation steps from your IaC templates.",
+          relevanceNote: "This bridges your infrastructure-as-code practices with intelligent alerting—catching configuration drift before it becomes a production incident saves your team hours of troubleshooting.",
+        },
+      ],
+      whatToTest: [
+        {
+          title: "Deploy an LLM Inference Endpoint with Automatic Scaling in Staging",
+          summary: "Spin up a small open-source LLM (like Mistral 7B) on your staging Kubernetes cluster using vLLM or similar inference frameworks, then configure horizontal pod autoscaling based on request latency. Monitor cost, latency, and resource utilization over one week.",
+          relevanceNote: "Understanding LLM inference infrastructure patterns in a safe staging environment helps you prepare for AI ops workloads and evaluate whether your current cluster architecture supports production readiness for AI services.",
+        },
+      ],
+    },
   },
 
   "research-scientists": {
@@ -719,6 +974,28 @@ const landingPages: Record<string, LandingPage> = {
       "Weekly pointers to papers worth reading in full",
     ],
     cta: "Get the research brief that saves you hours",
+    mockBrief: {
+      highlightTerms: ["Reproducibility","Benchmark evaluation","Research tooling","Methodology advances","Open datasets"],
+      relevantToYou: [
+        {
+          title: "Meta's LLaMA 3.2 Quantization Framework Improves Reproducibility Across Hardware Setups",
+          summary: "Meta released an updated quantization approach for LLaMA 3.2 that standardizes inference results across different GPU architectures. The framework includes detailed ablation logs and checkpoint versioning to address drift in research reproduction.",
+          relevanceNote: "With reproducibility challenges in your work, this standardized approach to quantization means your benchmark evaluation results will be more consistent when shared with collaborators using different hardware.",
+        },
+        {
+          title: "Hugging Face Introduces HF-Eval: A New Benchmark Aggregation Tool for Comparative Model Testing",
+          summary: "Hugging Face launched HF-Eval, which consolidates 50+ standard benchmarks into a unified evaluation pipeline with automated regression detection. The tool includes community reproduction notes for each benchmark to flag known failure modes.",
+          relevanceNote: "This open datasets and research tooling update lets you run benchmark evaluation against multiple standards simultaneously, reducing the manual work of validating methodology advances across competing approaches.",
+        },
+      ],
+      whatToTest: [
+        {
+          title: "Run Your Latest Model Against the Updated SuperGLUE Benchmark and Cross-Check Community Reproduction Notes",
+          summary: "Download the latest SuperGLUE version from Hugging Face Datasets, execute your model checkpoint against all 8 tasks, and compare your baseline results against the documented reproduction notes in the community feedback section. Log any deviations from reported numbers.",
+          relevanceNote: "This experiment directly tests reproducibility in your workflow and gives you concrete methodology advances data—you'll spot whether your research tooling setup matches community standards before publishing results.",
+        },
+      ],
+    },
   },
 
   "business-analysts": {
@@ -777,6 +1054,28 @@ const landingPages: Record<string, LandingPage> = {
       "Weekly experiments to try with your datasets",
     ],
     cta: "Get AI news for better analysis",
+    mockBrief: {
+      highlightTerms: ["BI platform automation","Data quality governance","AI-assisted analytics","Workflow optimization"],
+      relevantToYou: [
+        {
+          title: "Tableau Pulse GA: AI Summaries Now Live in Enterprise Plans",
+          summary: "Tableau released generative AI insights into Tableau Pulse this week, automatically surfacing metric anomalies and narrative explanations. The feature is now available for enterprise customers, reducing manual report interpretation time by up to 40%.",
+          relevanceNote: "Your BI platform automation capabilities just got a major upgrade—this means less time on routine insight generation and more time on strategic analysis.",
+        },
+        {
+          title: "Microsoft Power BI Copilot Gets Data Quality Validation Features",
+          summary: "Microsoft expanded its Copilot in Power BI to include automated data quality checks and anomaly detection, flagging inconsistencies before they reach stakeholders. The update rolls out to preview customers this January.",
+          relevanceNote: "If you're managing data quality governance across teams, this tool could help catch upstream issues faster and reduce the feedback cycles on dirty datasets.",
+        },
+      ],
+      whatToTest: [
+        {
+          title: "Run a Side-by-Side Comparison of ChatGPT vs. Claude for Query Translation",
+          summary: "Take your 5 most complex SQL queries or data transformation requests and prompt both ChatGPT and Claude to translate them into natural language summaries. Track accuracy, clarity, and how well each handles your domain-specific terminology.",
+          relevanceNote: "Testing different AI models on your actual workflows helps you pick the best tool for AI-assisted analytics without committing to one platform.",
+        },
+      ],
+    },
   },
 
   "project-managers": {
@@ -835,6 +1134,28 @@ const landingPages: Record<string, LandingPage> = {
       "Weekly experiments for your project workflow",
     ],
     cta: "Get AI news for project delivery",
+    mockBrief: {
+      highlightTerms: ["AI automation workflows","Team productivity","Risk management","PM tool integration","Workflow optimization"],
+      relevantToYou: [
+        {
+          title: "Monday.com Launches AI Assistant for Timeline Predictions — January 2025",
+          summary: "Monday.com's new AI-powered assistant automatically flags project delays and suggests resource reallocation before bottlenecks occur. The feature integrates directly into existing boards and timelines without requiring manual data entry.",
+          relevanceNote: "This directly addresses risk management by surfacing potential delays early—exactly what you need when managing complex team productivity across multiple workstreams.",
+        },
+        {
+          title: "Asana Partners with OpenAI to Automate Task Summaries and Status Updates",
+          summary: "Asana's latest integration auto-generates daily standups and project status summaries from task comments and activity logs. Teams can now reduce status meeting prep time by up to 40%.",
+          relevanceNote: "This PM automation workflow saves your team hours each week—letting you focus on strategic planning instead of manual updates across projects.",
+        },
+      ],
+      whatToTest: [
+        {
+          title: "Run a 2-week AI automation workflows pilot on your highest-touch project",
+          summary: "Pick one active project and enable AI-assisted task routing, auto-generated summaries, and deadline predictions in your PM tool. Track how much time your team saves and where friction points remain.",
+          relevanceNote: "Testing these AI automation workflows on a real project reveals whether the time savings actually translate to better team productivity—and where you might need to tweak adoption.",
+        },
+      ],
+    },
   },
 
   "customer-success": {
@@ -893,6 +1214,28 @@ const landingPages: Record<string, LandingPage> = {
       "Weekly experiments to try with your customer base",
     ],
     cta: "Get AI news for customer success",
+    mockBrief: {
+      highlightTerms: ["churn prediction","AI health scoring","customer automation","CSAT improvement","onboarding workflows"],
+      relevantToYou: [
+        {
+          title: "Gainsight Launches AI-Powered Churn Risk Engine with Real-Time Alerts",
+          summary: "Gainsight's new machine learning module automatically surfaces at-risk accounts using behavioral signals and engagement patterns. The tool integrates with existing Gainsight deployments and claims a 34% improvement in early intervention rates.",
+          relevanceNote: "Your focus on churn prediction means this AI health scoring update directly impacts how quickly your team can act on at-risk customers before they disengage.",
+        },
+        {
+          title: "Intercom Reports 42% Faster Resolution Times Using AI-Assisted Customer Support",
+          summary: "In their latest case study, Intercom shared data showing CS teams using their new AI response suggestions reduced ticket resolution time while maintaining CSAT improvement. The feature learns from your team's communication style.",
+          relevanceNote: "If you're experimenting with customer automation, seeing real CSAT data from teams using AI support tools can help you build a stronger business case for your own implementation.",
+        },
+      ],
+      whatToTest: [
+        {
+          title: "Run a Churn Prediction Pilot on Your Lowest-Engagement Segment",
+          summary: "Select one customer cohort (e.g., SMB accounts inactive for 30+ days) and apply a churn prediction model to score them. Compare manual risk assessments from your team against the AI's predictions over 4 weeks.",
+          relevanceNote: "Testing churn prediction on a contained segment lets you validate AI health scoring accuracy before rolling out to your entire book of business, with measurable CSAT and retention outcomes.",
+        },
+      ],
+    },
   },
 
   "solutions-architects": {
@@ -951,6 +1294,28 @@ const landingPages: Record<string, LandingPage> = {
       "Weekly reference designs to evaluate for your systems",
     ],
     cta: "Get AI architecture intelligence",
+    mockBrief: {
+      highlightTerms: ["Model serving architecture","Vector database","Agent orchestration","Cloud AI infrastructure","Reference designs"],
+      relevantToYou: [
+        {
+          title: "AWS Bedrock Adds Multi-Agent Orchestration Framework (March 2024)",
+          summary: "Amazon Web Services expanded Bedrock with native agent orchestration capabilities, enabling architects to build complex AI workflows without external frameworks. The update includes built-in state management and inter-agent communication patterns.",
+          relevanceNote: "Your agent orchestration patterns just got a first-party option on AWS—understanding this new architecture could eliminate a vendor dependency in your AI infrastructure stack.",
+        },
+        {
+          title: "Pinecone and MongoDB Announce Unified Vector-Relational Index (February 2024)",
+          summary: "The two platforms launched a joint index format allowing seamless queries across vector and relational data. This reduces architectural complexity for retrieval-augmented generation systems that need both embedding and structured filtering.",
+          relevanceNote: "If you're designing vector database selections for RAG systems, this reference design simplifies the choice between separate tools and reduces your overall model serving complexity.",
+        },
+      ],
+      whatToTest: [
+        {
+          title: "Compare Latency Profiles: vLLM vs. TensorRT-LLM for Your Inference Workload",
+          summary: "Spin up identical model endpoints using both vLLM and NVIDIA TensorRT-LLM on the same hardware, then measure p50/p99 latencies under concurrent request loads. Document token throughput and memory utilization across batch sizes.",
+          relevanceNote: "Model serving architecture choices directly impact your cloud AI infrastructure costs and user experience—this test will give you concrete data to defend your architecture decisions.",
+        },
+      ],
+    },
   },
 
   consultants: {
@@ -1009,6 +1374,28 @@ const landingPages: Record<string, LandingPage> = {
       "Weekly insights to weave into client deliverables",
     ],
     cta: "Get AI intelligence for your clients",
+    mockBrief: {
+      highlightTerms: ["AI adoption strategy","vendor evaluation","cross-industry benchmarking","client AI readiness","implementation frameworks"],
+      relevantToYou: [
+        {
+          title: "McKinsey's Q4 2024 AI Maturity Index: 73% of Enterprise Clients Now in Implementation Phase",
+          summary: "New research shows a significant shift from AI pilots to production deployments across Fortune 500 companies. The study identifies three distinct adoption archetypes that correlate with measurable business outcomes.",
+          relevanceNote: "This benchmark data directly supports your client AI readiness conversations—you can now segment clients by maturity level and reference industry-backed evidence when recommending next steps in their AI adoption strategy.",
+        },
+        {
+          title: "Anthropic and Google Cloud Expand Enterprise Partnerships; Custom Model Fine-Tuning Now Available",
+          summary: "Claude API now offers enterprise fine-tuning capabilities, reshaping the vendor evaluation landscape for teams considering custom LLM solutions. This move pressures OpenAI and other competitors to enhance customization offerings.",
+          relevanceNote: "As you guide clients through vendor evaluation, this shift means your cross-industry benchmarking can now include custom model performance data—giving you a competitive edge in positioning differentiated AI solutions for specialized use cases.",
+        },
+      ],
+      whatToTest: [
+        {
+          title: "Run a 30-Day AI Readiness Assessment Template with Three Pilot Clients",
+          summary: "Create a lightweight assessment scoring client maturity across data quality, team capability, and business case clarity. Use framework elements from the brief to standardize your diagnostic approach and track which dimensions correlate with successful implementation frameworks.",
+          relevanceNote: "This experiment turns the brief's implementation frameworks into a repeatable client deliverable, allowing you to build comparative data that strengthens your vendor evaluation process and demonstrates tangible progress to stakeholders.",
+        },
+      ],
+    },
   },
 
   "students-researchers": {
@@ -1067,6 +1454,28 @@ const landingPages: Record<string, LandingPage> = {
       "Weekly experiments to try for hands-on learning",
     ],
     cta: "Get the AI brief for learners and builders",
+    mockBrief: {
+      highlightTerms: ["Machine Learning","Open-source projects","Research papers","Hands-on experiments","AI career skills"],
+      relevantToYou: [
+        {
+          title: "Meta Releases Llama 3.2 with Vision Capabilities — Free for Research",
+          summary: "Meta's latest Llama model now includes multimodal vision features and is available under a research-friendly license. The release includes detailed documentation and benchmark datasets for academic use.",
+          relevanceNote: "This directly impacts your open-source projects workflow—you can now integrate vision capabilities into research prototypes without licensing friction.",
+        },
+        {
+          title: "arXiv Launches AI Filtering Tool to Help Researchers Navigate 15,000+ Weekly Papers",
+          summary: "A new personalized filtering system helps researchers surface papers most relevant to their focus area using semantic search and citation networks. Early adopters report 60% reduction in browsing time.",
+          relevanceNote: "Staying current with research papers is core to your AI career skills development, and this tool makes it feasible to track your specific subfields without drowning in noise.",
+        },
+      ],
+      whatToTest: [
+        {
+          title: "Build a Fine-tuned Classifier on Hugging Face Datasets in 90 Minutes",
+          summary: "Walk through fine-tuning a pre-trained transformer model using a small Hugging Face dataset (e.g., emotion classification or toxic comment detection), then deploy it as a shareable Hugging Face model card. This hands-on task combines real open-source tools with portfolio-building.",
+          relevanceNote: "Hands-on experiments like this strengthen both your machine learning fundamentals and your AI career skills by giving you a concrete project to showcase to employers or on your CV.",
+        },
+      ],
+    },
   },
 
   // ─── INDUSTRIES ─────────────────────────────────────────
@@ -1127,6 +1536,28 @@ const landingPages: Record<string, LandingPage> = {
       "Weekly product ideas inspired by AI-native SaaS",
     ],
     cta: "Get AI news for your SaaS product",
+    mockBrief: {
+      highlightTerms: ["AI feature launches","Build-vs-buy","Model API pricing","Feature inspiration","Cost optimization"],
+      relevantToYou: [
+        {
+          title: "OpenAI Cuts GPT-4 API Prices 50% on Input Tokens — What SaaS Teams Should Do Now",
+          summary: "OpenAI announced significant price reductions for GPT-4 API calls this week, making it cheaper for SaaS platforms to integrate advanced AI features without rebuilding internally. Teams using older pricing tiers could see immediate savings on production workloads.",
+          relevanceNote: "Your build-vs-buy decisions just shifted—these model API pricing changes mean hosted solutions are now more competitive, so it's worth revisiting whether your custom AI implementation still makes sense.",
+        },
+        {
+          title: "Notion AI, Canva Magic Design, and Figma's New Generative Fill: Three Feature Launches Worth Copying",
+          summary: "This week saw major AI feature launches from three design and productivity giants, each targeting different workflows: Notion's AI writing assistant expanded to databases, Canva launched one-click magic design for social media, and Figma shipped generative fill for design assets. These releases show where customer expectations are heading.",
+          relevanceNote: "These AI feature launches set the bar for what your users now expect—understanding what Notion, Canva, and Figma are shipping helps you prioritize your own feature inspiration and stay competitive.",
+        },
+      ],
+      whatToTest: [
+        {
+          title: "Compare In-House vs. Third-Party AI API Costs for Your Top 3 Features",
+          summary: "Pull your current usage data for the three most AI-heavy features in your product, then model costs using OpenAI, Anthropic, and a build-it-yourself scenario (including engineering time). Run the numbers with current pricing and updated rate cards from this month.",
+          relevanceNote: "This experiment directly informs your build-vs-buy strategy and ensures your cost optimization decisions reflect the latest model API pricing—potentially unlocking margin improvements or faster feature velocity.",
+        },
+      ],
+    },
   },
 
   fintech: {
@@ -1185,6 +1616,28 @@ const landingPages: Record<string, LandingPage> = {
       "Weekly insights from AI deployments in finance",
     ],
     cta: "Get AI news for fintech",
+    mockBrief: {
+      highlightTerms: ["fraud detection","AI regulation","model explainability","algorithmic trading","compliance tooling"],
+      relevantToYou: [
+        {
+          title: "EU Finalizes AI Act Implementation Timeline: Financial Services Face New Compliance Deadlines",
+          summary: "The European Commission announced enforcement timelines for the AI Act's financial services provisions, requiring compliance by early 2025. Institutions deploying fraud detection and algorithmic trading systems must now document model decision-making processes under stricter scrutiny.",
+          relevanceNote: "Your focus on AI regulation makes this critical—financial services firms using algorithmic trading and fraud detection will need updated compliance tooling to meet these new transparency requirements.",
+        },
+        {
+          title: "Mastercard Launches AI-Powered Fraud Detection Update; Real-Time Block Rate Increases 34%",
+          summary: "Mastercard's latest fraud detection AI model now processes transactions with improved model explainability, allowing issuers to understand why transactions are flagged. The system reduced false positives by 28% while increasing genuine fraud catch rates.",
+          relevanceNote: "This shows how model explainability is becoming table stakes in fraud detection—understanding your AI's reasoning is no longer optional if you want to stay competitive in fintech compliance.",
+        },
+      ],
+      whatToTest: [
+        {
+          title: "Audit Your Current Fraud Detection Model's Explainability Score",
+          summary: "Pull a sample of 100 recent fraud flags from your system and document whether your team can articulate *why* each was flagged. Compare your explainability clarity against Mastercard's or similar vendors' transparency standards to identify gaps.",
+          relevanceNote: "As AI regulation tightens, demonstrating that your fraud detection can explain its decisions will become essential for both compliance tooling audits and customer trust.",
+        },
+      ],
+    },
   },
 
   healthcare: {
@@ -1243,6 +1696,28 @@ const landingPages: Record<string, LandingPage> = {
       "Weekly developments in healthcare AI research",
     ],
     cta: "Get AI news for healthcare",
+    mockBrief: {
+      highlightTerms: ["FDA AI approvals","Drug discovery automation","Clinical workflow AI","Health data compliance","Diagnostic AI tools"],
+      relevantToYou: [
+        {
+          title: "FDA Clears Tempus AI's Oncology Diagnostic Platform for Expanded Tumor Analysis",
+          summary: "The FDA granted breakthrough device designation to Tempus's AI-powered pathology analysis tool, enabling clinical labs to integrate AI-assisted cancer diagnosis into routine workflows. The approval covers genomic and imaging data fusion for treatment recommendation.",
+          relevanceNote: "This FDA AI approvals milestone directly impacts your diagnostic AI tools strategy, showing how regulatory pathways are opening for integrated clinical workflow AI in oncology centers.",
+        },
+        {
+          title: "Exscientia and Roche Announce First AI-Designed Drug Candidate Enters Phase 2 Trials",
+          summary: "The collaborative drug discovery automation effort produced an RSV therapeutic compound designed entirely by AI, now advancing to human trials—18 months faster than traditional timelines. This marks a turning point in pharma's adoption of generative AI for lead optimization.",
+          relevanceNote: "Drug discovery automation breakthroughs like this reshape your competitive landscape; understanding how AI accelerates clinical trials is now essential to your health data compliance and evidence-based coverage strategy.",
+        },
+      ],
+      whatToTest: [
+        {
+          title: "Map Your Organization's FDA AI Approval Readiness Against Current Guidelines",
+          summary: "Audit your existing diagnostic AI tools and clinical workflow AI implementations against the FDA's latest 2024 AI/ML guideline updates released in March. Document gaps in validation, data provenance tracking, and performance monitoring requirements.",
+          relevanceNote: "Testing your readiness now against evolving FDA AI approvals criteria will strengthen your health data compliance posture and help you stay ahead of regulatory shifts affecting your product roadmap.",
+        },
+      ],
+    },
   },
 
   "ecommerce-retail": {
@@ -1301,6 +1776,28 @@ const landingPages: Record<string, LandingPage> = {
       "Weekly AI experiments for your store or catalog",
     ],
     cta: "Get AI news for retail",
+    mockBrief: {
+      highlightTerms: ["AI personalization","Inventory optimization","Visual search","Revenue forecasting","Product discovery"],
+      relevantToYou: [
+        {
+          title: "Shopify Launches Native Visual Search API for Product Discovery (March 2024)",
+          summary: "Shopify has integrated AI-powered visual search capabilities directly into its platform, allowing merchants to enable image-based product discovery without third-party tools. The feature uses computer vision to match customer photos to catalog items in real-time.",
+          relevanceNote: "Your visual search strategy can now be built natively into Shopify, eliminating integration friction and directly improving product discovery metrics for your store.",
+        },
+        {
+          title: "Amazon Increases Demand Forecasting Accuracy with Updated AI Models for SMB Sellers (February 2024)",
+          summary: "Amazon Web Services announced enhanced demand forecasting tools that help third-party sellers optimize inventory levels using real-time marketplace signals and historical data. The updated AI model claims 23% better accuracy for seasonal products.",
+          relevanceNote: "Better inventory optimization through improved demand forecasting can directly impact your revenue forecasting and reduce overstock costs across your catalog.",
+        },
+      ],
+      whatToTest: [
+        {
+          title: "Run A/B Test: AI Personalization Engine vs. Rule-Based Recommendations",
+          summary: "Split your traffic 50/50 between your current rule-based recommendation system and an AI personalization engine (like Dynamic Yield or Nosto) for 2 weeks. Measure conversion rate, average order value, and repeat purchase rate across both cohorts.",
+          relevanceNote: "Testing AI personalization directly against your baseline will reveal the real revenue impact and help justify investment in advanced recommendation technology for your product discovery strategy.",
+        },
+      ],
+    },
   },
 
   "education-edtech": {
@@ -1359,6 +1856,28 @@ const landingPages: Record<string, LandingPage> = {
       "Weekly developments in AI-powered learning",
     ],
     cta: "Get AI news for education",
+    mockBrief: {
+      highlightTerms: ["AI tutoring","academic integrity","adaptive learning","EdTech policy","pedagogical AI"],
+      relevantToYou: [
+        {
+          title: "OpenAI Releases ChatGPT Edu for Institutions; Universities Debate Plagiarism Detection Standards",
+          summary: "OpenAI launched ChatGPT Edu, a version designed for academic institutions with built-in oversight features. Simultaneously, the American Educational Research Association published guidelines questioning traditional plagiarism detection methods in the age of AI co-authoring.",
+          relevanceNote: "As institutions adopt AI tutoring systems, understanding the evolving academic integrity landscape is critical—especially how detection tools now distinguish between AI assistance and unauthorized use.",
+        },
+        {
+          title: "Knewton Alto Reports 34% Improvement in Math Outcomes; Adaptive Learning Platforms See Policy Push in K-12",
+          summary: "Knewton's adaptive learning platform published new efficacy data showing significant gains in student math proficiency. Meanwhile, 12 state education boards began formal reviews of AI-powered adaptive systems for curriculum alignment and equity concerns.",
+          relevanceNote: "With EdTech policy conversations intensifying around adaptive learning effectiveness, tracking these institutional adoption case studies helps you understand which pedagogical AI approaches are gaining regulatory approval and real-world traction.",
+        },
+      ],
+      whatToTest: [
+        {
+          title: "Compare Three AI Tutoring Platforms on Your Institution's Core Curriculum",
+          summary: "Run a pilot comparing ChatGPT Edu, Squirrel AI, and Carnegie Learning's platform against your institution's learning outcomes over 4 weeks. Measure student engagement, accuracy of concept mastery, and system compatibility with your current academic integrity protocols.",
+          relevanceNote: "This hands-on test bridges the gap between AI tutoring marketing claims and actual pedagogical results—giving you real data before committing to adoption.",
+        },
+      ],
+    },
   },
 
   "media-entertainment": {
@@ -1417,6 +1936,28 @@ const landingPages: Record<string, LandingPage> = {
       "Weekly creative AI experiments to try",
     ],
     cta: "Get AI news for media",
+    mockBrief: {
+      highlightTerms: ["AI content generation","Copyright protection","Streaming algorithms","Creative workflows","IP litigation"],
+      relevantToYou: [
+        {
+          title: "OpenAI Sued by New York Times Over Training Data; Copyright Claims Intensify",
+          summary: "The New York Times filed a major lawsuit against OpenAI alleging unauthorized use of copyrighted articles to train GPT models, marking the largest media company challenge yet. The case could reshape how AI developers license content and compensate publishers.",
+          relevanceNote: "As you monitor the evolving copyright protection landscape, this landmark case directly impacts licensing costs and IP litigation risks for any studio using AI content generation tools.",
+        },
+        {
+          title: "Netflix Adjusts Algorithm to Prioritize Completion Rates Over Views; Impact on Creator Metrics",
+          summary: "Netflix announced a shift in its recommendation engine weighting, now emphasizing viewer completion and engagement over raw viewing numbers. The change affects how content is ranked and promoted across the platform.",
+          relevanceNote: "Understanding how streaming algorithms reward different content types is critical for your creative workflows—this shift means rethinking how you structure stories for algorithmic success.",
+        },
+      ],
+      whatToTest: [
+        {
+          title: "Compare Runway Gen-3 vs. Pika 2.0 for Short-Form Video Production",
+          summary: "Run identical creative briefs through both Runway's Gen-3 and Pika 2.0 to evaluate output quality, rendering speed, and consistency over 5 test videos. Document which tool better handles motion, color grading, and adherence to your creative direction.",
+          relevanceNote: "Testing these emerging creative tools hands-on helps you evaluate real workflow improvements and cost savings before committing to AI content generation in your production pipeline.",
+        },
+      ],
+    },
   },
 
   "marketing-advertising": {
@@ -1475,6 +2016,28 @@ const landingPages: Record<string, LandingPage> = {
       "Weekly AI experiments for your marketing campaigns",
     ],
     cta: "Get AI news for the marketing industry",
+    mockBrief: {
+      highlightTerms: ["Ad platform AI","Creative automation","Attribution modeling","Martech tools","Performance measurement"],
+      relevantToYou: [
+        {
+          title: "Google Ads Introduces AI-Powered Responsive Search Ads with Real-Time Brand Safety Controls",
+          summary: "Google has rolled out enhanced AI features in Google Ads that automatically generate and test search ad variations while filtering out brand-unsafe placements in real time. The update includes new measurement dashboards that track creative performance across channels.",
+          relevanceNote: "With ad platform AI now handling more of your creative generation, understanding how these systems measure performance becomes critical to optimizing your campaigns.",
+        },
+        {
+          title: "HubSpot and Marketo Launch Native AI Attribution Models—What's Different",
+          summary: "Both platforms released updated attribution modeling features powered by machine learning, allowing marketers to move beyond last-click attribution and see true customer journey impact across touchpoints. Early users report 15-25% improvement in budget allocation accuracy.",
+          relevanceNote: "As attribution modeling shifts toward AI-driven approaches, comparing these martech tools' capabilities will directly impact how you allocate your marketing budget across channels.",
+        },
+      ],
+      whatToTest: [
+        {
+          title: "Run a Split Test: AI-Generated vs. Human-Crafted Ad Copy on Meta Ads",
+          summary: "Create two identical campaigns—one using Meta's Advantage+ creative automation to generate ad variations, one with manually written copy—and measure conversion rates, CPC, and brand lift metrics over two weeks. Track which creative generation approach delivers better performance for your specific audience segment.",
+          relevanceNote: "Testing creative automation directly against your current workflow will reveal whether investing in AI-powered ad creation tools actually improves your performance measurement outcomes.",
+        },
+      ],
+    },
   },
 
   consulting: {
@@ -1533,6 +2096,28 @@ const landingPages: Record<string, LandingPage> = {
       "Weekly insights to strengthen client conversations",
     ],
     cta: "Get AI news for consulting",
+    mockBrief: {
+      highlightTerms: ["AI strategy frameworks","Delivery model transformation","Client industry disruption","AI vendor evaluation","Consulting firm adoption"],
+      relevantToYou: [
+        {
+          title: "McKinsey Launches AI-Powered Client Diagnostics Tool (January 2025)",
+          summary: "McKinsey released an internal AI diagnostic platform to help clients assess AI maturity across their organizations. The tool integrates with their consulting engagements to benchmark client industry disruption readiness against peers.",
+          relevanceNote: "As you build client industry disruption conversations, understanding how top firms operationalize AI strategy frameworks through diagnostic tools will sharpen your competitive positioning.",
+        },
+        {
+          title: "Deloitte Reports 78% of Consulting Firms Restructuring Delivery Models for AI (Q4 2024)",
+          summary: "New research shows consulting firms are fundamentally changing how they staff and deliver engagements, shifting from traditional billable hours toward outcome-based AI implementation models. Firms report 40% faster project cycles with hybrid human-AI teams.",
+          relevanceNote: "Understanding delivery model transformation across the industry is critical for positioning your firm's unique approach and identifying where AI vendor evaluation becomes a core client conversation.",
+        },
+      ],
+      whatToTest: [
+        {
+          title: "Run a 30-Minute AI Strategy Framework Workshop With Your Next 3 Clients",
+          summary: "Pilot a structured 30-minute diagnostic session using a simple AI maturity matrix tailored to each client's industry. Capture which frameworks resonate and which client industry disruption patterns surface most frequently.",
+          relevanceNote: "This experiment will reveal which AI strategy frameworks drive the most valuable conversations and help you refine your delivery model transformation pitch based on real client feedback.",
+        },
+      ],
+    },
   },
 
   manufacturing: {
@@ -1591,6 +2176,28 @@ const landingPages: Record<string, LandingPage> = {
       "Weekly insights from manufacturing AI deployments",
     ],
     cta: "Get AI news for manufacturing",
+    mockBrief: {
+      highlightTerms: ["Predictive maintenance","Quality inspection AI","Supply chain optimization","Industrial automation","Defect detection"],
+      relevantToYou: [
+        {
+          title: "Siemens Expands Predictive Maintenance Suite with Real-Time Sensor Analytics",
+          summary: "Siemens released an updated MindSphere platform in January 2025 that integrates machine learning for real-time equipment failure prediction across manufacturing lines. The new features reduce unplanned downtime by up to 40% according to early deployments at Tier-1 automotive suppliers.",
+          relevanceNote: "Your interest in predictive maintenance aligns perfectly with this advancement—early adoption of Siemens' sensor analytics could help you identify equipment failures before they impact production.",
+        },
+        {
+          title: "Cognex Launches Next-Gen Vision AI for Defect Detection in Electronics Manufacturing",
+          summary: "Cognex announced a new deep learning model trained on 10M+ industrial images that detects micro-defects in PCB and semiconductor manufacturing with 99.2% accuracy. The tool integrates with existing machine vision systems without requiring complete infrastructure overhauls.",
+          relevanceNote: "If you're evaluating quality inspection AI tools, Cognex's latest defect detection engine offers a practical path to reducing manual inspection costs while improving detection rates.",
+        },
+      ],
+      whatToTest: [
+        {
+          title: "Run a 30-Day Pilot Comparing Your Current Inspection Process to AI-Powered Defect Detection",
+          summary: "Set up a parallel testing environment where your existing quality control workflow runs alongside an AI-powered defect detection system on the same product batches. Track detection accuracy, false positive rates, and labor time savings to benchmark ROI.",
+          relevanceNote: "This experiment will give you concrete data on how quality inspection AI can improve your defect detection rates while validating the investment case for supply chain optimization and automation across your facility.",
+        },
+      ],
+    },
   },
 
   "real-estate-proptech": {
@@ -1649,6 +2256,28 @@ const landingPages: Record<string, LandingPage> = {
       "Weekly insights from AI in real estate",
     ],
     cta: "Get AI news for real estate",
+    mockBrief: {
+      highlightTerms: ["AI valuation models","PropTech automation","Market prediction","Property management AI"],
+      relevantToYou: [
+        {
+          title: "Zillow Enhances Zestimate with Machine Learning; Claims 5% Accuracy Improvement",
+          summary: "Zillow announced an update to its Zestimate algorithm incorporating transformer-based neural networks trained on 100M+ property transactions. The new model reportedly reduces median error margin from 6.9% to 6.5% in major metros.",
+          relevanceNote: "Your focus on AI valuation models makes this directly relevant—understanding how the industry's most-used benchmark is evolving shapes your own property pricing strategy.",
+        },
+        {
+          title: "AppFolio Q4 Report: AI-Powered Tenant Screening Tool Reduces Approval Time by 40%",
+          summary: "AppFolio's latest product release integrates GPT-4 for automated tenant background synthesis and risk scoring. Property managers using the feature report 40% faster lease decisions with maintained compliance accuracy.",
+          relevanceNote: "This exemplifies how PropTech automation is transforming property management workflows—critical for your evaluation of next-gen tools in the space.",
+        },
+      ],
+      whatToTest: [
+        {
+          title: "Compare AI Valuation Accuracy: CoreLogic vs. Redfin vs. Zillow on Your Local Market",
+          summary: "Pull 50 recent comparable sales from your target neighborhood and run them through three leading AI valuation platforms. Document estimated values, confidence intervals, and time-to-result for each service.",
+          relevanceNote: "Testing multiple AI valuation models against real transactions will reveal which market prediction engines best align with your investment criteria and risk tolerance.",
+        },
+      ],
+    },
   },
 
   "legal-legaltech": {
@@ -1707,6 +2336,28 @@ const landingPages: Record<string, LandingPage> = {
       "Weekly developments in AI and the law",
     ],
     cta: "Get AI news for legal",
+    mockBrief: {
+      highlightTerms: ["Contract analysis","Legal research AI","Court rulings on AI","Document review","AI reliability"],
+      relevantToYou: [
+        {
+          title: "Thomson Reuters Introduces AI-Assisted Legal Research with Hallucination Detection (Jan 2024)",
+          summary: "Thomson Reuters launched enhanced AI-powered legal research capabilities with built-in fact-checking to flag potential inaccuracies in case law citations. The update addresses longstanding concerns about AI reliability in high-stakes legal research workflows.",
+          relevanceNote: "As you evaluate legal research AI tools, this reliability assessment feature directly addresses the accuracy concerns that matter most in your practice.",
+        },
+        {
+          title: "Federal Court Rules on ChatGPT Use in Legal Briefs—Bar Associations Issue Updated Guidelines (Dec 2023)",
+          summary: "Multiple state bar associations released updated guidelines permitting limited AI use in legal work, contingent on attorney review and disclosure. A federal ruling reinforced that lawyers remain liable for AI-generated content accuracy.",
+          relevanceNote: "Understanding the latest court rulings on AI usage and bar guidelines is essential as you integrate contract analysis and document review tools into your workflow.",
+        },
+      ],
+      whatToTest: [
+        {
+          title: "Compare Contract Analysis AI Tools on Clause Detection Accuracy",
+          summary: "Run the same 10 sample contracts through Lawgeex, LawGPT, and Kensho's contract analysis features, benchmarking their accuracy on identifying high-risk clauses and indemnification language. Document false positives and processing time.",
+          relevanceNote: "Testing real contract analysis solutions against your actual use cases will reveal which tools deliver the AI reliability you need to trust in your legal practice.",
+        },
+      ],
+    },
   },
 
   government: {
@@ -1765,6 +2416,28 @@ const landingPages: Record<string, LandingPage> = {
       "Weekly developments in government AI",
     ],
     cta: "Get AI news for government",
+    mockBrief: {
+      highlightTerms: ["AI procurement","policy compliance","public service automation","responsible AI","government implementation"],
+      relevantToYou: [
+        {
+          title: "GSA Updates AI Procurement Framework for Federal Agencies (November 2024)",
+          summary: "The General Services Administration released revised guidelines for AI tool evaluation and procurement across federal departments, emphasizing transparency, bias testing, and cost-benefit analysis for automation projects.",
+          relevanceNote: "This directly impacts your AI procurement processes—the updated framework includes new responsible AI evaluation criteria that will shape how your agency vets vendors and implements solutions.",
+        },
+        {
+          title: "DOD Establishes Responsible AI Center of Excellence (October 2024)",
+          summary: "The Department of Defense launched a new center dedicated to developing responsible AI standards and implementation playbooks for military and civilian operations, with focus on autonomous systems oversight.",
+          relevanceNote: "Your government implementation roadmap should align with these emerging responsible AI standards—the DoD's playbooks will become baseline requirements across federal public service automation initiatives.",
+        },
+      ],
+      whatToTest: [
+        {
+          title: "Map Your Agency's Current AI Tools Against Latest Policy Compliance Requirements",
+          summary: "Audit the AI systems your department currently uses against the GSA's updated procurement framework and responsible AI checklist. Document gaps in transparency, bias testing, and documentation for each tool.",
+          relevanceNote: "This exercise reveals whether your existing tools meet new policy compliance standards and helps prioritize which systems need evaluation or replacement as part of your government implementation strategy.",
+        },
+      ],
+    },
   },
 
   nonprofit: {
@@ -1823,6 +2496,28 @@ const landingPages: Record<string, LandingPage> = {
       "Weekly AI-for-good developments and case studies",
     ],
     cta: "Get AI news for nonprofits",
+    mockBrief: {
+      highlightTerms: ["Grant writing automation","Donor engagement","Ethical AI","Resource-conscious tools","Impact measurement"],
+      relevantToYou: [
+        {
+          title: "Google.org Expands AI for Social Good Fellowship; Applications Now Open",
+          summary: "Google.org announced expanded funding and mentorship for nonprofits implementing AI solutions for social impact, with a focus on organizations working in education, environment, and poverty alleviation. The 2024 cohort will provide $1M+ in cloud credits and direct technical support.",
+          relevanceNote: "This directly supports your focus on grant writing automation and responsible AI—Google's framework emphasizes ethical guardrails, making it ideal for nonprofits building sustainable, impact-driven AI initiatives.",
+        },
+        {
+          title: "OpenAI Launches Nonprofit Pricing Tier; 50% Discount on API for Qualified Organizations",
+          summary: "OpenAI introduced a new discounted API tier specifically for registered 501(c)(3) nonprofits, reducing costs by half for organizations working on education, health, and environmental projects. Eligibility verification launches this month.",
+          relevanceNote: "As a resource-conscious nonprofit, you can now access GPT-4 API for donor engagement and grant writing automation at significantly lower costs—opening doors to AI capabilities previously out of reach for mission-driven teams.",
+        },
+      ],
+      whatToTest: [
+        {
+          title: "Test ChatGPT for Grant Proposal Drafting Against Your Current Process",
+          summary: "Run a pilot where your grants team uses OpenAI's nonprofit pricing tier to draft 3 proposals in parallel with your existing workflow, tracking time saved and output quality. Measure both speed and whether AI-generated language meets funder tone/requirements.",
+          relevanceNote: "Grant writing automation is one of the highest-ROI opportunities for resource-conscious nonprofits—testing this now with discounted access lets you validate impact before committing budget or training staff.",
+        },
+      ],
+    },
   },
 
   cybersecurity: {
@@ -1881,6 +2576,28 @@ const landingPages: Record<string, LandingPage> = {
       "Weekly threat intelligence from the AI security landscape",
     ],
     cta: "Get AI news for cybersecurity",
+    mockBrief: {
+      highlightTerms: ["AI threat detection","Adversarial attacks","Security vendor evaluation","Threat intelligence","AI compliance"],
+      relevantToYou: [
+        {
+          title: "OpenAI Releases Security Advisories for ChatGPT Enterprise After Prompt Injection Vulnerabilities Discovered",
+          summary: "Security researchers identified multiple prompt injection attack vectors in ChatGPT Enterprise deployments that could allow unauthorized data exfiltration. OpenAI has released patches and updated their security guidelines for enterprise customers.",
+          relevanceNote: "Understanding how adversarial attacks exploit LLM systems is critical as you evaluate AI-powered security vendors integrating language models into their threat detection platforms.",
+        },
+        {
+          title: "CrowdStrike Falcon Updates Detection Engine with New AI Behavioral Analysis Module",
+          summary: "CrowdStrike announced enhancements to its threat detection capabilities using improved machine learning models for zero-day malware identification. The update includes real-time behavioral correlation across cloud and on-premises environments.",
+          relevanceNote: "This security vendor evaluation showcases how modern AI threat detection is evolving—comparing detection accuracy improvements will help you assess whether similar upgrades in your current tooling provide real security value.",
+        },
+      ],
+      whatToTest: [
+        {
+          title: "Run a Red Team Exercise Against Your Current AI-Powered Detection System",
+          summary: "Simulate adversarial attacks and prompt injection attempts against your existing AI threat detection tools to identify blind spots. Document which attack patterns your system flags versus misses, and categorize findings by attack sophistication level.",
+          relevanceNote: "Testing your defenses against adversarial attacks ensures your AI threat detection isn't vulnerable to the same evasion techniques attackers are actively developing against security vendors.",
+        },
+      ],
+    },
   },
 
   gaming: {
@@ -1939,6 +2656,28 @@ const landingPages: Record<string, LandingPage> = {
       "Weekly AI experiments for your game development pipeline",
     ],
     cta: "Get AI news for gaming",
+    mockBrief: {
+      highlightTerms: ["AI NPCs","Procedural generation","Game testing automation","AI art tools","Dynamic content"],
+      relevantToYou: [
+        {
+          title: "Inworld AI Launches Character Engine 2.0 with Real-Time Emotion Synthesis",
+          summary: "Inworld AI released an updated character engine enabling dynamic emotional responses in AI NPCs without pre-scripted dialogue trees. The update reduces latency by 40% and supports multi-language emotional nuance.",
+          relevanceNote: "Your focus on AI NPCs means this directly impacts how you can build more believable, reactive characters that respond authentically to player interactions in real-time.",
+        },
+        {
+          title: "Unity Partners with Nvidia to Integrate ACE Technology into Game Development Pipeline",
+          summary: "Unity announced native integration of Nvidia's Avatar Cloud Engine (ACE) for procedural generation of game assets and environments. Developers can now generate millions of unique variations without manual authoring.",
+          relevanceNote: "This evolution in procedural generation tools could transform your game development pipeline by automating asset creation while maintaining artistic consistency across dynamic content.",
+        },
+      ],
+      whatToTest: [
+        {
+          title: "Test Game Testing Automation with PlaytestCloud's AI-Powered Bug Detection",
+          summary: "Run a 2-week pilot using PlaytestCloud's AI system to identify bugs and UX issues in a vertical slice of your game. Compare results against your traditional QA process by tracking issues found, false positives, and time-to-report.",
+          relevanceNote: "Game testing automation can dramatically reduce your QA cycle while freeing your team to focus on creative problems that AI can't solve.",
+        },
+      ],
+    },
   },
 
   telecommunications: {
@@ -1997,6 +2736,28 @@ const landingPages: Record<string, LandingPage> = {
       "Weekly insights from telecom AI implementations",
     ],
     cta: "Get AI news for telecom",
+    mockBrief: {
+      highlightTerms: ["Network optimization AI","Customer service automation","5G edge intelligence","Telecom fraud detection","Network performance"],
+      relevantToYou: [
+        {
+          title: "Cisco's AI-Powered RAN Insights Reduce Network Congestion by 34% in Q1 2025 Deployments",
+          summary: "Cisco announced expanded capabilities in its Crosswork platform, enabling telecom operators to use machine learning for real-time radio access network optimization. Early adopters report significant reductions in congestion and improved spectrum utilization across 4G/5G infrastructure.",
+          relevanceNote: "Network optimization AI is moving from predictive to prescriptive—this advancement directly impacts your ability to manage peak traffic and maintain SLA compliance without manual intervention.",
+        },
+        {
+          title: "Juniper Networks and Mavenir Launch Joint 5G Edge AI Deployment Program for North American Carriers",
+          summary: "The partnership combines Juniper's edge routing intelligence with Mavenir's cloud-native 5G stack to enable low-latency AI inference at network edge. Three Tier-1 carriers are piloting the solution for real-time anomaly detection and customer service automation.",
+          relevanceNote: "As customer service automation and 5G edge intelligence converge, this deployment model shows how you can reduce response times and enable AI-driven support closer to end users without backhaul delays.",
+        },
+      ],
+      whatToTest: [
+        {
+          title: "Run a Telecom Fraud Detection AI Pilot on Your CDR Data",
+          summary: "Extract a representative sample of your call detail records and feed them into an AI-native fraud detection platform (e.g., Subex, NETSCOUT, or open-source alternatives) to identify patterns your current rules-based system may miss. Measure false positive rates and compare detection accuracy against your baseline.",
+          relevanceNote: "Telecom fraud detection AI tools are now mature enough for real-world validation—testing on your own data will reveal gaps in network performance monitoring and customer trust that impact your bottom line.",
+        },
+      ],
+    },
   },
 
   "energy-cleantech": {
@@ -2055,6 +2816,28 @@ const landingPages: Record<string, LandingPage> = {
       "Weekly insights from AI in the energy transition",
     ],
     cta: "Get AI news for energy",
+    mockBrief: {
+      highlightTerms: ["Grid optimization","Predictive maintenance","Renewable forecasting","Carbon tracking","Energy AI"],
+      relevantToYou: [
+        {
+          title: "Google DeepMind's Latest Grid Optimization Model Cuts Peak Demand by 20% at UK Utility",
+          summary: "Google DeepMind announced an updated reinforcement learning model deployed across three UK regional grids that reduces peak demand forecasting errors by 20%. The system integrates real-time renewable generation data and EV charging patterns to optimize load distribution.",
+          relevanceNote: "Your focus on grid optimization makes this critical—this breakthrough shows how AI can directly improve energy dispatch efficiency at scale without infrastructure overhauls.",
+        },
+        {
+          title: "Siemens Energy Launches AI-Powered Turbine Health Platform; Partners with GE for Cross-Asset Insights",
+          summary: "Siemens Energy released an enterprise predictive maintenance suite that uses federated learning across wind and gas turbines. The platform reduces unplanned downtime by 35% compared to rule-based monitoring, with GE providing comparative benchmark data.",
+          relevanceNote: "As predictive maintenance becomes table-stakes in energy operations, this multi-asset approach directly addresses the cost of unexpected outages that drain your operational margins.",
+        },
+      ],
+      whatToTest: [
+        {
+          title: "Run a Renewable Forecasting Accuracy Audit Against Your Current Model",
+          summary: "Pull 30 days of solar and wind generation predictions from your existing system and compare them against three emerging AI tools (e.g., DeepWeather, Tomorrow.io Energy API, or a custom transformer model). Track RMSE and mean bias across different weather patterns.",
+          relevanceNote: "Renewable forecasting accuracy directly drives your grid optimization ROI—even small improvements in prediction error can unlock significant cost savings and better carbon tracking outcomes.",
+        },
+      ],
+    },
   },
 
   "transportation-logistics": {
@@ -2113,6 +2896,28 @@ const landingPages: Record<string, LandingPage> = {
       "Weekly insights from AI in logistics operations",
     ],
     cta: "Get AI news for logistics",
+    mockBrief: {
+      highlightTerms: ["Route optimization","Autonomous vehicles","Supply chain visibility","Warehouse automation","Fleet management"],
+      relevantToYou: [
+        {
+          title: "Tesla's Dojo Supercomputer Powers New Autonomous Fleet Pilot with J.B. Hunt",
+          summary: "Tesla and J.B. Hunt Transport Services launched a limited autonomous vehicle pilot using Tesla's Dojo-trained models for long-haul trucking on select interstate routes. The initiative focuses on safety validation and real-world performance data collection across varying weather and traffic conditions.",
+          relevanceNote: "This autonomous vehicles breakthrough directly impacts your fleet management strategy—understanding how majors like J.B. Hunt are deploying self-driving tech helps you stay competitive in route optimization and operational efficiency.",
+        },
+        {
+          title: "Amazon Expands Digit Robot Deployment to 20 Additional Fulfillment Centers in Q1 2024",
+          summary: "Amazon announced scaled rollout of its humanoid Digit robot across North American warehouses, automating case handling and reducing manual sorting labor by up to 25%. The robots integrate with existing WMS systems for seamless warehouse automation workflows.",
+          relevanceNote: "Warehouse automation is transforming labor economics in logistics—seeing Amazon's ROI on Digit helps you evaluate whether similar robotics investments make sense for your supply chain visibility and operational costs.",
+        },
+      ],
+      whatToTest: [
+        {
+          title: "Run a Real-Time Supply Chain Visibility Audit with AI Tracking Tools",
+          summary: "Implement a 2-week trial of an AI supply chain tracking platform (such as FourKites or Fourkites-adjacent solutions) across 3-5 key shipping lanes to measure end-to-end visibility gaps and exception detection accuracy versus your current system.",
+          relevanceNote: "Testing supply chain visibility tools now will reveal whether AI-powered tracking can improve your autonomous vehicles routing decisions and fleet management efficiency before larger rollouts.",
+        },
+      ],
+    },
   },
 };
 
