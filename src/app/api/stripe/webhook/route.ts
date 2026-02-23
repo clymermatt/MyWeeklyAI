@@ -42,9 +42,7 @@ export async function POST(req: Request) {
       );
       const periodEnd = sub.trial_end
         ? new Date(sub.trial_end * 1000)
-        : sub.current_period_end
-          ? new Date(sub.current_period_end * 1000)
-          : null;
+        : new Date(sub.billing_cycle_anchor * 1000);
 
       await prisma.subscription.upsert({
         where: { userId },
