@@ -3,7 +3,7 @@ import { runIngestion } from "@/lib/ingestion/ingest";
 import { generateBrief } from "@/lib/llm/generate-brief";
 import { generateFreeBrief } from "@/lib/llm/generate-brief";
 import { rankNewsForUser } from "@/lib/llm/relevance-scorer";
-import { sendWeeklyBrief } from "@/lib/email/send";
+import { deliverBrief } from "@/lib/delivery/send-brief";
 import type { BriefOutput } from "@/types/brief";
 import { freeBriefToBriefOutput } from "@/types/brief";
 
@@ -11,6 +11,7 @@ export interface DigestResult {
   freeUsersProcessed: number;
   paidUsersProcessed: number;
   emailsSent: number;
+  telegramsSent: number;
   errors: string[];
 }
 
@@ -47,6 +48,7 @@ export async function runWeeklyDigest(): Promise<DigestResult> {
   const labItems = allNewsItems.filter((i) => i.source.category === "AI_LAB");
 
   let emailsSent = 0;
+  let telegramsSent = 0;
   const errors: string[] = [];
 
   // ── Phase A: Generate shared free brief (1 Claude call) ──
@@ -84,19 +86,20 @@ export async function runWeeklyDigest(): Promise<DigestResult> {
       });
 
       try {
-        await sendWeeklyBrief({
-          to: user.email,
-          userName: user.name ?? undefined,
+        const delivery = await deliverBrief({
+          user,
           brief: freeBriefJson,
           isFree: true,
           periodStart,
           periodEnd,
         });
-        emailsSent++;
-      } catch (emailErr) {
-        const msg = emailErr instanceof Error ? emailErr.message : "Unknown email error";
-        console.log(`Email skipped for ${user.email}: ${msg}`);
-        errors.push(`Email skipped for ${user.email}: ${msg}`);
+        if (delivery.emailSent) emailsSent++;
+        if (delivery.telegramSent) telegramsSent++;
+        errors.push(...delivery.errors);
+      } catch (deliveryErr) {
+        const msg = deliveryErr instanceof Error ? deliveryErr.message : "Unknown delivery error";
+        console.log(`Delivery skipped for ${user.email}: ${msg}`);
+        errors.push(`Delivery skipped for ${user.email}: ${msg}`);
       }
     } catch (err) {
       errors.push(
@@ -164,20 +167,21 @@ export async function runWeeklyDigest(): Promise<DigestResult> {
           ...profile.focusTopics,
         ].filter((t): t is string => !!t);
 
-        await sendWeeklyBrief({
-          to: user.email,
-          userName: user.name ?? undefined,
+        const delivery = await deliverBrief({
+          user,
           brief,
           isFree: false,
           periodStart,
           periodEnd,
           profileTerms,
         });
-        emailsSent++;
-      } catch (emailErr) {
-        const msg = emailErr instanceof Error ? emailErr.message : "Unknown email error";
-        console.log(`Email skipped for ${user.email}: ${msg}`);
-        errors.push(`Email skipped for ${user.email}: ${msg}`);
+        if (delivery.emailSent) emailsSent++;
+        if (delivery.telegramSent) telegramsSent++;
+        errors.push(...delivery.errors);
+      } catch (deliveryErr) {
+        const msg = deliveryErr instanceof Error ? deliveryErr.message : "Unknown delivery error";
+        console.log(`Delivery skipped for ${user.email}: ${msg}`);
+        errors.push(`Delivery skipped for ${user.email}: ${msg}`);
       }
     } catch (err) {
       errors.push(
@@ -190,6 +194,7 @@ export async function runWeeklyDigest(): Promise<DigestResult> {
     freeUsersProcessed: freeUsers.length,
     paidUsersProcessed: paidUsers.length,
     emailsSent,
+    telegramsSent,
     errors,
   };
 }

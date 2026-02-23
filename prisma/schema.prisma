@@ -19,6 +19,12 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
+  // Telegram delivery
+  telegramChatId     String?          @unique
+  telegramLinkToken  String?          @unique
+  telegramLinkExpires DateTime?
+  deliveryChannel    DeliveryChannel  @default(EMAIL)
+
   accounts       Account[]
   sessions       Session[]
   contextProfile ContextProfile?
@@ -197,4 +203,10 @@ enum JobStatus {
   RUNNING
   SUCCESS
   FAILURE
+}
+
+enum DeliveryChannel {
+  EMAIL
+  TELEGRAM
+  BOTH
 }

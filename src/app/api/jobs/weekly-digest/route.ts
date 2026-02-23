@@ -26,6 +26,7 @@ export async function POST(req: Request) {
           freeUsersProcessed: result.freeUsersProcessed,
           paidUsersProcessed: result.paidUsersProcessed,
           emailsSent: result.emailsSent,
+          telegramsSent: result.telegramsSent,
           errorCount: result.errors.length,
         },
       },

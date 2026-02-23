@@ -3,7 +3,7 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { generateBrief, generateFreeBrief } from "@/lib/llm/generate-brief";
 import { rankNewsForUser } from "@/lib/llm/relevance-scorer";
-import { sendWeeklyBrief } from "@/lib/email/send";
+import { deliverBrief } from "@/lib/delivery/send-brief";
 import { freeBriefToBriefOutput } from "@/types/brief";
 
 export async function GET() {
@@ -135,16 +135,15 @@ async function generateInstantBriefing(
       ...profile.focusTopics,
     ].filter((t): t is string => !!t);
 
-    await sendWeeklyBrief({
-      to: user.email,
-      userName: user.name ?? undefined,
+    await deliverBrief({
+      user,
       brief: briefJson as never,
       isFree,
       periodStart,
       periodEnd,
       profileTerms,
     });
-  } catch (emailErr) {
-    console.error("Instant briefing email failed:", emailErr);
+  } catch (deliveryErr) {
+    console.error("Instant briefing delivery failed:", deliveryErr);
   }
 }

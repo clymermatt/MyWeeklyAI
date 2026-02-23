@@ -2,6 +2,7 @@ import Link from "next/link";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import SubscriptionButton from "@/components/subscription-button";
+import TelegramConnectCard from "@/components/telegram-connect-card";
 
 export default async function DashboardPage({
   searchParams,
@@ -12,13 +13,17 @@ export default async function DashboardPage({
   const userId = session!.user!.id!;
   const params = await searchParams;
 
-  const [profile, subscription, recentDigests] = await Promise.all([
+  const [profile, subscription, recentDigests, user] = await Promise.all([
     prisma.contextProfile.findUnique({ where: { userId } }),
     prisma.subscription.findUnique({ where: { userId } }),
     prisma.weeklyDigest.findMany({
       where: { userId },
       orderBy: { sentAt: "desc" },
       take: 3,
+    }),
+    prisma.user.findUniqueOrThrow({
+      where: { id: userId },
+      select: { telegramChatId: true, deliveryChannel: true },
     }),
   ]);
 
@@ -180,6 +185,12 @@ export default async function DashboardPage({
             View all &rarr;
           </Link>
         </div>
+
+        {/* Delivery Channel Card */}
+        <TelegramConnectCard
+          isConnected={!!user.telegramChatId}
+          currentChannel={user.deliveryChannel}
+        />
       </div>
     </div>
   );
