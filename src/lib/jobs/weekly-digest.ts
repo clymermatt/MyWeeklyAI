@@ -41,7 +41,7 @@ export async function runWeeklyDigest(): Promise<DigestResult> {
     },
     include: { source: { select: { name: true, category: true } } },
     orderBy: { publishedAt: "desc" },
-    take: 200,
+    take: 400,
   });
 
   const industryItems = allNewsItems.filter((i) => i.source.category === "INDUSTRY_NEWS");
