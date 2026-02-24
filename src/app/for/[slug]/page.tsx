@@ -188,10 +188,58 @@ export default async function LandingPage({
 
           {/* Mock brief preview */}
           <div className="mt-14">
-            <p className="mb-4 text-center text-sm text-gray-500">
-              Here&apos;s what a personalized brief looks like for {page.label}:
+            <p className="mb-4 text-center text-base font-medium text-gray-800">
+              Build your personal context profile
             </p>
-            <div className="mx-auto max-w-2xl rounded-lg border border-purple-100 bg-purple-50/50 p-5">
+            <div className="mx-auto max-w-2xl mb-3 rounded-lg border border-gray-200 bg-white px-4 py-3">
+              <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-400">
+                Sample context profile
+              </p>
+              <div className="space-y-2 text-sm">
+                <div className="flex items-center gap-2">
+                  <span className="w-16 flex-shrink-0 text-xs text-gray-500">
+                    {page.type === "role" ? "Role" : "Industry"}
+                  </span>
+                  <span className="rounded-full bg-purple-100 px-2.5 py-0.5 text-xs font-medium text-purple-700">
+                    {page.label}
+                  </span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="mt-0.5 w-16 flex-shrink-0 text-xs text-gray-500">Topics</span>
+                  <div className="flex flex-wrap gap-1.5">
+                    {page.mockBrief.highlightTerms.map((term) => (
+                      <span
+                        key={term}
+                        className="rounded-full bg-purple-100 px-2.5 py-0.5 text-xs font-medium text-purple-700"
+                      >
+                        {term}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p className="mt-8 mb-3 flex items-center justify-center gap-2 text-center text-base font-medium text-gray-800">
+              Receive a personalized AI newsletter every Sunday in your
+              <span className="inline-flex items-center gap-1">
+                <svg className="h-3.5 w-3.5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M3 4a2 2 0 00-2 2v1.161l8.441 4.221a1.25 1.25 0 001.118 0L19 7.162V6a2 2 0 00-2-2H3z" />
+                  <path d="M19 8.839l-7.556 3.778a2.75 2.75 0 01-2.888 0L1 8.839V14a2 2 0 002 2h14a2 2 0 002-2V8.839z" />
+                </svg>
+                email
+              </span>
+              or
+              <span className="inline-flex items-center gap-1">
+                <svg className="h-3.5 w-3.5 text-gray-400" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z" />
+                </svg>
+                Telegram
+              </span>
+            </p>
+            <div className="mx-auto max-w-2xl rounded-lg border border-purple-100 bg-white p-5">
+              <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-gray-400">
+                Sample personalized newsletter
+              </p>
               <h3 className="mb-3 text-sm font-semibold text-purple-900">
                 News Relevant to You
               </h3>
