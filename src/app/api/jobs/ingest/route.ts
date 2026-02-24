@@ -17,7 +17,11 @@ export async function POST(req: Request) {
   try {
     const result = await runIngestion();
 
-    const status = result.errors.length > 0 ? "FAILURE" : "SUCCESS";
+    const totalWork = result.sourcesProcessed + result.itemsUpserted;
+    const status =
+      totalWork === 0 && result.errors.length > 0
+        ? "FAILURE"
+        : "SUCCESS";
     const endedAt = new Date();
     const metrics = {
       sourcesProcessed: result.sourcesProcessed,

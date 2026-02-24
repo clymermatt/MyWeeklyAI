@@ -17,7 +17,14 @@ export async function POST(req: Request) {
   try {
     const result = await runWeeklyDigest();
 
-    const status = result.errors.length > 0 ? "FAILURE" : "SUCCESS";
+    const totalDelivered = result.emailsSent + result.telegramsSent;
+    const totalUsers = result.freeUsersProcessed + result.paidUsersProcessed;
+    const status =
+      totalUsers === 0 && result.errors.length > 0
+        ? "FAILURE"
+        : totalDelivered === 0 && totalUsers > 0 && result.errors.length > 0
+          ? "FAILURE"
+          : "SUCCESS";
     const endedAt = new Date();
     const metrics = {
       freeUsersProcessed: result.freeUsersProcessed,
