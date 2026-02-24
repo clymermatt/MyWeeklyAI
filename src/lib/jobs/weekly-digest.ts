@@ -75,6 +75,12 @@ export async function runWeeklyDigest(): Promise<DigestResult> {
 
   for (const user of freeUsers) {
     try {
+      // Skip if user already received a digest this period
+      const existing = await prisma.weeklyDigest.findFirst({
+        where: { userId: user.id, periodStart: { gte: periodStart } },
+      });
+      if (existing) continue;
+
       await prisma.weeklyDigest.create({
         data: {
           userId: user.id,
@@ -124,6 +130,12 @@ export async function runWeeklyDigest(): Promise<DigestResult> {
     if (!user.contextProfile) continue;
 
     try {
+      // Skip if user already received a digest this period
+      const existingPaid = await prisma.weeklyDigest.findFirst({
+        where: { userId: user.id, periodStart: { gte: periodStart } },
+      });
+      if (existingPaid) continue;
+
       // Dedup: get URLs from the user's last 2 digests
       const recentDigests = await prisma.weeklyDigest.findMany({
         where: { userId: user.id },
