@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { runWeeklyDigest } from "@/lib/jobs/weekly-digest";
+import { sendJobAlertEmail } from "@/lib/email/send";
+import { pingHealthCheck } from "@/lib/healthcheck";
 
 export async function POST(req: Request) {
   const authHeader = req.headers.get("authorization");
@@ -15,32 +17,55 @@ export async function POST(req: Request) {
   try {
     const result = await runWeeklyDigest();
 
+    const status = result.errors.length > 0 ? "FAILURE" : "SUCCESS";
+    const endedAt = new Date();
+    const metrics = {
+      freeUsersProcessed: result.freeUsersProcessed,
+      paidUsersProcessed: result.paidUsersProcessed,
+      emailsSent: result.emailsSent,
+      telegramsSent: result.telegramsSent,
+      errorCount: result.errors.length,
+    };
+    const errorText =
+      result.errors.length > 0 ? result.errors.join("\n") : null;
+
     await prisma.jobRun.update({
       where: { id: jobRun.id },
-      data: {
-        status: result.errors.length > 0 ? "FAILURE" : "SUCCESS",
-        endedAt: new Date(),
-        error:
-          result.errors.length > 0 ? result.errors.join("\n") : null,
-        metrics: {
-          freeUsersProcessed: result.freeUsersProcessed,
-          paidUsersProcessed: result.paidUsersProcessed,
-          emailsSent: result.emailsSent,
-          telegramsSent: result.telegramsSent,
-          errorCount: result.errors.length,
-        },
-      },
+      data: { status, endedAt, error: errorText, metrics },
     });
+
+    if (status === "FAILURE") {
+      await sendJobAlertEmail({
+        jobName: "weekly-digest",
+        status,
+        startedAt: jobRun.startedAt,
+        endedAt,
+        metrics,
+        error: errorText,
+      });
+    }
+
+    if (status === "SUCCESS") {
+      await pingHealthCheck("weekly-digest");
+    }
 
     return NextResponse.json(result);
   } catch (error) {
+    const endedAt = new Date();
+    const errorText =
+      error instanceof Error ? error.message : "Unknown error";
+
     await prisma.jobRun.update({
       where: { id: jobRun.id },
-      data: {
-        status: "FAILURE",
-        endedAt: new Date(),
-        error: error instanceof Error ? error.message : "Unknown error",
-      },
+      data: { status: "FAILURE", endedAt, error: errorText },
+    });
+
+    await sendJobAlertEmail({
+      jobName: "weekly-digest",
+      status: "FAILURE",
+      startedAt: jobRun.startedAt,
+      endedAt,
+      error: errorText,
     });
 
     return NextResponse.json(
