@@ -117,7 +117,7 @@ export default async function DashboardPage({
           )}
           <Link
             href="/dashboard/profile"
-            className="mt-4 inline-block text-sm font-medium text-purple-600 hover:text-purple-700"
+            className="mt-4 inline-block text-sm font-medium text-blue-600 hover:text-blue-700"
           >
             {profile ? "Edit profile" : "Create profile"} &rarr;
           </Link>
@@ -136,7 +136,7 @@ export default async function DashboardPage({
               </p>
               <a
                 href="/api/stripe/portal"
-                className="mt-4 inline-block text-sm font-medium text-purple-600 hover:text-purple-700"
+                className="mt-4 inline-block text-sm font-medium text-blue-600 hover:text-blue-700"
               >
                 Manage subscription &rarr;
               </a>
@@ -180,7 +180,7 @@ export default async function DashboardPage({
           )}
           <Link
             href="/dashboard/briefings"
-            className="mt-4 inline-block text-sm font-medium text-purple-600 hover:text-purple-700"
+            className="mt-4 inline-block text-sm font-medium text-blue-600 hover:text-blue-700"
           >
             View all &rarr;
           </Link>

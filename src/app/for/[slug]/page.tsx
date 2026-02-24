@@ -469,7 +469,7 @@ export default async function LandingPage({
       </section>
 
       {/* Bottom CTA */}
-      <section className="relative dot-pattern bg-purple-600 px-4 py-20 text-center">
+      <section className="relative dot-pattern bg-gradient-to-br from-purple-600 to-blue-600 px-4 py-20 text-center">
         <div className="relative mx-auto max-w-2xl">
           <FadeIn>
             <h2 className="text-3xl font-bold text-white">{page.cta}</h2>
