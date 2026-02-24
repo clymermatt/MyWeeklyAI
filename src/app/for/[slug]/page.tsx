@@ -215,7 +215,7 @@ export default async function LandingPage({
           {/* Mock brief preview */}
           <div className="mt-14">
             <FadeIn>
-              <p className="mb-4 text-center text-base font-medium text-gray-800">
+              <p className="mb-4 text-center text-base font-bold text-gray-800">
                 Build your personal context profile
               </p>
               <div className="mx-auto max-w-2xl mb-3 rounded-lg border border-gray-200 bg-white px-4 py-3">
@@ -248,7 +248,7 @@ export default async function LandingPage({
               </div>
             </FadeIn>
             <FadeIn delay={100}>
-              <p className="mt-8 mb-3 flex items-center justify-center gap-2 text-center text-base font-medium text-gray-800">
+              <p className="mt-8 mb-3 flex items-center justify-center gap-2 text-center text-base font-bold text-gray-800">
                 Receive a personalized AI newsletter every Sunday in your
                 <span className="inline-flex items-center gap-1">
                   <svg className="h-3.5 w-3.5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
