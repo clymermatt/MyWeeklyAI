@@ -7,12 +7,20 @@ export default async function SiteNav() {
   const session = await auth();
 
   let plan: "Free" | "Pro" = "Free";
+  let isAdmin = false;
   if (session?.user?.id) {
-    const subscription = await prisma.subscription.findUnique({
-      where: { userId: session.user.id },
-      select: { status: true },
-    });
+    const [subscription, user] = await Promise.all([
+      prisma.subscription.findUnique({
+        where: { userId: session.user.id },
+        select: { status: true },
+      }),
+      prisma.user.findUnique({
+        where: { id: session.user.id },
+        select: { role: true },
+      }),
+    ]);
     plan = subscription?.status === "ACTIVE" ? "Pro" : "Free";
+    isAdmin = user?.role === "ADMIN";
   }
 
   return (
@@ -71,6 +79,7 @@ export default async function SiteNav() {
             <UserMenu
               name={session.user!.name?.split(" ")[0] || session.user!.email!.split("@")[0]}
               plan={plan}
+              isAdmin={isAdmin}
             />
             <form
               action={async () => {

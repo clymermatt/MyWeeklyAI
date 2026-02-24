@@ -6,9 +6,10 @@ import Link from "next/link";
 interface UserMenuProps {
   name: string;
   plan: "Free" | "Pro";
+  isAdmin?: boolean;
 }
 
-export default function UserMenu({ name, plan }: UserMenuProps) {
+export default function UserMenu({ name, plan, isAdmin }: UserMenuProps) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -53,6 +54,15 @@ export default function UserMenu({ name, plan }: UserMenuProps) {
           >
             My Dashboard
           </Link>
+          {isAdmin && (
+            <Link
+              href="/admin/jobs"
+              onClick={() => setOpen(false)}
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+            >
+              Admin
+            </Link>
+          )}
         </div>
       )}
     </div>
