@@ -3,6 +3,15 @@ import type { NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt";
 
 export async function middleware(req: NextRequest) {
+  // 301 redirect .vercel.app to custom domain
+  const host = req.headers.get("host") || "";
+  if (host.endsWith(".vercel.app")) {
+    const url = new URL(req.url);
+    url.host = "www.myweekly.ai";
+    url.port = "";
+    return NextResponse.redirect(url, 301);
+  }
+
   const token = await getToken({
     req,
     secret: process.env.NEXTAUTH_SECRET,
@@ -23,5 +32,10 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/admin/:path*"],
+  matcher: [
+    /*
+     * Match all paths except static files and Next.js internals
+     */
+    "/((?!_next/static|_next/image|favicon.ico|icon.svg|logos/).*)",
+  ],
 };
