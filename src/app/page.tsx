@@ -275,7 +275,67 @@ export default async function HomePage() {
               </div>
             </FadeIn>
             <FadeIn delay={100}>
-              <p className="mt-8 mb-3 flex items-center justify-center gap-2 text-center text-base font-bold text-gray-800">
+              <div className="mx-auto my-6 flex justify-center">
+                <svg className="h-6 w-6 text-purple-400" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" />
+                </svg>
+              </div>
+              <div className="mx-auto max-w-2xl mb-3 rounded-lg border border-gray-200 bg-white px-4 py-3">
+                <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-gray-400">
+                  Sample AI curation
+                </p>
+                <div className="space-y-3 text-sm">
+                  <div className="flex items-start gap-3">
+                    <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-purple-100">
+                      <svg className="h-3.5 w-3.5 text-purple-600" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <p className="font-medium text-gray-900">Scanning 200+ articles</p>
+                      <p className="text-xs text-gray-500">From 20+ AI labs, publications, and research outlets</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-purple-100">
+                      <svg className="h-3.5 w-3.5 text-purple-600" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <p className="font-medium text-gray-900">Matching your context</p>
+                      <p className="text-xs text-gray-500">
+                        Filtering for{" "}
+                        {["Content Strategist", "LegalTech", "Contract Review"].map((term, i) => (
+                          <span key={term}>
+                            {i > 0 && ", "}
+                            <span className="font-medium text-purple-600">{term}</span>
+                          </span>
+                        ))}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-purple-100">
+                      <svg className="h-3.5 w-3.5 text-purple-600" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M3 4.5h14.25M3 9h9.75M3 13.5h5.25m5.25-.75L17.25 9m0 0L21 12.75M17.25 9v12" />
+                      </svg>
+                    </div>
+                    <div>
+                      <p className="font-medium text-gray-900">Ranking by relevance</p>
+                      <p className="text-xs text-gray-500">Surfacing only what matters to your role and priorities</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="mx-auto flex justify-center">
+                <svg className="h-6 w-6 text-purple-400" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" />
+                </svg>
+              </div>
+            </FadeIn>
+            <FadeIn delay={200}>
+              <p className="mt-6 mb-3 flex items-center justify-center gap-2 text-center text-base font-bold text-gray-800">
                 Receive a personalized AI newsletter every Sunday in your
                 <span className="inline-flex items-center gap-1">
                   <svg className="h-3.5 w-3.5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
