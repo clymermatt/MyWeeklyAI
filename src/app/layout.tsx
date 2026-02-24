@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_APP_URL || "https://myweeklyai.com"
+    process.env.NEXT_PUBLIC_APP_URL || "https://www.myweekly.ai"
   ),
   title: {
     default: "My Weekly AI — Personalized AI News Digest",

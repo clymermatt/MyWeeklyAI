@@ -18,14 +18,14 @@ export default async function HomePage() {
       {
         "@type": "Organization",
         name: "My Weekly AI",
-        url: process.env.NEXT_PUBLIC_APP_URL || "https://myweeklyai.com",
+        url: process.env.NEXT_PUBLIC_APP_URL || "https://www.myweekly.ai",
         description:
           "A personalized weekly AI news digest, tailored to your role, tools, and interests.",
       },
       {
         "@type": "WebSite",
         name: "My Weekly AI",
-        url: process.env.NEXT_PUBLIC_APP_URL || "https://myweeklyai.com",
+        url: process.env.NEXT_PUBLIC_APP_URL || "https://www.myweekly.ai",
         description:
           "A personalized weekly AI news digest, tailored to your role, tools, and interests.",
       },
