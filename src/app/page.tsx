@@ -2,6 +2,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { auth } from "@/lib/auth";
 import SiteNav from "@/components/site-nav";
+import {
+  FadeIn,
+  CountUp,
+  StickyCTA,
+  LogoTicker,
+} from "@/components/animations";
 
 export default async function HomePage() {
   const session = await auth();
@@ -64,305 +70,311 @@ export default async function HomePage() {
       <SiteNav />
 
       {/* Hero */}
-      <section className="px-4 py-20 text-center">
-        <div className="mx-auto max-w-3xl">
-          <h1 className="text-5xl font-bold tracking-tight text-gray-900">
-            The AI briefing built for your role
-          </h1>
-          <p className="mt-6 text-xl text-gray-600">
-            No hype, no noise, no one-size-fits-all roundups.
-            <br />
-            Every week we surface the AI developments, tools, and ideas that
-            matter to you — so you spend less time scrolling and more time
-            applying AI to your actual work.
-          </p>
-          <div className="mt-8 flex items-center justify-center gap-4">
-            {session ? (
-              <Link
-                href="/dashboard"
-                className="rounded-lg bg-purple-600 px-6 py-3 text-sm font-medium text-white hover:bg-purple-700 transition-colors"
-              >
-                Go to Dashboard
-              </Link>
-            ) : (
-              <Link
-                href="/auth/signin"
-                className="rounded-lg bg-purple-600 px-6 py-3 text-sm font-medium text-white hover:bg-purple-700 transition-colors"
-              >
-                Get your free brief
-              </Link>
-            )}
-          </div>
+      <section className="relative overflow-hidden px-4 py-20 text-center">
+        {/* Gradient mesh blob */}
+        <div className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2">
+          <div className="h-[500px] w-[700px] rounded-full bg-gradient-to-br from-purple-200/40 via-indigo-100/30 to-transparent blur-3xl" />
+        </div>
+        <div className="relative mx-auto max-w-3xl">
+          <FadeIn>
+            <h1 className="text-5xl font-bold tracking-tight text-gray-900">
+              The AI briefing{" "}
+              <span className="bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+                built for your role
+              </span>
+            </h1>
+          </FadeIn>
+          <FadeIn delay={100}>
+            <p className="mt-6 text-xl text-gray-600">
+              No hype, no noise, no one-size-fits-all roundups.
+              <br />
+              Every week we surface the AI developments, tools, and ideas that
+              matter to you — so you spend less time scrolling and more time
+              applying AI to your actual work.
+            </p>
+          </FadeIn>
+          <FadeIn delay={200}>
+            <div className="mt-8 flex items-center justify-center gap-4">
+              {session ? (
+                <Link
+                  href="/dashboard"
+                  className="rounded-lg bg-purple-600 px-6 py-3 text-sm font-medium text-white shadow-lg shadow-purple-600/25 transition-all hover:bg-purple-700 hover:shadow-xl hover:shadow-purple-600/30"
+                >
+                  Go to Dashboard
+                </Link>
+              ) : (
+                <Link
+                  href="/auth/signin"
+                  className="rounded-lg bg-purple-600 px-6 py-3 text-sm font-medium text-white shadow-lg shadow-purple-600/25 transition-all hover:bg-purple-700 hover:shadow-xl hover:shadow-purple-600/30"
+                >
+                  Get your free brief
+                </Link>
+              )}
+            </div>
+          </FadeIn>
         </div>
       </section>
 
-      {/* Source logos */}
+      {/* Source logos — ticker */}
       <section className="px-4 pb-16">
-        <p className="text-center text-sm text-gray-400 mb-6">
-          Curated from 20+ industry labs and publications
-        </p>
-        <div className="mx-auto flex max-w-3xl items-center justify-center gap-x-8 grayscale opacity-50">
-          <Image src="/logos/openai.svg" alt="OpenAI" width={88} height={25} />
-          <Image src="/logos/anthropic.svg" alt="Anthropic" width={100} height={15} />
-          <Image src="/logos/deepmind.svg" alt="Google DeepMind" width={112} height={18} />
-          <Image src="/logos/the-verge.svg" alt="The Verge" width={62} height={12} />
-          <Image src="/logos/techcrunch.svg" alt="TechCrunch" width={72} height={12} />
-        </div>
-        <div className="mx-auto mt-5 flex max-w-3xl items-center justify-center gap-x-8 grayscale opacity-50">
-          <Image src="/logos/venturebeat.svg" alt="VentureBeat" width={106} height={15} />
-          <Image src="/logos/mit-tech-review.svg" alt="MIT Technology Review" width={88} height={44} />
-          <Image src="/logos/ieee-spectrum.svg" alt="IEEE Spectrum" width={88} height={12} />
-        </div>
+        <FadeIn>
+          <p className="text-center text-sm text-gray-400 mb-6">
+            Curated from 20+ industry labs and publications
+          </p>
+          <div className="mx-auto max-w-3xl grayscale opacity-50">
+            <LogoTicker>
+              <Image src="/logos/openai.svg" alt="OpenAI" width={88} height={25} className="flex-shrink-0" />
+              <Image src="/logos/anthropic.svg" alt="Anthropic" width={100} height={15} className="flex-shrink-0" />
+              <Image src="/logos/deepmind.svg" alt="Google DeepMind" width={112} height={18} className="flex-shrink-0" />
+              <Image src="/logos/the-verge.svg" alt="The Verge" width={62} height={12} className="flex-shrink-0" />
+              <Image src="/logos/techcrunch.svg" alt="TechCrunch" width={72} height={12} className="flex-shrink-0" />
+              <Image src="/logos/venturebeat.svg" alt="VentureBeat" width={106} height={15} className="flex-shrink-0" />
+              <Image src="/logos/mit-tech-review.svg" alt="MIT Technology Review" width={88} height={44} className="flex-shrink-0" />
+              <Image src="/logos/ieee-spectrum.svg" alt="IEEE Spectrum" width={88} height={12} className="flex-shrink-0" />
+            </LogoTicker>
+          </div>
+        </FadeIn>
       </section>
 
       {/* How it works */}
       <section className="border-t border-gray-200 bg-white px-4 py-20">
         <div className="mx-auto max-w-4xl">
-          <h2 className="text-center text-3xl font-bold text-gray-900">
-            How it works
-          </h2>
+          <FadeIn>
+            <h2 className="text-center text-3xl font-bold text-gray-900">
+              How it works
+            </h2>
+          </FadeIn>
           <div className="mt-12 grid gap-8 sm:grid-cols-3">
-            <div className="text-center">
-              <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-purple-100 text-sm font-bold text-purple-700">
-                1
-              </div>
-              <h3 className="mt-4 font-semibold text-gray-900">
-                Tell us about yourself
-              </h3>
-              <p className="mt-2 text-sm text-gray-600">
-                Your role, industry, tools you use, and what you care about.
-                Takes 2 minutes.
-              </p>
-            </div>
-            <div className="text-center">
-              <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-purple-100 text-sm font-bold text-purple-700">
-                2
-              </div>
-              <h3 className="mt-4 font-semibold text-gray-900">
-                AI curates your brief
-              </h3>
-              <p className="mt-2 text-sm text-gray-600">
-                Every week, AI reads hundreds of articles and picks what&apos;s
-                relevant to your specific context.
-              </p>
-            </div>
-            <div className="text-center">
-              <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-purple-100 text-sm font-bold text-purple-700">
-                3
-              </div>
-              <h3 className="mt-4 font-semibold text-gray-900">
-                Get it Sunday morning
-              </h3>
-              <p className="mt-2 text-sm text-gray-600">
-                A concise brief with what dropped, what&apos;s relevant to you,
-                and what to try this week.
-              </p>
-              <div className="mt-3 flex justify-center gap-2">
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700">
-                  <svg className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
-                    <path d="M3 4a2 2 0 00-2 2v1.161l8.441 4.221a1.25 1.25 0 001.118 0L19 7.162V6a2 2 0 00-2-2H3z" />
-                    <path d="M19 8.839l-7.556 3.778a2.75 2.75 0 01-2.888 0L1 8.839V14a2 2 0 002 2h14a2 2 0 002-2V8.839z" />
-                  </svg>
-                  Email
-                </span>
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700">
-                  <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z" />
-                  </svg>
-                  Telegram
-                </span>
-              </div>
-            </div>
+            {[
+              {
+                step: "1",
+                title: "Tell us about yourself",
+                desc: "Your role, industry, tools you use, and what you care about. Takes 2 minutes.",
+              },
+              {
+                step: "2",
+                title: "AI curates your brief",
+                desc: "Every week, AI reads hundreds of articles and picks what\u2019s relevant to your specific context.",
+              },
+              {
+                step: "3",
+                title: "Get it Sunday morning",
+                desc: "A concise brief with what dropped, what\u2019s relevant to you, and what to try this week.",
+              },
+            ].map((item, i) => (
+              <FadeIn key={item.step} delay={i * 120}>
+                <div className="text-center">
+                  <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-purple-100 text-sm font-bold text-purple-700">
+                    {item.step}
+                  </div>
+                  <h3 className="mt-4 font-semibold text-gray-900">
+                    {item.title}
+                  </h3>
+                  <p className="mt-2 text-sm text-gray-600">{item.desc}</p>
+                  {item.step === "3" && (
+                    <div className="mt-3 flex justify-center gap-2">
+                      <span className="inline-flex items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700">
+                        <svg className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
+                          <path d="M3 4a2 2 0 00-2 2v1.161l8.441 4.221a1.25 1.25 0 001.118 0L19 7.162V6a2 2 0 00-2-2H3z" />
+                          <path d="M19 8.839l-7.556 3.778a2.75 2.75 0 01-2.888 0L1 8.839V14a2 2 0 002 2h14a2 2 0 002-2V8.839z" />
+                        </svg>
+                        Email
+                      </span>
+                      <span className="inline-flex items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700">
+                        <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z" />
+                        </svg>
+                        Telegram
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </FadeIn>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Not another AI newsletter */}
-      <section className="border-t border-gray-200 px-4 py-20">
+      <section className="border-t border-gray-200 bg-gradient-to-b from-gray-50 to-white px-4 py-20">
         <div className="mx-auto max-w-4xl">
-          <h2 className="text-center text-3xl font-bold text-gray-900">
-            Not another AI newsletter
-          </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-center text-gray-600">
-            Generic AI roundups waste your time. Here&apos;s how we&apos;re
-            different.
-          </p>
+          <FadeIn>
+            <h2 className="text-center text-3xl font-bold text-gray-900">
+              Not another AI newsletter
+            </h2>
+            <p className="mx-auto mt-4 max-w-2xl text-center text-gray-600">
+              Generic AI roundups waste your time. Here&apos;s how we&apos;re
+              different.
+            </p>
+          </FadeIn>
           <div className="mt-12 grid gap-6 sm:grid-cols-2">
-            <div className="rounded-lg border border-gray-200 bg-white p-6">
-              <h3 className="font-semibold text-gray-900">
-                Personalized, not broadcast
-              </h3>
-              <p className="mt-2 text-sm text-gray-600">
-                A product manager and a DevOps engineer shouldn&apos;t get the
-                same newsletter. Yours is built from your context profile.
-              </p>
-            </div>
-            <div className="rounded-lg border border-gray-200 bg-white p-6">
-              <h3 className="font-semibold text-gray-900">
-                Signal over noise
-              </h3>
-              <p className="mt-2 text-sm text-gray-600">
-                We filter out hype, funding announcements you don&apos;t need,
-                and rewrites of the same press release. You get what&apos;s
-                actionable.
-              </p>
-            </div>
-            <div className="rounded-lg border border-gray-200 bg-white p-6">
-              <h3 className="font-semibold text-gray-900">
-                Actionable items, not just headlines
-              </h3>
-              <p className="mt-2 text-sm text-gray-600">
-                Every brief includes a &quot;What to Test&quot; section — things
-                you can actually try at work this week.
-              </p>
-            </div>
-            <div className="rounded-lg border border-gray-200 bg-white p-6">
-              <h3 className="font-semibold text-gray-900">
-                Context-aware filtering
-              </h3>
-              <p className="mt-2 text-sm text-gray-600">
-                Set focus topics to go deeper and avoid topics to skip entirely.
-                Your brief adapts to what matters right now.
-              </p>
-            </div>
+            {[
+              {
+                title: "Personalized, not broadcast",
+                desc: "A product manager and a DevOps engineer shouldn\u2019t get the same newsletter. Yours is built from your context profile.",
+              },
+              {
+                title: "Signal over noise",
+                desc: "We filter out hype, funding announcements you don\u2019t need, and rewrites of the same press release. You get what\u2019s actionable.",
+              },
+              {
+                title: "Actionable items, not just headlines",
+                desc: 'Every brief includes a "What to Test" section \u2014 things you can actually try at work this week.',
+              },
+              {
+                title: "Context-aware filtering",
+                desc: "Set focus topics to go deeper and avoid topics to skip entirely. Your brief adapts to what matters right now.",
+              },
+            ].map((card, i) => (
+              <FadeIn key={card.title} delay={i * 80}>
+                <div className="rounded-lg border border-gray-200 bg-white p-6 transition-all hover:-translate-y-0.5 hover:shadow-md">
+                  <h3 className="font-semibold text-gray-900">{card.title}</h3>
+                  <p className="mt-2 text-sm text-gray-600">{card.desc}</p>
+                </div>
+              </FadeIn>
+            ))}
           </div>
 
           {/* Mock brief preview */}
           <div className="mt-12">
-            <p className="mb-4 text-center text-base font-medium text-gray-800">
-              Build your personal context profile
-            </p>
-            <div className="mx-auto max-w-2xl mb-3 rounded-lg border border-gray-200 bg-white px-4 py-3">
-              <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-400">
-                Sample context profile
+            <FadeIn>
+              <p className="mb-4 text-center text-base font-medium text-gray-800">
+                Build your personal context profile
               </p>
-              <div className="space-y-2 text-sm">
-                <div className="flex items-center gap-2">
-                  <span className="w-16 flex-shrink-0 text-xs text-gray-500">Role</span>
-                  <span className="rounded-full bg-purple-100 px-2.5 py-0.5 text-xs font-medium text-purple-700">
-                    Content Strategist
-                  </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="w-16 flex-shrink-0 text-xs text-gray-500">Industry</span>
-                  <span className="rounded-full bg-purple-100 px-2.5 py-0.5 text-xs font-medium text-purple-700">
-                    LegalTech
-                  </span>
-                </div>
-                <div className="flex items-start gap-2">
-                  <span className="mt-0.5 w-16 flex-shrink-0 text-xs text-gray-500">Topics</span>
-                  <div className="flex flex-wrap gap-1.5">
-                    {["Contract Review", "AI Writing Tools", "Compliance Automation"].map((term) => (
-                      <span
-                        key={term}
-                        className="rounded-full bg-purple-100 px-2.5 py-0.5 text-xs font-medium text-purple-700"
-                      >
-                        {term}
-                      </span>
-                    ))}
+              <div className="mx-auto max-w-2xl mb-3 rounded-lg border border-gray-200 bg-white px-4 py-3">
+                <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-400">
+                  Sample context profile
+                </p>
+                <div className="space-y-2 text-sm">
+                  <div className="flex items-center gap-2">
+                    <span className="w-16 flex-shrink-0 text-xs text-gray-500">Role</span>
+                    <span className="rounded-full bg-purple-100 px-2.5 py-0.5 text-xs font-medium text-purple-700">
+                      Content Strategist
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="w-16 flex-shrink-0 text-xs text-gray-500">Industry</span>
+                    <span className="rounded-full bg-purple-100 px-2.5 py-0.5 text-xs font-medium text-purple-700">
+                      LegalTech
+                    </span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <span className="mt-0.5 w-16 flex-shrink-0 text-xs text-gray-500">Topics</span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {["Contract Review", "AI Writing Tools", "Compliance Automation"].map((term) => (
+                        <span
+                          key={term}
+                          className="rounded-full bg-purple-100 px-2.5 py-0.5 text-xs font-medium text-purple-700"
+                        >
+                          {term}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <p className="mt-8 mb-3 flex items-center justify-center gap-2 text-center text-base font-medium text-gray-800">
-              Receive a personalized AI newsletter every Sunday in your
-              <span className="inline-flex items-center gap-1">
-                <svg className="h-3.5 w-3.5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
-                  <path d="M3 4a2 2 0 00-2 2v1.161l8.441 4.221a1.25 1.25 0 001.118 0L19 7.162V6a2 2 0 00-2-2H3z" />
-                  <path d="M19 8.839l-7.556 3.778a2.75 2.75 0 01-2.888 0L1 8.839V14a2 2 0 002 2h14a2 2 0 002-2V8.839z" />
-                </svg>
-                email
-              </span>
-              or
-              <span className="inline-flex items-center gap-1">
-                <svg className="h-3.5 w-3.5 text-gray-400" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z" />
-                </svg>
-                Telegram
-              </span>
-            </p>
-            <div className="mx-auto max-w-2xl rounded-lg border border-purple-100 bg-white p-5">
-              <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-gray-400">
-                Sample personalized newsletter
+            </FadeIn>
+            <FadeIn delay={100}>
+              <p className="mt-8 mb-3 flex items-center justify-center gap-2 text-center text-base font-medium text-gray-800">
+                Receive a personalized AI newsletter every Sunday in your
+                <span className="inline-flex items-center gap-1">
+                  <svg className="h-3.5 w-3.5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M3 4a2 2 0 00-2 2v1.161l8.441 4.221a1.25 1.25 0 001.118 0L19 7.162V6a2 2 0 00-2-2H3z" />
+                    <path d="M19 8.839l-7.556 3.778a2.75 2.75 0 01-2.888 0L1 8.839V14a2 2 0 002 2h14a2 2 0 002-2V8.839z" />
+                  </svg>
+                  email
+                </span>
+                or
+                <span className="inline-flex items-center gap-1">
+                  <svg className="h-3.5 w-3.5 text-gray-400" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z" />
+                  </svg>
+                  Telegram
+                </span>
               </p>
-              <h3 className="mb-3 text-sm font-semibold text-purple-900">
-                News Relevant to You
-              </h3>
-              <ul className="space-y-4">
-                <li>
-                  <p className="text-sm font-medium text-purple-700">
-                    Google Introduces Gemini-Powered Contract Review for Workspace
-                  </p>
-                  <p className="mt-0.5 text-sm text-gray-700">
-                    Google added AI-driven clause analysis and risk flagging
-                    directly inside Google Docs, targeting legal and compliance
-                    teams.
-                  </p>
-                  <p className="mt-1 text-xs italic text-gray-500">
-                    Why this matters to you: Directly relevant to your{" "}
-                    <span className="font-semibold text-purple-600">
-                      LegalTech
-                    </span>{" "}
-                    focus — this could reshape how{" "}
-                    <span className="font-semibold text-purple-600">
-                      contract review
-                    </span>{" "}
-                    workflows integrate with tools your team already uses.
-                  </p>
-                </li>
-                <li>
-                  <p className="text-sm font-medium text-purple-700">
-                    New Study: AI Content Tools Now Used by 62% of Marketing Teams
-                  </p>
-                  <p className="mt-0.5 text-sm text-gray-700">
-                    Adoption of AI writing assistants hit a tipping point across
-                    mid-market companies, with most teams using them for first
-                    drafts and SEO.
-                  </p>
-                  <p className="mt-1 text-xs italic text-gray-500">
-                    Why this matters to you: As a{" "}
-                    <span className="font-semibold text-purple-600">
-                      Content Strategist
-                    </span>
-                    , this signals that AI-assisted{" "}
-                    <span className="font-semibold text-purple-600">
-                      content
-                    </span>{" "}
-                    creation is now table stakes — worth evaluating your
-                    team&apos;s current workflow.
-                  </p>
-                </li>
-              </ul>
-              <div className="mt-4 border-t border-purple-200 pt-4">
+              <div className="mx-auto max-w-2xl rounded-lg border border-purple-100 bg-white p-5">
+                <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-gray-400">
+                  Sample personalized newsletter
+                </p>
                 <h3 className="mb-3 text-sm font-semibold text-purple-900">
-                  What To Test This Week
+                  News Relevant to You
                 </h3>
                 <ul className="space-y-4">
                   <li>
                     <p className="text-sm font-medium text-purple-700">
-                      Try Clause-Level Redlining in Google Docs with Gemini
+                      Google Introduces Gemini-Powered Contract Review for Workspace
                     </p>
                     <p className="mt-0.5 text-sm text-gray-700">
-                      Upload a sample NDA to the new Gemini sidebar and compare
-                      its flagged clauses against your team&apos;s standard
-                      playbook.
+                      Google added AI-driven clause analysis and risk flagging
+                      directly inside Google Docs, targeting legal and compliance
+                      teams.
                     </p>
                     <p className="mt-1 text-xs italic text-gray-500">
-                      Why this matters to you: A quick way to benchmark whether
-                      Google&apos;s{" "}
-                      <span className="font-semibold text-purple-600">
-                        contract review
-                      </span>{" "}
-                      catches the same risks your current{" "}
+                      Why this matters to you: Directly relevant to your{" "}
                       <span className="font-semibold text-purple-600">
                         LegalTech
                       </span>{" "}
-                      stack does.
+                      focus — this could reshape how{" "}
+                      <span className="font-semibold text-purple-600">
+                        contract review
+                      </span>{" "}
+                      workflows integrate with tools your team already uses.
+                    </p>
+                  </li>
+                  <li>
+                    <p className="text-sm font-medium text-purple-700">
+                      New Study: AI Content Tools Now Used by 62% of Marketing Teams
+                    </p>
+                    <p className="mt-0.5 text-sm text-gray-700">
+                      Adoption of AI writing assistants hit a tipping point across
+                      mid-market companies, with most teams using them for first
+                      drafts and SEO.
+                    </p>
+                    <p className="mt-1 text-xs italic text-gray-500">
+                      Why this matters to you: As a{" "}
+                      <span className="font-semibold text-purple-600">
+                        Content Strategist
+                      </span>
+                      , this signals that AI-assisted{" "}
+                      <span className="font-semibold text-purple-600">
+                        content
+                      </span>{" "}
+                      creation is now table stakes — worth evaluating your
+                      team&apos;s current workflow.
                     </p>
                   </li>
                 </ul>
+                <div className="mt-4 border-t border-purple-200 pt-4">
+                  <h3 className="mb-3 text-sm font-semibold text-purple-900">
+                    What To Test This Week
+                  </h3>
+                  <ul className="space-y-4">
+                    <li>
+                      <p className="text-sm font-medium text-purple-700">
+                        Try Clause-Level Redlining in Google Docs with Gemini
+                      </p>
+                      <p className="mt-0.5 text-sm text-gray-700">
+                        Upload a sample NDA to the new Gemini sidebar and compare
+                        its flagged clauses against your team&apos;s standard
+                        playbook.
+                      </p>
+                      <p className="mt-1 text-xs italic text-gray-500">
+                        Why this matters to you: A quick way to benchmark whether
+                        Google&apos;s{" "}
+                        <span className="font-semibold text-purple-600">
+                          contract review
+                        </span>{" "}
+                        catches the same risks your current{" "}
+                        <span className="font-semibold text-purple-600">
+                          LegalTech
+                        </span>{" "}
+                        stack does.
+                      </p>
+                    </li>
+                  </ul>
+                </div>
               </div>
-            </div>
+            </FadeIn>
           </div>
         </div>
       </section>
@@ -370,135 +382,154 @@ export default async function HomePage() {
       {/* Free vs Pro */}
       <section className="border-t border-gray-200 bg-white px-4 py-20">
         <div className="mx-auto max-w-4xl">
-          <h2 className="text-center text-3xl font-bold text-gray-900">
-            Free vs Pro
-          </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-center text-gray-600">
-            Start free. Upgrade when you want the full picture.
-          </p>
+          <FadeIn>
+            <h2 className="text-center text-3xl font-bold text-gray-900">
+              Free vs Pro
+            </h2>
+            <p className="mx-auto mt-4 max-w-2xl text-center text-gray-600">
+              Start free. Upgrade when you want the full picture.
+            </p>
+          </FadeIn>
           <div className="mt-12 grid gap-6 sm:grid-cols-2">
-            <div className="rounded-lg border border-gray-200 p-6">
-              <h3 className="text-lg font-bold text-gray-900">Free</h3>
-              <p className="mt-1 text-sm text-gray-500">$0 / forever</p>
-              <ul className="mt-6 space-y-3 text-sm text-gray-700">
-                <li className="flex items-start gap-2">
-                  <span className="mt-0.5 text-green-600">&#10003;</span>
-                  Top AI news of the week, curated from 20+ industry publications
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="mt-0.5 text-green-600">&#10003;</span>
-                  Weekly email every Sunday - your first delivered TODAY
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="mt-0.5 text-green-600">&#10003;</span>
-                  Web dashboard to browse briefings
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="mt-0.5 text-green-600">&#10003;</span>
-                  Bookmark articles for later
-                </li>
-              </ul>
-              <div className="mt-8">
-                <Link
-                  href="/auth/signin"
-                  className="block rounded-lg border border-gray-300 py-2.5 text-center text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
-                >
-                  Get started free
-                </Link>
+            <FadeIn delay={0}>
+              <div className="rounded-lg border border-gray-200 p-6 transition-all hover:-translate-y-0.5 hover:shadow-md">
+                <h3 className="text-lg font-bold text-gray-900">Free</h3>
+                <p className="mt-1 text-sm text-gray-500">$0 / forever</p>
+                <ul className="mt-6 space-y-3 text-sm text-gray-700">
+                  <li className="flex items-start gap-2">
+                    <span className="mt-0.5 text-green-600">&#10003;</span>
+                    Top AI news of the week, curated from 20+ industry publications
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="mt-0.5 text-green-600">&#10003;</span>
+                    Weekly email every Sunday - your first delivered TODAY
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="mt-0.5 text-green-600">&#10003;</span>
+                    Web dashboard to browse briefings
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="mt-0.5 text-green-600">&#10003;</span>
+                    Bookmark articles for later
+                  </li>
+                </ul>
+                <div className="mt-8">
+                  <Link
+                    href="/auth/signin"
+                    className="block rounded-lg border border-gray-300 py-2.5 text-center text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50"
+                  >
+                    Get started free
+                  </Link>
+                </div>
               </div>
-            </div>
-            <div className="rounded-lg border-2 border-purple-600 p-6">
-              <h3 className="text-lg font-bold text-gray-900">Pro</h3>
-              <p className="mt-1 text-sm text-gray-500">$9.99/mo after 7-day free trial</p>
-              <ul className="mt-6 space-y-3 text-sm text-gray-700">
-                <li className="flex items-start gap-2">
-                  <span className="mt-0.5 text-green-600">&#10003;</span>
-                  Everything in Free
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="mt-0.5 text-green-600">&#10003;</span>
-                  &quot;Relevant To You&quot; — personalized picks for your role
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="mt-0.5 text-green-600">&#10003;</span>
-                  &quot;What To Test&quot; — actionable experiments for your work
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="mt-0.5 text-green-600">&#10003;</span>
-                  &quot;Filtered Out&quot; — see what was skipped and why
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="mt-0.5 text-green-600">&#10003;</span>
-                  Focus &amp; avoid topics for deeper personalization
-                </li>
-              </ul>
-              <div className="mt-8">
-                <Link
-                  href="/auth/signin?plan=pro"
-                  className="block rounded-lg bg-purple-600 py-2.5 text-center text-sm font-medium text-white hover:bg-purple-700 transition-colors"
-                >
-                  Start Pro — 7 Days Free
-                </Link>
+            </FadeIn>
+            <FadeIn delay={100}>
+              <div className="pro-card-glow rounded-lg border-2 border-purple-600 p-6 transition-all hover:-translate-y-0.5 hover:shadow-lg">
+                <h3 className="text-lg font-bold text-gray-900">Pro</h3>
+                <p className="mt-1 text-sm text-gray-500">$9.99/mo after 7-day free trial</p>
+                <ul className="mt-6 space-y-3 text-sm text-gray-700">
+                  <li className="flex items-start gap-2">
+                    <span className="mt-0.5 text-green-600">&#10003;</span>
+                    Everything in Free
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="mt-0.5 text-green-600">&#10003;</span>
+                    &quot;Relevant To You&quot; — personalized picks for your role
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="mt-0.5 text-green-600">&#10003;</span>
+                    &quot;What To Test&quot; — actionable experiments for your work
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="mt-0.5 text-green-600">&#10003;</span>
+                    &quot;Filtered Out&quot; — see what was skipped and why
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="mt-0.5 text-green-600">&#10003;</span>
+                    Focus &amp; avoid topics for deeper personalization
+                  </li>
+                </ul>
+                <div className="mt-8">
+                  <Link
+                    href="/auth/signin?plan=pro"
+                    className="block rounded-lg bg-purple-600 py-2.5 text-center text-sm font-medium text-white shadow-lg shadow-purple-600/25 transition-all hover:bg-purple-700 hover:shadow-xl hover:shadow-purple-600/30"
+                  >
+                    Start Pro — 7 Days Free
+                  </Link>
+                </div>
               </div>
-            </div>
+            </FadeIn>
           </div>
         </div>
       </section>
 
-      {/* Social proof placeholder */}
-      <section className="border-t border-gray-200 px-4 py-20">
+      {/* Stats */}
+      <section className="border-t border-gray-200 bg-gradient-to-b from-gray-50 to-white px-4 py-20">
         <div className="mx-auto max-w-4xl text-center">
           <div className="grid gap-8 sm:grid-cols-3">
-            <div>
-              <p className="text-3xl font-bold text-gray-900">200+</p>
-              <p className="mt-1 text-sm text-gray-600">
-                AI articles analyzed weekly
-              </p>
-            </div>
-            <div>
-              <p className="text-3xl font-bold text-gray-900">18</p>
-              <p className="mt-1 text-sm text-gray-600">
-                Industries covered
-              </p>
-            </div>
-            <div>
-              <p className="text-3xl font-bold text-gray-900">5 min</p>
-              <p className="mt-1 text-sm text-gray-600">
-                Average read time per brief
-              </p>
-            </div>
+            <FadeIn delay={0}>
+              <div>
+                <p className="text-3xl font-bold text-gray-900">
+                  <CountUp end={200} suffix="+" />
+                </p>
+                <p className="mt-1 text-sm text-gray-600">
+                  AI articles analyzed weekly
+                </p>
+              </div>
+            </FadeIn>
+            <FadeIn delay={120}>
+              <div>
+                <p className="text-3xl font-bold text-gray-900">
+                  <CountUp end={18} />
+                </p>
+                <p className="mt-1 text-sm text-gray-600">
+                  Industries covered
+                </p>
+              </div>
+            </FadeIn>
+            <FadeIn delay={240}>
+              <div>
+                <p className="text-3xl font-bold text-gray-900">
+                  <CountUp end={5} suffix=" min" />
+                </p>
+                <p className="mt-1 text-sm text-gray-600">
+                  Average read time per brief
+                </p>
+              </div>
+            </FadeIn>
           </div>
-          <p className="mt-12 text-sm text-gray-400">
-            Testimonials coming soon
-          </p>
         </div>
       </section>
 
       {/* Bottom CTA */}
-      <section className="bg-purple-600 px-4 py-20 text-center">
-        <div className="mx-auto max-w-2xl">
-          <h2 className="text-3xl font-bold text-white">
-            Your personalized filter for the AI firehose
-          </h2>
-          <p className="mt-4 text-purple-100">
-            Set up your context profile in 2 minutes and get your first brief today.
-          </p>
-          <div className="mt-8 flex items-center justify-center gap-4">
-            <Link
-              href="/auth/signin"
-              className="rounded-lg border border-purple-400 px-6 py-3 text-sm font-medium text-white hover:bg-purple-700 transition-colors"
-            >
-              Get your free brief
-            </Link>
-            <Link
-              href="/auth/signin?plan=pro"
-              className="rounded-lg bg-white px-6 py-3 text-sm font-medium text-purple-600 hover:bg-purple-50 transition-colors"
-            >
-              Start Pro — 7 Days Free
-            </Link>
-          </div>
+      <section className="relative dot-pattern bg-purple-600 px-4 py-20 text-center">
+        <div className="relative mx-auto max-w-2xl">
+          <FadeIn>
+            <h2 className="text-3xl font-bold text-white">
+              Your personalized filter for the AI firehose
+            </h2>
+            <p className="mt-4 text-purple-100">
+              Set up your context profile in 2 minutes and get your first brief today.
+            </p>
+            <div className="mt-8 flex items-center justify-center gap-4">
+              <Link
+                href="/auth/signin"
+                className="rounded-lg border border-purple-400 px-6 py-3 text-sm font-medium text-white transition-all hover:bg-purple-700"
+              >
+                Get your free brief
+              </Link>
+              <Link
+                href="/auth/signin?plan=pro"
+                className="rounded-lg bg-white px-6 py-3 text-sm font-medium text-purple-600 shadow-lg transition-all hover:bg-purple-50 hover:shadow-xl"
+              >
+                Start Pro — 7 Days Free
+              </Link>
+            </div>
+          </FadeIn>
         </div>
       </section>
+
+      <StickyCTA />
     </div>
   );
 }
