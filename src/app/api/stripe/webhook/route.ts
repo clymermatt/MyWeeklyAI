@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { stripe } from "@/lib/stripe";
+import { generateInstantBriefing } from "@/lib/jobs/instant-brief";
 import type Stripe from "stripe";
 
 export async function POST(req: Request) {
@@ -60,6 +61,11 @@ export async function POST(req: Request) {
           currentPeriodEnd: periodEnd,
         },
       });
+
+      // Trigger instant Pro brief on upgrade (non-blocking)
+      generateInstantBriefing(userId).catch((err) =>
+        console.error("Pro upgrade instant brief failed:", err),
+      );
       break;
     }
 
