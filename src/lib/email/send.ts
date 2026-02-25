@@ -52,7 +52,7 @@ export async function sendWeeklyBrief({
 
   const resend = getResend();
   const { error } = await resend.emails.send({
-    from: "My Weekly AI <onboarding@resend.dev>",
+    from: "My Weekly AI <digest@myweekly.ai>",
     to,
     subject,
     html,
@@ -74,7 +74,7 @@ export async function sendWelcomeEmail({
 
   const resend = getResend();
   const { error } = await resend.emails.send({
-    from: "My Weekly AI <onboarding@resend.dev>",
+    from: "My Weekly AI <digest@myweekly.ai>",
     to,
     subject: "Welcome to My Weekly AI — let's get you set up",
     html,
@@ -132,7 +132,7 @@ export async function sendJobAlertEmail({
 
   const resend = getResend();
   const { error: sendError } = await resend.emails.send({
-    from: "My Weekly AI <onboarding@resend.dev>",
+    from: "My Weekly AI <digest@myweekly.ai>",
     to,
     subject: `[${status}] Job Alert: ${jobName}`,
     html,
