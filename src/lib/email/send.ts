@@ -74,7 +74,7 @@ export async function sendWelcomeEmail({
 
   const resend = getResend();
   const { error } = await resend.emails.send({
-    from: "My Weekly AI <digest@myweekly.ai>",
+    from: "My Weekly AI <hello@myweekly.ai>",
     to,
     subject: "Welcome to My Weekly AI — let's get you set up",
     html,
