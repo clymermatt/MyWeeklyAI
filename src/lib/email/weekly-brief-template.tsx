@@ -343,7 +343,24 @@ export default function WeeklyBriefEmail({
               textAlign: "center" as const,
             }}
           >
-            Powered by My Weekly AI
+            Powered by{" "}
+            <Link
+              href="https://www.myweekly.ai"
+              style={{ color: "#9ca3af", textDecoration: "underline" }}
+            >
+              My Weekly AI
+            </Link>
+          </Text>
+          <Text
+            style={{
+              color: "#d1d5db",
+              fontSize: "11px",
+              textAlign: "center" as const,
+              margin: "4px 0 0",
+            }}
+          >
+            Please do not reply to this email. Emails sent to this address will
+            not be answered.
           </Text>
         </Container>
       </Body>

@@ -99,7 +99,25 @@ export default function WelcomeEmail({ userName }: WelcomeEmailProps) {
               textAlign: "center" as const,
             }}
           >
-            Powered by My Weekly AI &middot; Curated by AI
+            Powered by{" "}
+            <Link
+              href="https://www.myweekly.ai"
+              style={{ color: "#9ca3af", textDecoration: "underline" }}
+            >
+              My Weekly AI
+            </Link>
+            {" "}&middot; Curated by AI
+          </Text>
+          <Text
+            style={{
+              color: "#d1d5db",
+              fontSize: "11px",
+              textAlign: "center" as const,
+              margin: "4px 0 0",
+            }}
+          >
+            Please do not reply to this email. Emails sent to this address will
+            not be answered.
           </Text>
         </Container>
       </Body>
