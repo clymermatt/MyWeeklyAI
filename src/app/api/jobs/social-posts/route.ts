@@ -18,9 +18,13 @@ export async function POST(req: Request) {
   const allSlugs = Object.keys(landingPages);
   const slug = allSlugs[segmentIndex];
 
-  // First segment creates the job run
+  // First segment: clean up stale RUNNING records and create a new job run
   let jobRunId: string | null = null;
   if (segmentIndex === 0) {
+    await prisma.jobRun.updateMany({
+      where: { jobName: "social-posts", status: "RUNNING" },
+      data: { status: "FAILURE", endedAt: new Date(), error: "Timed out (stale)" },
+    });
     const jobRun = await prisma.jobRun.create({
       data: { jobName: "social-posts", status: "RUNNING" },
     });
