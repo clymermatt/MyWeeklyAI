@@ -1,7 +1,14 @@
 import { prisma } from "@/lib/prisma";
 import { generateSocialPostsBatch } from "@/lib/llm/generate-social-posts";
 import landingPages from "@/lib/landing-content";
-import type { FreeBriefStored } from "@/types/brief";
+import type { BriefOutput } from "@/types/brief";
+
+interface StoryItem {
+  title: string;
+  url: string;
+  source?: string;
+  summary: string;
+}
 
 export interface SocialPostsResult {
   segmentsProcessed: number;
@@ -9,21 +16,48 @@ export interface SocialPostsResult {
   errors: string[];
 }
 
+/** Extract stories from either a free brief (industryNews/labUpdates) or paid brief (whatDropped) */
+function extractStories(briefJson: unknown): StoryItem[] {
+  const brief = briefJson as Record<string, unknown>;
+  const stories: StoryItem[] = [];
+
+  // Free brief format
+  const industryNews = brief.industryNews as StoryItem[] | undefined;
+  const labUpdates = brief.labUpdates as StoryItem[] | undefined;
+  if (industryNews?.length) stories.push(...industryNews);
+  if (labUpdates?.length) stories.push(...labUpdates);
+
+  // Paid brief format fallback
+  if (stories.length === 0) {
+    const paid = brief as unknown as BriefOutput;
+    if (paid.whatDropped?.length) stories.push(...paid.whatDropped);
+    if (paid.relevantToYou?.length) stories.push(...paid.relevantToYou);
+  }
+
+  return stories;
+}
+
 export async function runSocialPostsGeneration(): Promise<SocialPostsResult> {
   const errors: string[] = [];
 
-  // Step 1: Find the latest free WeeklyDigest
-  const latestFreeDigest = await prisma.weeklyDigest.findFirst({
+  // Step 1: Find the latest WeeklyDigest (prefer free, fall back to any)
+  let digest = await prisma.weeklyDigest.findFirst({
     where: { isFree: true },
     orderBy: { createdAt: "desc" },
   });
 
-  if (!latestFreeDigest) {
-    throw new Error("No free digest found");
+  if (!digest) {
+    digest = await prisma.weeklyDigest.findFirst({
+      orderBy: { createdAt: "desc" },
+    });
+  }
+
+  if (!digest) {
+    throw new Error("No weekly digest found");
   }
 
   // Step 2: Idempotency — skip if posts already exist for this week
-  const weekOf = latestFreeDigest.periodEnd;
+  const weekOf = digest.periodEnd;
   const existingCount = await prisma.socialPost.count({
     where: { weekOf },
   });
@@ -36,15 +70,11 @@ export async function runSocialPostsGeneration(): Promise<SocialPostsResult> {
     };
   }
 
-  // Step 3: Extract stories from the free brief
-  const briefJson = latestFreeDigest.briefJson as unknown as FreeBriefStored;
-  const stories = [
-    ...(briefJson.industryNews || []),
-    ...(briefJson.labUpdates || []),
-  ];
+  // Step 3: Extract stories from the brief (handles both free and paid formats)
+  const stories = extractStories(digest.briefJson);
 
   if (stories.length === 0) {
-    throw new Error("Free digest has no stories to generate posts from");
+    throw new Error("Digest has no stories to generate posts from");
   }
 
   // Step 4: Get all segments and batch them (6 per Claude call)
