@@ -54,7 +54,7 @@ export default async function SiteNav() {
               <line x1="16" y1="16" x2="16" y2="5.5" stroke="white" strokeWidth="2.5" strokeLinecap="round"/>
               <circle cx="20" cy="10" r="2" fill="white"/>
             </svg>
-            <span className="hidden sm:inline">My Weekly AI</span>
+            <span className="hidden sm:inline text-gray-900">My Weekly AI</span>
           </Link>
           <div className="hidden md:flex gap-6">
             <Link

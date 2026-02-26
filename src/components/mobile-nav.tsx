@@ -74,7 +74,7 @@ export default function MobileNav({
       </button>
 
       {open && (
-        <div className="absolute left-0 right-0 top-16 border-b border-gray-200 bg-white shadow-lg">
+        <div className="absolute left-0 right-0 top-16 z-50 border-b border-gray-200 bg-white shadow-lg">
           <div className="mx-auto max-w-5xl px-4 py-3">
             {isAuthenticated && userName && (
               <div className="mb-3 flex items-center gap-2 border-b border-gray-100 pb-3">
