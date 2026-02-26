@@ -12,20 +12,14 @@ export interface SocialPostsResult {
 export async function runSocialPostsGeneration(): Promise<SocialPostsResult> {
   const errors: string[] = [];
 
-  // Step 1: Find the latest free WeeklyDigest (created within the last 24h)
-  const oneDayAgo = new Date();
-  oneDayAgo.setHours(oneDayAgo.getHours() - 24);
-
+  // Step 1: Find the latest free WeeklyDigest
   const latestFreeDigest = await prisma.weeklyDigest.findFirst({
-    where: {
-      isFree: true,
-      periodEnd: { gte: oneDayAgo },
-    },
+    where: { isFree: true },
     orderBy: { createdAt: "desc" },
   });
 
   if (!latestFreeDigest) {
-    throw new Error("No free digest found within the last 24 hours");
+    throw new Error("No free digest found");
   }
 
   // Step 2: Idempotency — skip if posts already exist for this week
