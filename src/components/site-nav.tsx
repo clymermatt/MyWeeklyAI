@@ -33,7 +33,7 @@ export default async function SiteNav() {
         <div className="flex items-center gap-8">
           <Link href="/" className="shrink-0">
             <Image
-              src="/logos/nav-logo.svg"
+              src="/logos/nav-logo.png"
               alt="My Weekly AI"
               width={180}
               height={32}
