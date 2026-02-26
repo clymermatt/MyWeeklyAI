@@ -61,6 +61,23 @@ export async function runWeeklyDigest(): Promise<DigestResult> {
     labUpdates: freeBrief.labUpdates,
   };
 
+  // ── Store a standalone free brief for social post generation ──
+  await prisma.weeklyDigest.upsert({
+    where: { id: `free-brief-${periodStart.toISOString().split("T")[0]}` },
+    create: {
+      id: `free-brief-${periodStart.toISOString().split("T")[0]}`,
+      userId: (await prisma.user.findFirst({ select: { id: true } }))!.id,
+      briefJson: JSON.parse(JSON.stringify(freeBriefJson)),
+      isFree: true,
+      periodStart,
+      periodEnd,
+    },
+    update: {
+      briefJson: JSON.parse(JSON.stringify(freeBriefJson)),
+      periodEnd,
+    },
+  });
+
   // ── Phase B: Free users (have profile, no ACTIVE subscription) ──
   const freeUsers = await prisma.user.findMany({
     where: {
