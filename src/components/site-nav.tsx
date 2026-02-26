@@ -37,15 +37,7 @@ export default async function SiteNav() {
               alt="My Weekly AI"
               width={180}
               height={32}
-              className="hidden sm:block h-8 w-auto"
-              priority
-            />
-            <Image
-              src="/logos/icon.svg"
-              alt="My Weekly AI"
-              width={32}
-              height={32}
-              className="block sm:hidden h-7 w-7"
+              className="h-7 w-auto"
               priority
             />
           </Link>
