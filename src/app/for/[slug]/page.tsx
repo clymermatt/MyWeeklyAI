@@ -267,7 +267,7 @@ export default async function LandingPage({
                         </svg>
                       </div>
                       <div>
-                        <p className="font-medium text-gray-900">Scanning 400+ articles</p>
+                        <p className="font-medium text-gray-900">Scanning 400+ articles weekly</p>
                         <p className="text-xs text-gray-500">From 20+ AI labs, publications, and research outlets</p>
                       </div>
                     </div>
@@ -474,7 +474,7 @@ export default async function LandingPage({
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="mt-0.5 text-green-600">&#10003;</span>
-                    Personalized brief filtered for your role and industry
+                    Personalized weekly brief filtered for your role and industry
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="mt-0.5 text-green-600">&#10003;</span>

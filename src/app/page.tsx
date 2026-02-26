@@ -220,7 +220,7 @@ export default async function HomePage() {
                         </svg>
                       </div>
                       <div>
-                        <p className="font-medium text-gray-900">Scanning 400+ articles</p>
+                        <p className="font-medium text-gray-900">Scanning 400+ articles weekly</p>
                         <p className="text-xs text-gray-500">From 20+ AI labs, publications, and research outlets</p>
                       </div>
                     </div>
