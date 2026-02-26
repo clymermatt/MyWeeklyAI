@@ -37,7 +37,12 @@ function extractStories(briefJson: unknown): StoryItem[] {
   return stories;
 }
 
-export async function runSocialPostsGeneration(): Promise<SocialPostsResult> {
+const SEGMENTS_PER_INVOCATION = 12; // 2 concurrent Claude calls of 6 each
+const BATCH_SIZE = 6;
+
+export async function runSocialPostsGeneration(
+  batchIndex = 0,
+): Promise<SocialPostsResult & { nextBatch?: number }> {
   const errors: string[] = [];
 
   // Step 1: Find the latest WeeklyDigest (prefer free, fall back to any)
@@ -56,39 +61,47 @@ export async function runSocialPostsGeneration(): Promise<SocialPostsResult> {
     throw new Error("No weekly digest found");
   }
 
-  // Step 2: Idempotency — skip if posts already exist for this week
   const weekOf = digest.periodEnd;
-  const existingCount = await prisma.socialPost.count({
-    where: { weekOf },
-  });
 
-  if (existingCount > 0) {
-    return {
-      segmentsProcessed: 0,
-      postsGenerated: 0,
-      errors: ["Posts already exist for this week — skipped"],
-    };
+  // Step 2: On first batch only, check idempotency
+  if (batchIndex === 0) {
+    const existingCount = await prisma.socialPost.count({
+      where: { weekOf },
+    });
+    if (existingCount > 0) {
+      return {
+        segmentsProcessed: 0,
+        postsGenerated: 0,
+        errors: ["Posts already exist for this week — skipped"],
+      };
+    }
   }
 
-  // Step 3: Extract stories from the brief (handles both free and paid formats)
+  // Step 3: Extract stories from the brief
   const stories = extractStories(digest.briefJson);
 
   if (stories.length === 0) {
     throw new Error("Digest has no stories to generate posts from");
   }
 
-  // Step 4: Get all segments and batch them (6 per Claude call, all run concurrently)
+  // Step 4: Get this invocation's slice of segments
   const allSegments = Object.values(landingPages);
-  const BATCH_SIZE = 6;
-  const batches: (typeof allSegments)[] = [];
-  for (let i = 0; i < allSegments.length; i += BATCH_SIZE) {
-    batches.push(allSegments.slice(i, i + BATCH_SIZE));
+  const start = batchIndex * SEGMENTS_PER_INVOCATION;
+  const sliceSegments = allSegments.slice(start, start + SEGMENTS_PER_INVOCATION);
+
+  if (sliceSegments.length === 0) {
+    return { segmentsProcessed: 0, postsGenerated: 0, errors: [] };
+  }
+
+  // Split into sub-batches and run concurrently (2 calls of 6)
+  const batches: (typeof sliceSegments)[] = [];
+  for (let i = 0; i < sliceSegments.length; i += BATCH_SIZE) {
+    batches.push(sliceSegments.slice(i, i + BATCH_SIZE));
   }
 
   let segmentsProcessed = 0;
   let postsGenerated = 0;
 
-  // Run all batches concurrently to fit within Vercel's 60s timeout
   const batchResults = await Promise.allSettled(
     batches.map((batch) => generateSocialPostsBatch(batch, stories)),
   );
@@ -148,5 +161,13 @@ export async function runSocialPostsGeneration(): Promise<SocialPostsResult> {
     }
   }
 
-  return { segmentsProcessed, postsGenerated, errors };
+  // Signal whether there are more segments to process
+  const hasMore = start + SEGMENTS_PER_INVOCATION < allSegments.length;
+
+  return {
+    segmentsProcessed,
+    postsGenerated,
+    errors,
+    nextBatch: hasMore ? batchIndex + 1 : undefined,
+  };
 }
