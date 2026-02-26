@@ -27,10 +27,10 @@ export default async function SiteNav() {
   const userName = session?.user?.name?.split(" ")[0] || session?.user?.email?.split("@")[0];
 
   return (
-    <nav className="relative border-b border-gray-200 bg-white">
+    <nav className="sticky top-0 z-40 border-b border-gray-200 bg-white">
       <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4">
         <div className="flex items-center gap-8">
-          <Link href="/" className="flex items-center gap-2 text-lg font-bold text-gray-900">
+          <Link href="/" className="flex items-center gap-2 text-lg font-bold" style={{ color: "#111827" }}>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" className="h-7 w-7 shrink-0" aria-hidden="true">
               <rect width="32" height="32" rx="8" fill="#9333ea"/>
               <path d="M16 6 A10 10 0 0 0 7.34 11" fill="none" stroke="white" strokeWidth="2.5" opacity="0.7" strokeLinecap="round"/>
@@ -54,7 +54,7 @@ export default async function SiteNav() {
               <line x1="16" y1="16" x2="16" y2="5.5" stroke="white" strokeWidth="2.5" strokeLinecap="round"/>
               <circle cx="20" cy="10" r="2" fill="white"/>
             </svg>
-            <span className="hidden sm:inline text-gray-900">My Weekly AI</span>
+            <span className="hidden sm:inline">My Weekly AI</span>
           </Link>
           <div className="hidden md:flex gap-6">
             <Link
