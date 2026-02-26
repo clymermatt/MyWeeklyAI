@@ -60,6 +60,7 @@ export async function getLatestStories(): Promise<{ stories: Story[]; weekOf: Da
  */
 export async function generatePostsForSegment(
   segmentSlug: string,
+  { regenerate = false }: { regenerate?: boolean } = {},
 ): Promise<SocialPostsResult> {
   const segment = landingPages[segmentSlug];
   if (!segment) {
@@ -73,11 +74,18 @@ export async function generatePostsForSegment(
     where: { segment: segmentSlug, weekOf },
   });
   if (existing > 0) {
-    return {
-      segmentsProcessed: 0,
-      postsGenerated: 0,
-      errors: [`Posts already exist for ${segmentSlug} this week`],
-    };
+    if (regenerate) {
+      // Delete existing posts for this segment + week so we can regenerate
+      await prisma.socialPost.deleteMany({
+        where: { segment: segmentSlug, weekOf },
+      });
+    } else {
+      return {
+        segmentsProcessed: 0,
+        postsGenerated: 0,
+        errors: [`Posts already exist for ${segmentSlug} this week`],
+      };
+    }
   }
 
   const result = await generateSocialPostsForSegment(segment, stories);

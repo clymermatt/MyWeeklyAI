@@ -107,6 +107,23 @@ export default function SocialPostsAdmin({ initialWeeks, segments }: Props) {
     await fetchPosts();
   }
 
+  const [regeneratingSegment, setRegeneratingSegment] = useState<string | null>(null);
+
+  async function regenerateSegment(segment: string) {
+    setRegeneratingSegment(segment);
+    try {
+      await fetch("/api/admin/social-posts/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ segment, regenerate: true }),
+      });
+    } catch {
+      // ignore
+    }
+    setRegeneratingSegment(null);
+    await fetchPosts();
+  }
+
   function toggleSegment(slug: string) {
     setSelectedSegments((prev) => {
       const next = new Set(prev);
@@ -550,14 +567,25 @@ export default function SocialPostsAdmin({ initialWeeks, segments }: Props) {
                         </button>
                       )}
                       {post.status === "REJECTED" && (
-                        <button
-                          onClick={() =>
-                            updatePost(post.id, { status: "DRAFT" })
-                          }
-                          className="rounded border border-gray-300 px-2.5 py-1 text-xs text-gray-600 hover:bg-gray-50"
-                        >
-                          Restore
-                        </button>
+                        <>
+                          <button
+                            onClick={() => regenerateSegment(post.segment)}
+                            disabled={regeneratingSegment === post.segment}
+                            className="rounded bg-blue-600 px-2.5 py-1 text-xs font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+                          >
+                            {regeneratingSegment === post.segment
+                              ? "Regenerating..."
+                              : "Regenerate"}
+                          </button>
+                          <button
+                            onClick={() =>
+                              updatePost(post.id, { status: "DRAFT" })
+                            }
+                            className="rounded border border-gray-300 px-2.5 py-1 text-xs text-gray-600 hover:bg-gray-50"
+                          >
+                            Restore
+                          </button>
+                        </>
                       )}
                     </div>
                   </div>

@@ -10,7 +10,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const body = (await req.json()) as { segment: string };
+  const body = (await req.json()) as { segment: string; regenerate?: boolean };
 
   if (!body.segment) {
     return NextResponse.json(
@@ -20,7 +20,9 @@ export async function POST(req: Request) {
   }
 
   try {
-    const result = await generatePostsForSegment(body.segment);
+    const result = await generatePostsForSegment(body.segment, {
+      regenerate: body.regenerate ?? false,
+    });
     return NextResponse.json(result);
   } catch (error) {
     const detail = error instanceof Error ? error.message : "Unknown error";
