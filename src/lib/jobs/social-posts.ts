@@ -37,8 +37,7 @@ function extractStories(briefJson: unknown): StoryItem[] {
   return stories;
 }
 
-const SEGMENTS_PER_INVOCATION = 12; // 2 concurrent Claude calls of 6 each
-const BATCH_SIZE = 6;
+const SEGMENTS_PER_INVOCATION = 6; // 1 Claude call per invocation
 
 export async function runSocialPostsGeneration(
   batchIndex = 0,
@@ -93,30 +92,13 @@ export async function runSocialPostsGeneration(
     return { segmentsProcessed: 0, postsGenerated: 0, errors: [] };
   }
 
-  // Split into sub-batches and run concurrently (2 calls of 6)
-  const batches: (typeof sliceSegments)[] = [];
-  for (let i = 0; i < sliceSegments.length; i += BATCH_SIZE) {
-    batches.push(sliceSegments.slice(i, i + BATCH_SIZE));
-  }
-
   let segmentsProcessed = 0;
   let postsGenerated = 0;
 
-  const batchResults = await Promise.allSettled(
-    batches.map((batch) => generateSocialPostsBatch(batch, stories)),
-  );
+  try {
+    const results = await generateSocialPostsBatch(sliceSegments, stories);
 
-  for (let b = 0; b < batchResults.length; b++) {
-    const result = batchResults[b];
-    if (result.status === "rejected") {
-      const slugs = batches[b].map((s) => s.slug).join(", ");
-      errors.push(
-        `Batch error [${slugs}]: ${result.reason instanceof Error ? result.reason.message : "Unknown"}`,
-      );
-      continue;
-    }
-
-    for (const post of result.value) {
+    for (const post of results) {
       const segment = allSegments.find((s) => s.slug === post.segment);
       if (!segment) {
         errors.push(`Unknown segment slug returned: ${post.segment}`);
@@ -159,6 +141,11 @@ export async function runSocialPostsGeneration(
 
       segmentsProcessed++;
     }
+  } catch (batchErr) {
+    const slugs = sliceSegments.map((s) => s.slug).join(", ");
+    errors.push(
+      `Batch error [${slugs}]: ${batchErr instanceof Error ? batchErr.message : "Unknown"}`,
+    );
   }
 
   // Signal whether there are more segments to process
