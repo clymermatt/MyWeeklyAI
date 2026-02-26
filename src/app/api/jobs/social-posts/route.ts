@@ -72,7 +72,7 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json(
-      { error: "Social posts generation failed" },
+      { error: "Social posts generation failed", detail: errorText },
       { status: 500 },
     );
   }
