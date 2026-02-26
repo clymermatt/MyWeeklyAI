@@ -123,13 +123,14 @@ export default async function AdminJobsPage() {
 
   const lastDigest = jobRuns.find((r) => r.jobName === "weekly-digest");
   const lastIngest = jobRuns.find((r) => r.jobName === "ingestion");
+  const lastSocial = jobRuns.find((r) => r.jobName === "social-posts");
 
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold text-gray-900">Job Runs</h1>
 
       {/* Summary cards */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <JobSummaryCard
           title="Weekly Digest"
           lastRun={lastDigest}
@@ -145,6 +146,11 @@ export default async function AdminJobsPage() {
           title="Ingestion"
           lastRun={lastIngest}
           metricKeys={["sourcesProcessed", "itemsUpserted", "errorCount"]}
+        />
+        <JobSummaryCard
+          title="Social Posts"
+          lastRun={lastSocial}
+          metricKeys={["segmentsProcessed", "postsGenerated", "errorCount"]}
         />
       </div>
 

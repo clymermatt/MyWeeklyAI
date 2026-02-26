@@ -33,6 +33,12 @@ export default async function AdminLayout({
                 Jobs
               </Link>
               <Link
+                href="/admin/social"
+                className="text-sm text-gray-600 hover:text-gray-900"
+              >
+                Social
+              </Link>
+              <Link
                 href="/dashboard"
                 className="text-sm text-gray-600 hover:text-gray-900"
               >

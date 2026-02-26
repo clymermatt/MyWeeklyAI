@@ -1,6 +1,7 @@
 const PING_URLS: Record<string, string | undefined> = {
   "weekly-digest": process.env.HEALTHCHECK_PING_URL_DIGEST,
   ingestion: process.env.HEALTHCHECK_PING_URL_INGEST,
+  "social-posts": process.env.HEALTHCHECK_PING_URL_SOCIAL,
 };
 
 export async function pingHealthCheck(jobName: string) {
