@@ -138,59 +138,240 @@ export default async function HomePage() {
 
       {/* How it works */}
       <section className="border-t border-gray-200 bg-white px-4 py-20">
-        <div className="mx-auto max-w-4xl">
+        <div className="mx-auto max-w-5xl">
           <FadeIn>
             <h2 className="text-center text-3xl font-bold text-gray-900">
               How it works
             </h2>
           </FadeIn>
-          <div className="mt-12 grid gap-8 sm:grid-cols-3">
-            {[
-              {
-                step: "1",
-                title: "Tell us about yourself",
-                desc: "Your role, industry, tools you use, and what you care about. Takes 2 minutes.",
-              },
-              {
-                step: "2",
-                title: "AI curates your brief",
-                desc: "Every week, AI reads hundreds of articles and picks what\u2019s relevant to your specific context.",
-              },
-              {
-                step: "3",
-                title: "Get it Sunday morning",
-                desc: "A concise brief with what dropped, what\u2019s relevant to you, and what to try this week.",
-              },
-            ].map((item, i) => (
-              <FadeIn key={item.step} delay={i * 120}>
-                <div className="text-center">
-                  <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-purple-100 text-sm font-bold text-purple-700">
-                    {item.step}
+          <div className="mt-16 space-y-20">
+            {/* Step 1 */}
+            <FadeIn>
+              <div className="grid items-center gap-8 md:grid-cols-2">
+                <div>
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-purple-100 text-sm font-bold text-purple-700">
+                    1
                   </div>
-                  <h3 className="mt-4 font-semibold text-gray-900">
-                    {item.title}
+                  <h3 className="mt-4 text-xl font-semibold text-gray-900">
+                    Tell us about yourself
                   </h3>
-                  <p className="mt-2 text-sm text-gray-600">{item.desc}</p>
-                  {item.step === "3" && (
-                    <div className="mt-3 flex justify-center gap-2">
-                      <span className="inline-flex items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700">
-                        <svg className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
-                          <path d="M3 4a2 2 0 00-2 2v1.161l8.441 4.221a1.25 1.25 0 001.118 0L19 7.162V6a2 2 0 00-2-2H3z" />
-                          <path d="M19 8.839l-7.556 3.778a2.75 2.75 0 01-2.888 0L1 8.839V14a2 2 0 002 2h14a2 2 0 002-2V8.839z" />
-                        </svg>
-                        Email
-                      </span>
-                      <span className="inline-flex items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700">
-                        <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor">
-                          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z" />
-                        </svg>
-                        Telegram
+                  <p className="mt-2 text-gray-600">
+                    Your role, industry, tools you use, and what you care about. Takes 2 minutes.
+                  </p>
+                </div>
+                <div className="rounded-lg border border-gray-200 bg-white px-4 py-3 shadow-sm">
+                  <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-400">
+                    Sample context profile
+                  </p>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex items-center gap-2">
+                      <span className="w-16 flex-shrink-0 text-xs text-gray-500">Role</span>
+                      <span className="rounded-full bg-purple-100 px-2.5 py-0.5 text-xs font-medium text-purple-700">
+                        Content Strategist
                       </span>
                     </div>
-                  )}
+                    <div className="flex items-center gap-2">
+                      <span className="w-16 flex-shrink-0 text-xs text-gray-500">Industry</span>
+                      <span className="rounded-full bg-purple-100 px-2.5 py-0.5 text-xs font-medium text-purple-700">
+                        LegalTech
+                      </span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <span className="mt-0.5 w-16 flex-shrink-0 text-xs text-gray-500">Topics</span>
+                      <div className="flex flex-wrap gap-1.5">
+                        {["Contract Review", "AI Writing Tools", "Compliance Automation"].map((term) => (
+                          <span
+                            key={term}
+                            className="rounded-full bg-purple-100 px-2.5 py-0.5 text-xs font-medium text-purple-700"
+                          >
+                            {term}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </FadeIn>
-            ))}
+              </div>
+            </FadeIn>
+
+            {/* Step 2 */}
+            <FadeIn delay={120}>
+              <div className="grid items-center gap-8 md:grid-cols-2">
+                <div>
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-purple-100 text-sm font-bold text-purple-700">
+                    2
+                  </div>
+                  <h3 className="mt-4 text-xl font-semibold text-gray-900">
+                    AI curates your brief
+                  </h3>
+                  <p className="mt-2 text-gray-600">
+                    Every week, AI reads hundreds of articles and picks what&apos;s relevant to your specific context.
+                  </p>
+                </div>
+                <div className="rounded-lg border border-gray-200 bg-white px-4 py-3 shadow-sm">
+                  <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-gray-400">
+                    Sample AI curation
+                  </p>
+                  <div className="space-y-3 text-sm">
+                    <div className="flex items-start gap-3">
+                      <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-purple-100">
+                        <svg className="h-3.5 w-3.5 text-purple-600" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                        </svg>
+                      </div>
+                      <div>
+                        <p className="font-medium text-gray-900">Scanning 400+ articles</p>
+                        <p className="text-xs text-gray-500">From 20+ AI labs, publications, and research outlets</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-purple-100">
+                        <svg className="h-3.5 w-3.5 text-purple-600" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z" />
+                        </svg>
+                      </div>
+                      <div>
+                        <p className="font-medium text-gray-900">Matching your context</p>
+                        <p className="text-xs text-gray-500">
+                          Filtering for{" "}
+                          {["Content Strategist", "LegalTech", "Contract Review"].map((term, i) => (
+                            <span key={term}>
+                              {i > 0 && ", "}
+                              <span className="font-medium text-purple-600">{term}</span>
+                            </span>
+                          ))}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-purple-100">
+                        <svg className="h-3.5 w-3.5 text-purple-600" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M3 4.5h14.25M3 9h9.75M3 13.5h5.25m5.25-.75L17.25 9m0 0L21 12.75M17.25 9v12" />
+                        </svg>
+                      </div>
+                      <div>
+                        <p className="font-medium text-gray-900">Ranking by relevance</p>
+                        <p className="text-xs text-gray-500">Surfacing only what matters to your role and priorities</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </FadeIn>
+
+            {/* Step 3 */}
+            <FadeIn delay={240}>
+              <div className="grid items-center gap-8 md:grid-cols-2">
+                <div>
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-purple-100 text-sm font-bold text-purple-700">
+                    3
+                  </div>
+                  <h3 className="mt-4 text-xl font-semibold text-gray-900">
+                    Get it Sunday morning
+                  </h3>
+                  <p className="mt-2 text-gray-600">
+                    A concise brief with what dropped, what&apos;s relevant to you, and what to try this week.
+                  </p>
+                  <div className="mt-3 flex gap-2">
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700">
+                      <svg className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M3 4a2 2 0 00-2 2v1.161l8.441 4.221a1.25 1.25 0 001.118 0L19 7.162V6a2 2 0 00-2-2H3z" />
+                        <path d="M19 8.839l-7.556 3.778a2.75 2.75 0 01-2.888 0L1 8.839V14a2 2 0 002 2h14a2 2 0 002-2V8.839z" />
+                      </svg>
+                      Email
+                    </span>
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700">
+                      <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z" />
+                      </svg>
+                      Telegram
+                    </span>
+                  </div>
+                </div>
+                <div className="rounded-lg border border-purple-100 bg-white p-5 shadow-sm">
+                  <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-gray-400">
+                    Sample personalized newsletter
+                  </p>
+                  <h4 className="mb-3 text-sm font-semibold text-purple-900">
+                    News Relevant to You
+                  </h4>
+                  <ul className="space-y-4">
+                    <li>
+                      <p className="text-sm font-medium text-purple-700">
+                        Google Introduces Gemini-Powered Contract Review for Workspace
+                      </p>
+                      <p className="mt-0.5 text-sm text-gray-700">
+                        Google added AI-driven clause analysis and risk flagging
+                        directly inside Google Docs, targeting legal and compliance
+                        teams.
+                      </p>
+                      <p className="mt-1 text-xs italic text-gray-500">
+                        Why this matters to you: Directly relevant to your{" "}
+                        <span className="font-semibold text-purple-600">
+                          LegalTech
+                        </span>{" "}
+                        focus — this could reshape how{" "}
+                        <span className="font-semibold text-purple-600">
+                          contract review
+                        </span>{" "}
+                        workflows integrate with tools your team already uses.
+                      </p>
+                    </li>
+                    <li>
+                      <p className="text-sm font-medium text-purple-700">
+                        New Study: AI Content Tools Now Used by 62% of Marketing Teams
+                      </p>
+                      <p className="mt-0.5 text-sm text-gray-700">
+                        Adoption of AI writing assistants hit a tipping point across
+                        mid-market companies, with most teams using them for first
+                        drafts and SEO.
+                      </p>
+                      <p className="mt-1 text-xs italic text-gray-500">
+                        Why this matters to you: As a{" "}
+                        <span className="font-semibold text-purple-600">
+                          Content Strategist
+                        </span>
+                        , this signals that AI-assisted{" "}
+                        <span className="font-semibold text-purple-600">
+                          content
+                        </span>{" "}
+                        creation is now table stakes — worth evaluating your
+                        team&apos;s current workflow.
+                      </p>
+                    </li>
+                  </ul>
+                  <div className="mt-4 border-t border-purple-200 pt-4">
+                    <h4 className="mb-3 text-sm font-semibold text-purple-900">
+                      What To Test This Week
+                    </h4>
+                    <ul className="space-y-4">
+                      <li>
+                        <p className="text-sm font-medium text-purple-700">
+                          Try Clause-Level Redlining in Google Docs with Gemini
+                        </p>
+                        <p className="mt-0.5 text-sm text-gray-700">
+                          Upload a sample NDA to the new Gemini sidebar and compare
+                          its flagged clauses against your team&apos;s standard
+                          playbook.
+                        </p>
+                        <p className="mt-1 text-xs italic text-gray-500">
+                          Why this matters to you: A quick way to benchmark whether
+                          Google&apos;s{" "}
+                          <span className="font-semibold text-purple-600">
+                            contract review
+                          </span>{" "}
+                          catches the same risks your current{" "}
+                          <span className="font-semibold text-purple-600">
+                            LegalTech
+                          </span>{" "}
+                          stack does.
+                        </p>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </FadeIn>
           </div>
         </div>
       </section>
@@ -233,208 +414,6 @@ export default async function HomePage() {
                 </div>
               </FadeIn>
             ))}
-          </div>
-
-          {/* Mock brief preview */}
-          <div className="mt-12">
-            <FadeIn>
-              <p className="mb-4 text-center text-base font-bold text-gray-800">
-                Build your personal context profile
-              </p>
-              <div className="mx-auto max-w-2xl mb-3 rounded-lg border border-gray-200 bg-white px-4 py-3">
-                <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-400">
-                  Sample context profile
-                </p>
-                <div className="space-y-2 text-sm">
-                  <div className="flex items-center gap-2">
-                    <span className="w-16 flex-shrink-0 text-xs text-gray-500">Role</span>
-                    <span className="rounded-full bg-purple-100 px-2.5 py-0.5 text-xs font-medium text-purple-700">
-                      Content Strategist
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="w-16 flex-shrink-0 text-xs text-gray-500">Industry</span>
-                    <span className="rounded-full bg-purple-100 px-2.5 py-0.5 text-xs font-medium text-purple-700">
-                      LegalTech
-                    </span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <span className="mt-0.5 w-16 flex-shrink-0 text-xs text-gray-500">Topics</span>
-                    <div className="flex flex-wrap gap-1.5">
-                      {["Contract Review", "AI Writing Tools", "Compliance Automation"].map((term) => (
-                        <span
-                          key={term}
-                          className="rounded-full bg-purple-100 px-2.5 py-0.5 text-xs font-medium text-purple-700"
-                        >
-                          {term}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </FadeIn>
-            <FadeIn delay={100}>
-              <div className="mx-auto my-6 flex justify-center">
-                <svg className="h-6 w-6 text-purple-400" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" />
-                </svg>
-              </div>
-              <div className="mx-auto max-w-2xl mb-3 rounded-lg border border-gray-200 bg-white px-4 py-3">
-                <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-gray-400">
-                  Sample AI curation
-                </p>
-                <div className="space-y-3 text-sm">
-                  <div className="flex items-start gap-3">
-                    <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-purple-100">
-                      <svg className="h-3.5 w-3.5 text-purple-600" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <p className="font-medium text-gray-900">Scanning 400+ articles</p>
-                      <p className="text-xs text-gray-500">From 20+ AI labs, publications, and research outlets</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-purple-100">
-                      <svg className="h-3.5 w-3.5 text-purple-600" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <p className="font-medium text-gray-900">Matching your context</p>
-                      <p className="text-xs text-gray-500">
-                        Filtering for{" "}
-                        {["Content Strategist", "LegalTech", "Contract Review"].map((term, i) => (
-                          <span key={term}>
-                            {i > 0 && ", "}
-                            <span className="font-medium text-purple-600">{term}</span>
-                          </span>
-                        ))}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-purple-100">
-                      <svg className="h-3.5 w-3.5 text-purple-600" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M3 4.5h14.25M3 9h9.75M3 13.5h5.25m5.25-.75L17.25 9m0 0L21 12.75M17.25 9v12" />
-                      </svg>
-                    </div>
-                    <div>
-                      <p className="font-medium text-gray-900">Ranking by relevance</p>
-                      <p className="text-xs text-gray-500">Surfacing only what matters to your role and priorities</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="mx-auto flex justify-center">
-                <svg className="h-6 w-6 text-purple-400" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" />
-                </svg>
-              </div>
-            </FadeIn>
-            <FadeIn delay={200}>
-              <p className="mt-6 mb-3 flex items-center justify-center gap-2 text-center text-base font-bold text-gray-800">
-                Receive a personalized AI newsletter every Sunday in your
-                <span className="inline-flex items-center gap-1">
-                  <svg className="h-3.5 w-3.5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
-                    <path d="M3 4a2 2 0 00-2 2v1.161l8.441 4.221a1.25 1.25 0 001.118 0L19 7.162V6a2 2 0 00-2-2H3z" />
-                    <path d="M19 8.839l-7.556 3.778a2.75 2.75 0 01-2.888 0L1 8.839V14a2 2 0 002 2h14a2 2 0 002-2V8.839z" />
-                  </svg>
-                  email
-                </span>
-                or
-                <span className="inline-flex items-center gap-1">
-                  <svg className="h-3.5 w-3.5 text-gray-400" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z" />
-                  </svg>
-                  Telegram
-                </span>
-              </p>
-              <div className="mx-auto max-w-2xl rounded-lg border border-purple-100 bg-white p-5">
-                <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-gray-400">
-                  Sample personalized newsletter
-                </p>
-                <h3 className="mb-3 text-sm font-semibold text-purple-900">
-                  News Relevant to You
-                </h3>
-                <ul className="space-y-4">
-                  <li>
-                    <p className="text-sm font-medium text-purple-700">
-                      Google Introduces Gemini-Powered Contract Review for Workspace
-                    </p>
-                    <p className="mt-0.5 text-sm text-gray-700">
-                      Google added AI-driven clause analysis and risk flagging
-                      directly inside Google Docs, targeting legal and compliance
-                      teams.
-                    </p>
-                    <p className="mt-1 text-xs italic text-gray-500">
-                      Why this matters to you: Directly relevant to your{" "}
-                      <span className="font-semibold text-purple-600">
-                        LegalTech
-                      </span>{" "}
-                      focus — this could reshape how{" "}
-                      <span className="font-semibold text-purple-600">
-                        contract review
-                      </span>{" "}
-                      workflows integrate with tools your team already uses.
-                    </p>
-                  </li>
-                  <li>
-                    <p className="text-sm font-medium text-purple-700">
-                      New Study: AI Content Tools Now Used by 62% of Marketing Teams
-                    </p>
-                    <p className="mt-0.5 text-sm text-gray-700">
-                      Adoption of AI writing assistants hit a tipping point across
-                      mid-market companies, with most teams using them for first
-                      drafts and SEO.
-                    </p>
-                    <p className="mt-1 text-xs italic text-gray-500">
-                      Why this matters to you: As a{" "}
-                      <span className="font-semibold text-purple-600">
-                        Content Strategist
-                      </span>
-                      , this signals that AI-assisted{" "}
-                      <span className="font-semibold text-purple-600">
-                        content
-                      </span>{" "}
-                      creation is now table stakes — worth evaluating your
-                      team&apos;s current workflow.
-                    </p>
-                  </li>
-                </ul>
-                <div className="mt-4 border-t border-purple-200 pt-4">
-                  <h3 className="mb-3 text-sm font-semibold text-purple-900">
-                    What To Test This Week
-                  </h3>
-                  <ul className="space-y-4">
-                    <li>
-                      <p className="text-sm font-medium text-purple-700">
-                        Try Clause-Level Redlining in Google Docs with Gemini
-                      </p>
-                      <p className="mt-0.5 text-sm text-gray-700">
-                        Upload a sample NDA to the new Gemini sidebar and compare
-                        its flagged clauses against your team&apos;s standard
-                        playbook.
-                      </p>
-                      <p className="mt-1 text-xs italic text-gray-500">
-                        Why this matters to you: A quick way to benchmark whether
-                        Google&apos;s{" "}
-                        <span className="font-semibold text-purple-600">
-                          contract review
-                        </span>{" "}
-                        catches the same risks your current{" "}
-                        <span className="font-semibold text-purple-600">
-                          LegalTech
-                        </span>{" "}
-                        stack does.
-                      </p>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </FadeIn>
           </div>
         </div>
       </section>
