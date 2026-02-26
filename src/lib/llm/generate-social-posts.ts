@@ -19,7 +19,7 @@ export interface SocialPostResult {
   };
 }
 
-interface Story {
+export interface Story {
   title: string;
   url: string;
   source?: string;
@@ -27,21 +27,13 @@ interface Story {
 }
 
 /**
- * Generate social posts for a batch of segments (up to 6 at a time).
- * Each segment gets one LinkedIn + one Twitter post based on the most
- * relevant story from this week's free brief.
+ * Generate social posts for a single segment.
+ * One Claude call → 1 LinkedIn + 1 Twitter post.
  */
-export async function generateSocialPostsBatch(
-  segments: LandingPage[],
+export async function generateSocialPostsForSegment(
+  segment: LandingPage,
   stories: Story[],
-): Promise<SocialPostResult[]> {
-  const segmentDescriptions = segments
-    .map(
-      (s, i) =>
-        `${i + 1}. slug: "${s.slug}" | type: ${s.type} | label: "${s.label}" | keywords: ${s.mockBrief.highlightTerms.join(", ")}`,
-    )
-    .join("\n");
-
+): Promise<SocialPostResult> {
   const storiesList = stories
     .map(
       (s, i) =>
@@ -54,15 +46,16 @@ export async function generateSocialPostsBatch(
 ## This Week's Top AI Stories
 ${storiesList}
 
-## Target Segments
-${segmentDescriptions}
+## Target Audience
+Segment: "${segment.label}" (${segment.type})
+Keywords: ${segment.mockBrief.highlightTerms.join(", ")}
 
 ## Task
-For EACH segment above, pick the single most relevant story and create two social media posts:
+Pick the single most relevant story for this audience and create two social media posts:
 
 **LinkedIn post:**
 - Professional tone, 150-300 words
-- Reference the segment audience explicitly (e.g., "If you're a Product Manager...")
+- Reference the segment audience explicitly (e.g., "If you're a ${segment.label.replace(/s$/, "")}...")
 - Explain why this specific story matters for that audience
 - End with a call to action to subscribe to My Weekly AI for personalized briefs
 - 3-5 relevant hashtags
@@ -73,59 +66,43 @@ For EACH segment above, pick the single most relevant story and create two socia
 - 1-2 hashtags
 
 ## Output Format
-Return valid JSON — an array with one object per segment:
-[
-  {
-    "segment": "the-slug",
-    "linkedIn": {
-      "content": "full post text",
-      "hashtags": ["Tag1", "Tag2"],
-      "sourceHeadline": "original story title",
-      "sourceUrl": "original story url"
-    },
-    "twitter": {
-      "content": "full tweet text including hashtags",
-      "hashtags": ["Tag1"],
-      "sourceHeadline": "original story title",
-      "sourceUrl": "original story url"
-    }
+Return valid JSON:
+{
+  "segment": "${segment.slug}",
+  "linkedIn": {
+    "content": "full post text",
+    "hashtags": ["Tag1", "Tag2"],
+    "sourceHeadline": "original story title",
+    "sourceUrl": "original story url"
+  },
+  "twitter": {
+    "content": "full tweet text including hashtags",
+    "hashtags": ["Tag1"],
+    "sourceHeadline": "original story title",
+    "sourceUrl": "original story url"
   }
-]
+}
 
-Return ONLY the JSON array, no markdown code fences or other text.`;
+Return ONLY the JSON object, no markdown code fences or other text.`;
 
   const message = await anthropic.messages.create({
     model: "claude-sonnet-4-5-20250929",
-    max_tokens: 8192,
+    max_tokens: 2048,
     messages: [{ role: "user", content: prompt }],
   });
 
   let text =
     message.content[0].type === "text" ? message.content[0].text : "";
 
-  // Strip markdown code fences if present
   text = text
     .replace(/^```(?:json)?\s*\n?/i, "")
     .replace(/\n?```\s*$/i, "")
     .trim();
 
-  const parsed = JSON.parse(text) as SocialPostResult[];
+  const parsed = JSON.parse(text) as SocialPostResult;
 
-  if (!Array.isArray(parsed) || parsed.length === 0) {
-    throw new Error("Invalid social posts output — expected non-empty array");
-  }
-
-  // Validate each result has the expected shape
-  for (const result of parsed) {
-    if (
-      !result.segment ||
-      !result.linkedIn?.content ||
-      !result.twitter?.content
-    ) {
-      throw new Error(
-        `Invalid social post for segment "${result.segment || "unknown"}"`,
-      );
-    }
+  if (!parsed.segment || !parsed.linkedIn?.content || !parsed.twitter?.content) {
+    throw new Error(`Invalid social post for segment "${segment.slug}"`);
   }
 
   return parsed;

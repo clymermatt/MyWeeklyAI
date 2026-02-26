@@ -19,11 +19,18 @@ interface SocialPost {
   createdAt: string;
 }
 
-interface Props {
-  initialWeeks: string[];
+interface Segment {
+  slug: string;
+  type: string;
+  label: string;
 }
 
-export default function SocialPostsAdmin({ initialWeeks }: Props) {
+interface Props {
+  initialWeeks: string[];
+  segments: Segment[];
+}
+
+export default function SocialPostsAdmin({ initialWeeks, segments }: Props) {
   const [posts, setPosts] = useState<SocialPost[]>([]);
   const [weeks, setWeeks] = useState<string[]>(initialWeeks);
   const [selectedWeek, setSelectedWeek] = useState(initialWeeks[0] || "");
@@ -36,10 +43,16 @@ export default function SocialPostsAdmin({ initialWeeks }: Props) {
   const [loading, setLoading] = useState(false);
   const [scheduling, setScheduling] = useState(false);
 
+  // Generate state
+  const [showGenerator, setShowGenerator] = useState(false);
+  const [selectedSegments, setSelectedSegments] = useState<Set<string>>(new Set());
+  const [generating, setGenerating] = useState(false);
+  const [genProgress, setGenProgress] = useState("");
+
   const fetchPosts = useCallback(async () => {
-    if (!selectedWeek) return;
     setLoading(true);
-    const params = new URLSearchParams({ weekOf: selectedWeek });
+    const params = new URLSearchParams();
+    if (selectedWeek) params.set("weekOf", selectedWeek);
     if (platformFilter !== "ALL") params.set("platform", platformFilter);
     if (typeFilter !== "ALL") params.set("segmentType", typeFilter);
     if (statusFilter !== "ALL") params.set("status", statusFilter);
@@ -56,12 +69,52 @@ export default function SocialPostsAdmin({ initialWeeks }: Props) {
     fetchPosts();
   }, [fetchPosts]);
 
+  // Figure out which segments already have posts this week
+  const segmentsWithPosts = new Set(posts.map((p) => p.segment));
+
   const stats = {
     total: posts.length,
     approved: posts.filter((p) => p.status === "APPROVED").length,
     scheduled: posts.filter((p) => p.status === "SCHEDULED").length,
     rejected: posts.filter((p) => p.status === "REJECTED").length,
   };
+
+  async function generateForSegments() {
+    if (selectedSegments.size === 0) return;
+    setGenerating(true);
+    const slugs = [...selectedSegments];
+
+    for (let i = 0; i < slugs.length; i++) {
+      const slug = slugs[i];
+      const label = segments.find((s) => s.slug === slug)?.label || slug;
+      setGenProgress(`Generating ${i + 1}/${slugs.length}: ${label}...`);
+
+      try {
+        await fetch("/api/admin/social-posts/generate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ segment: slug }),
+        });
+      } catch {
+        // Continue with next segment
+      }
+    }
+
+    setGenerating(false);
+    setGenProgress("");
+    setSelectedSegments(new Set());
+    setShowGenerator(false);
+    await fetchPosts();
+  }
+
+  function toggleSegment(slug: string) {
+    setSelectedSegments((prev) => {
+      const next = new Set(prev);
+      if (next.has(slug)) next.delete(slug);
+      else next.add(slug);
+      return next;
+    });
+  }
 
   async function bulkUpdateStatus(status: string) {
     if (selected.size === 0) return;
@@ -148,19 +201,120 @@ export default function SocialPostsAdmin({ initialWeeks }: Props) {
 
   return (
     <div className="space-y-6">
+      {/* Generate button + panel */}
+      <div>
+        <button
+          onClick={() => setShowGenerator(!showGenerator)}
+          className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+        >
+          {showGenerator ? "Hide Generator" : "Generate Posts"}
+        </button>
+
+        {showGenerator && (
+          <div className="mt-4 rounded-lg border border-blue-200 bg-blue-50 p-4">
+            <h3 className="text-sm font-semibold text-blue-900">
+              Select segments to generate posts for
+            </h3>
+            <p className="mt-1 text-xs text-blue-700">
+              Each segment generates 1 LinkedIn + 1 Twitter post (~10s per segment).
+              Segments with existing posts this week are dimmed.
+            </p>
+
+            <div className="mt-3 space-y-3">
+              {/* Roles */}
+              <div>
+                <p className="mb-1 text-xs font-medium text-gray-600">Roles</p>
+                <div className="flex flex-wrap gap-2">
+                  {segments
+                    .filter((s) => s.type === "role")
+                    .map((s) => {
+                      const hasPosts = segmentsWithPosts.has(s.slug);
+                      const isSelected = selectedSegments.has(s.slug);
+                      return (
+                        <button
+                          key={s.slug}
+                          onClick={() => !hasPosts && toggleSegment(s.slug)}
+                          disabled={hasPosts}
+                          className={`rounded-full border px-3 py-1 text-xs transition ${
+                            hasPosts
+                              ? "border-gray-200 bg-gray-100 text-gray-400 cursor-not-allowed"
+                              : isSelected
+                                ? "border-blue-500 bg-blue-100 text-blue-800"
+                                : "border-gray-300 bg-white text-gray-700 hover:border-blue-400"
+                          }`}
+                        >
+                          {s.label} {hasPosts && "(done)"}
+                        </button>
+                      );
+                    })}
+                </div>
+              </div>
+
+              {/* Industries */}
+              <div>
+                <p className="mb-1 text-xs font-medium text-gray-600">Industries</p>
+                <div className="flex flex-wrap gap-2">
+                  {segments
+                    .filter((s) => s.type === "industry")
+                    .map((s) => {
+                      const hasPosts = segmentsWithPosts.has(s.slug);
+                      const isSelected = selectedSegments.has(s.slug);
+                      return (
+                        <button
+                          key={s.slug}
+                          onClick={() => !hasPosts && toggleSegment(s.slug)}
+                          disabled={hasPosts}
+                          className={`rounded-full border px-3 py-1 text-xs transition ${
+                            hasPosts
+                              ? "border-gray-200 bg-gray-100 text-gray-400 cursor-not-allowed"
+                              : isSelected
+                                ? "border-blue-500 bg-blue-100 text-blue-800"
+                                : "border-gray-300 bg-white text-gray-700 hover:border-blue-400"
+                          }`}
+                        >
+                          {s.label} {hasPosts && "(done)"}
+                        </button>
+                      );
+                    })}
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-4 flex items-center gap-3">
+              <button
+                onClick={generateForSegments}
+                disabled={generating || selectedSegments.size === 0}
+                className="rounded bg-blue-600 px-4 py-1.5 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+              >
+                {generating
+                  ? genProgress
+                  : `Generate for ${selectedSegments.size} segment${selectedSegments.size !== 1 ? "s" : ""}`}
+              </button>
+              {!generating && selectedSegments.size > 0 && (
+                <span className="text-xs text-gray-500">
+                  ~{selectedSegments.size * 10}s estimated
+                </span>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+
       {/* Filters */}
       <div className="flex flex-wrap items-center gap-3">
-        <select
-          value={selectedWeek}
-          onChange={(e) => setSelectedWeek(e.target.value)}
-          className="rounded-md border border-gray-300 px-3 py-1.5 text-sm"
-        >
-          {weeks.map((w) => (
-            <option key={w} value={w}>
-              Week of {new Date(w).toLocaleDateString()}
-            </option>
-          ))}
-        </select>
+        {weeks.length > 0 && (
+          <select
+            value={selectedWeek}
+            onChange={(e) => setSelectedWeek(e.target.value)}
+            className="rounded-md border border-gray-300 px-3 py-1.5 text-sm"
+          >
+            {weeks.map((w) => (
+              <option key={w} value={w}>
+                Week of {new Date(w).toLocaleDateString()}
+              </option>
+            ))}
+          </select>
+        )}
         <select
           value={platformFilter}
           onChange={(e) => setPlatformFilter(e.target.value)}
@@ -193,20 +347,22 @@ export default function SocialPostsAdmin({ initialWeeks }: Props) {
       </div>
 
       {/* Stats bar */}
-      <div className="flex items-center gap-4 rounded-lg border border-gray-200 bg-white px-4 py-3 text-sm">
-        <span className="text-gray-600">
-          <strong>{stats.total}</strong> total
-        </span>
-        <span className="text-green-700">
-          <strong>{stats.approved}</strong> approved
-        </span>
-        <span className="text-purple-700">
-          <strong>{stats.scheduled}</strong> scheduled
-        </span>
-        <span className="text-red-700">
-          <strong>{stats.rejected}</strong> rejected
-        </span>
-      </div>
+      {posts.length > 0 && (
+        <div className="flex items-center gap-4 rounded-lg border border-gray-200 bg-white px-4 py-3 text-sm">
+          <span className="text-gray-600">
+            <strong>{stats.total}</strong> total
+          </span>
+          <span className="text-green-700">
+            <strong>{stats.approved}</strong> approved
+          </span>
+          <span className="text-purple-700">
+            <strong>{stats.scheduled}</strong> scheduled
+          </span>
+          <span className="text-red-700">
+            <strong>{stats.rejected}</strong> rejected
+          </span>
+        </div>
+      )}
 
       {/* Bulk actions */}
       {selected.size > 0 && (
@@ -243,7 +399,7 @@ export default function SocialPostsAdmin({ initialWeeks }: Props) {
         </div>
       ) : posts.length === 0 ? (
         <div className="py-12 text-center text-sm text-gray-500">
-          No posts found for this week.
+          No posts yet. Use the Generate button above to create posts for selected segments.
         </div>
       ) : (
         <div className="space-y-1">

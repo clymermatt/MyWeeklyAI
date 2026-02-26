@@ -1,14 +1,8 @@
 import { prisma } from "@/lib/prisma";
-import { generateSocialPostsBatch } from "@/lib/llm/generate-social-posts";
+import { generateSocialPostsForSegment } from "@/lib/llm/generate-social-posts";
+import type { Story } from "@/lib/llm/generate-social-posts";
 import landingPages from "@/lib/landing-content";
 import type { BriefOutput } from "@/types/brief";
-
-interface StoryItem {
-  title: string;
-  url: string;
-  source?: string;
-  summary: string;
-}
 
 export interface SocialPostsResult {
   segmentsProcessed: number;
@@ -16,18 +10,16 @@ export interface SocialPostsResult {
   errors: string[];
 }
 
-/** Extract stories from either a free brief (industryNews/labUpdates) or paid brief (whatDropped) */
-function extractStories(briefJson: unknown): StoryItem[] {
+/** Extract stories from either a free brief or paid brief */
+function extractStories(briefJson: unknown): Story[] {
   const brief = briefJson as Record<string, unknown>;
-  const stories: StoryItem[] = [];
+  const stories: Story[] = [];
 
-  // Free brief format
-  const industryNews = brief.industryNews as StoryItem[] | undefined;
-  const labUpdates = brief.labUpdates as StoryItem[] | undefined;
+  const industryNews = brief.industryNews as Story[] | undefined;
+  const labUpdates = brief.labUpdates as Story[] | undefined;
   if (industryNews?.length) stories.push(...industryNews);
   if (labUpdates?.length) stories.push(...labUpdates);
 
-  // Paid brief format fallback
   if (stories.length === 0) {
     const paid = brief as unknown as BriefOutput;
     if (paid.whatDropped?.length) stories.push(...paid.whatDropped);
@@ -37,14 +29,8 @@ function extractStories(briefJson: unknown): StoryItem[] {
   return stories;
 }
 
-const SEGMENTS_PER_INVOCATION = 6; // 1 Claude call per invocation
-
-export async function runSocialPostsGeneration(
-  batchIndex = 0,
-): Promise<SocialPostsResult & { nextBatch?: number }> {
-  const errors: string[] = [];
-
-  // Step 1: Find the latest WeeklyDigest (prefer free, fall back to any)
+/** Get stories from the latest digest */
+export async function getLatestStories(): Promise<{ stories: Story[]; weekOf: Date }> {
   let digest = await prisma.weeklyDigest.findFirst({
     where: { isFree: true },
     orderBy: { createdAt: "desc" },
@@ -60,101 +46,68 @@ export async function runSocialPostsGeneration(
     throw new Error("No weekly digest found");
   }
 
-  const weekOf = digest.periodEnd;
-
-  // Step 2: On first batch only, check idempotency
-  if (batchIndex === 0) {
-    const existingCount = await prisma.socialPost.count({
-      where: { weekOf },
-    });
-    if (existingCount > 0) {
-      return {
-        segmentsProcessed: 0,
-        postsGenerated: 0,
-        errors: ["Posts already exist for this week — skipped"],
-      };
-    }
-  }
-
-  // Step 3: Extract stories from the brief
   const stories = extractStories(digest.briefJson);
-
   if (stories.length === 0) {
     throw new Error("Digest has no stories to generate posts from");
   }
 
-  // Step 4: Get this invocation's slice of segments
-  const allSegments = Object.values(landingPages);
-  const start = batchIndex * SEGMENTS_PER_INVOCATION;
-  const sliceSegments = allSegments.slice(start, start + SEGMENTS_PER_INVOCATION);
+  return { stories, weekOf: digest.periodEnd };
+}
 
-  if (sliceSegments.length === 0) {
-    return { segmentsProcessed: 0, postsGenerated: 0, errors: [] };
+/**
+ * Generate social posts for a single segment.
+ * Called from the admin UI one segment at a time.
+ */
+export async function generatePostsForSegment(
+  segmentSlug: string,
+): Promise<SocialPostsResult> {
+  const segment = landingPages[segmentSlug];
+  if (!segment) {
+    throw new Error(`Unknown segment: ${segmentSlug}`);
   }
 
-  let segmentsProcessed = 0;
-  let postsGenerated = 0;
+  const { stories, weekOf } = await getLatestStories();
 
-  try {
-    const results = await generateSocialPostsBatch(sliceSegments, stories);
-
-    for (const post of results) {
-      const segment = allSegments.find((s) => s.slug === post.segment);
-      if (!segment) {
-        errors.push(`Unknown segment slug returned: ${post.segment}`);
-        continue;
-      }
-
-      try {
-        await prisma.socialPost.createMany({
-          data: [
-            {
-              platform: "LINKEDIN",
-              segment: segment.slug,
-              segmentType: segment.type,
-              segmentLabel: segment.label,
-              content: post.linkedIn.content,
-              hashtags: post.linkedIn.hashtags || [],
-              sourceHeadline: post.linkedIn.sourceHeadline,
-              sourceUrl: post.linkedIn.sourceUrl,
-              weekOf,
-            },
-            {
-              platform: "TWITTER",
-              segment: segment.slug,
-              segmentType: segment.type,
-              segmentLabel: segment.label,
-              content: post.twitter.content,
-              hashtags: post.twitter.hashtags || [],
-              sourceHeadline: post.twitter.sourceHeadline,
-              sourceUrl: post.twitter.sourceUrl,
-              weekOf,
-            },
-          ],
-        });
-        postsGenerated += 2;
-      } catch (dbErr) {
-        errors.push(
-          `DB error for ${segment.slug}: ${dbErr instanceof Error ? dbErr.message : "Unknown"}`,
-        );
-      }
-
-      segmentsProcessed++;
-    }
-  } catch (batchErr) {
-    const slugs = sliceSegments.map((s) => s.slug).join(", ");
-    errors.push(
-      `Batch error [${slugs}]: ${batchErr instanceof Error ? batchErr.message : "Unknown"}`,
-    );
+  // Check if posts already exist for this segment + week
+  const existing = await prisma.socialPost.count({
+    where: { segment: segmentSlug, weekOf },
+  });
+  if (existing > 0) {
+    return {
+      segmentsProcessed: 0,
+      postsGenerated: 0,
+      errors: [`Posts already exist for ${segmentSlug} this week`],
+    };
   }
 
-  // Signal whether there are more segments to process
-  const hasMore = start + SEGMENTS_PER_INVOCATION < allSegments.length;
+  const result = await generateSocialPostsForSegment(segment, stories);
 
-  return {
-    segmentsProcessed,
-    postsGenerated,
-    errors,
-    nextBatch: hasMore ? batchIndex + 1 : undefined,
-  };
+  await prisma.socialPost.createMany({
+    data: [
+      {
+        platform: "LINKEDIN",
+        segment: segment.slug,
+        segmentType: segment.type,
+        segmentLabel: segment.label,
+        content: result.linkedIn.content,
+        hashtags: result.linkedIn.hashtags || [],
+        sourceHeadline: result.linkedIn.sourceHeadline,
+        sourceUrl: result.linkedIn.sourceUrl,
+        weekOf,
+      },
+      {
+        platform: "TWITTER",
+        segment: segment.slug,
+        segmentType: segment.type,
+        segmentLabel: segment.label,
+        content: result.twitter.content,
+        hashtags: result.twitter.hashtags || [],
+        sourceHeadline: result.twitter.sourceHeadline,
+        sourceUrl: result.twitter.sourceUrl,
+        weekOf,
+      },
+    ],
+  });
+
+  return { segmentsProcessed: 1, postsGenerated: 2, errors: [] };
 }

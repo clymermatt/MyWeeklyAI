@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { runSocialPostsGeneration } from "@/lib/jobs/social-posts";
+import { generatePostsForSegment } from "@/lib/jobs/social-posts";
 import { sendJobAlertEmail } from "@/lib/email/send";
 import { pingHealthCheck } from "@/lib/healthcheck";
+import landingPages from "@/lib/landing-content";
 
 export const maxDuration = 60;
 
@@ -13,11 +14,13 @@ export async function POST(req: Request) {
   }
 
   const { searchParams } = new URL(req.url);
-  const batchIndex = parseInt(searchParams.get("batch") || "0", 10);
+  const segmentIndex = parseInt(searchParams.get("index") || "0", 10);
+  const allSlugs = Object.keys(landingPages);
+  const slug = allSlugs[segmentIndex];
 
-  // Only create a JobRun on the first batch
+  // First segment creates the job run
   let jobRunId: string | null = null;
-  if (batchIndex === 0) {
+  if (segmentIndex === 0) {
     const jobRun = await prisma.jobRun.create({
       data: { jobName: "social-posts", status: "RUNNING" },
     });
@@ -25,94 +28,93 @@ export async function POST(req: Request) {
   }
 
   try {
-    const result = await runSocialPostsGeneration(batchIndex);
+    if (!slug) {
+      // All segments processed — finalize
+      return await finalizeJobRun();
+    }
 
-    // If there are more segments, chain the next invocation
-    if (result.nextBatch !== undefined) {
+    const result = await generatePostsForSegment(slug);
+
+    // Chain the next segment
+    const nextIndex = segmentIndex + 1;
+    if (nextIndex < allSlugs.length) {
       const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://www.myweekly.ai";
-      fetch(`${baseUrl}/api/jobs/social-posts?batch=${result.nextBatch}`, {
+      fetch(`${baseUrl}/api/jobs/social-posts?index=${nextIndex}`, {
         method: "POST",
         headers: { Authorization: `Bearer ${process.env.CRON_SECRET}` },
-      }).catch(() => {
-        // Fire and forget — errors will be caught by the next invocation
-      });
-
-      return NextResponse.json({
-        ...result,
-        message: `Batch ${batchIndex} done, triggering batch ${result.nextBatch}`,
-      });
+      }).catch(() => {});
+    } else {
+      // Last segment — finalize asynchronously
+      const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://www.myweekly.ai";
+      fetch(`${baseUrl}/api/jobs/social-posts?index=${allSlugs.length}`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${process.env.CRON_SECRET}` },
+      }).catch(() => {});
     }
 
-    // Final batch — update the JobRun with aggregate metrics
-    if (jobRunId || batchIndex > 0) {
-      // Find the RUNNING job run for this job
-      const runningJob = jobRunId
-        ? { id: jobRunId }
-        : await prisma.jobRun.findFirst({
-            where: { jobName: "social-posts", status: "RUNNING" },
-            orderBy: { startedAt: "desc" },
-          });
-
-      if (runningJob) {
-        // Count all posts created for this week to get aggregate metrics
-        const totalPosts = await prisma.socialPost.count({
-          where: {
-            createdAt: { gte: new Date(Date.now() - 10 * 60 * 1000) },
-          },
-        });
-
-        const endedAt = new Date();
-        const status = totalPosts > 0 ? "SUCCESS" : "FAILURE";
-        const metrics = {
-          segmentsProcessed: totalPosts / 2,
-          postsGenerated: totalPosts,
-          errorCount: result.errors.length,
-          batches: batchIndex + 1,
-        };
-
-        await prisma.jobRun.update({
-          where: { id: runningJob.id },
-          data: { status, endedAt, metrics },
-        });
-
-        if (status === "SUCCESS") {
-          await pingHealthCheck("social-posts");
-        }
-      }
-    }
-
-    return NextResponse.json(result);
-  } catch (error) {
-    const endedAt = new Date();
-    const errorText =
-      error instanceof Error ? error.message : "Unknown error";
-
-    // Try to update the job run
-    const runningJob = jobRunId
-      ? { id: jobRunId }
-      : await prisma.jobRun.findFirst({
-          where: { jobName: "social-posts", status: "RUNNING" },
-          orderBy: { startedAt: "desc" },
-        });
-
-    if (runningJob) {
-      await prisma.jobRun.update({
-        where: { id: runningJob.id },
-        data: { status: "FAILURE", endedAt, error: errorText },
-      });
-    }
-
-    await sendJobAlertEmail({
-      jobName: "social-posts",
-      status: "FAILURE",
-      startedAt: new Date(),
-      endedAt,
-      error: errorText,
+    return NextResponse.json({
+      segment: slug,
+      index: segmentIndex,
+      total: allSlugs.length,
+      ...result,
     });
+  } catch (error) {
+    const errorText = error instanceof Error ? error.message : "Unknown error";
+
+    // Log the error but continue with the next segment
+    console.error(`Social post error for ${slug}: ${errorText}`);
+
+    const nextIndex = segmentIndex + 1;
+    if (nextIndex <= allSlugs.length) {
+      const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://www.myweekly.ai";
+      fetch(`${baseUrl}/api/jobs/social-posts?index=${nextIndex}`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${process.env.CRON_SECRET}` },
+      }).catch(() => {});
+    }
 
     return NextResponse.json(
-      { error: "Social posts generation failed", detail: errorText },
+      { error: "Social posts generation failed", detail: errorText, segment: slug },
       { status: 500 },
     );
   }
+}
+
+async function finalizeJobRun() {
+  const runningJob = await prisma.jobRun.findFirst({
+    where: { jobName: "social-posts", status: "RUNNING" },
+    orderBy: { startedAt: "desc" },
+  });
+
+  if (runningJob) {
+    const totalPosts = await prisma.socialPost.count({
+      where: { createdAt: { gte: runningJob.startedAt } },
+    });
+
+    const endedAt = new Date();
+    const status = totalPosts > 0 ? "SUCCESS" : "FAILURE";
+    const metrics = {
+      segmentsProcessed: totalPosts / 2,
+      postsGenerated: totalPosts,
+    };
+
+    await prisma.jobRun.update({
+      where: { id: runningJob.id },
+      data: { status, endedAt, metrics },
+    });
+
+    if (status === "SUCCESS") {
+      await pingHealthCheck("social-posts");
+    } else {
+      await sendJobAlertEmail({
+        jobName: "social-posts",
+        status: "FAILURE",
+        startedAt: runningJob.startedAt,
+        endedAt,
+        error: "No posts were generated",
+      });
+    }
+  }
+
+  return NextResponse.json({ message: "Job finalized" });
 }
