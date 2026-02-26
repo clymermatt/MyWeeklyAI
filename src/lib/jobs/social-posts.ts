@@ -77,9 +77,9 @@ export async function runSocialPostsGeneration(): Promise<SocialPostsResult> {
     throw new Error("Digest has no stories to generate posts from");
   }
 
-  // Step 4: Get all segments and batch them (13 per Claude call → 3 concurrent calls)
+  // Step 4: Get all segments and batch them (6 per Claude call, all run concurrently)
   const allSegments = Object.values(landingPages);
-  const BATCH_SIZE = 13;
+  const BATCH_SIZE = 6;
   const batches: (typeof allSegments)[] = [];
   for (let i = 0; i < allSegments.length; i += BATCH_SIZE) {
     batches.push(allSegments.slice(i, i + BATCH_SIZE));
