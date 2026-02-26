@@ -132,7 +132,7 @@ export async function sendJobAlertEmail({
 
   const resend = getResend();
   const { error: sendError } = await resend.emails.send({
-    from: "My Weekly AI <digest@myweekly.ai>",
+    from: "My Weekly AI <alerts@myweekly.ai>",
     to,
     subject: `[${status}] Job Alert: ${jobName}`,
     html,
