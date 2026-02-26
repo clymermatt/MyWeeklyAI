@@ -2,6 +2,7 @@ import Link from "next/link";
 import { auth, signOut } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import UserMenu from "@/components/user-menu";
+import MobileNav from "@/components/mobile-nav";
 
 export default async function SiteNav() {
   const session = await auth();
@@ -23,12 +24,14 @@ export default async function SiteNav() {
     isAdmin = user?.role === "ADMIN";
   }
 
+  const userName = session?.user?.name?.split(" ")[0] || session?.user?.email?.split("@")[0];
+
   return (
-    <nav className="border-b border-gray-200 bg-white">
+    <nav className="relative border-b border-gray-200 bg-white">
       <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4">
         <div className="flex items-center gap-8">
           <Link href="/" className="flex items-center gap-2 text-lg font-bold text-gray-900">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" className="h-7 w-7" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" className="h-7 w-7 shrink-0" aria-hidden="true">
               <rect width="32" height="32" rx="8" fill="#9333ea"/>
               <path d="M16 6 A10 10 0 0 0 7.34 11" fill="none" stroke="white" strokeWidth="2.5" opacity="0.7" strokeLinecap="round"/>
               <path d="M7.34 11 A10 10 0 0 0 7.34 21" fill="none" stroke="white" strokeWidth="2.5" opacity="0.5" strokeLinecap="round"/>
@@ -51,9 +54,9 @@ export default async function SiteNav() {
               <line x1="16" y1="16" x2="16" y2="5.5" stroke="white" strokeWidth="2.5" strokeLinecap="round"/>
               <circle cx="20" cy="10" r="2" fill="white"/>
             </svg>
-            My Weekly AI
+            <span className="hidden sm:inline">My Weekly AI</span>
           </Link>
-          <div className="flex gap-6">
+          <div className="hidden md:flex gap-6">
             <Link
               href="/dashboard"
               className="text-sm text-gray-600 hover:text-gray-900"
@@ -75,9 +78,9 @@ export default async function SiteNav() {
           </div>
         </div>
         {session ? (
-          <div className="flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-4">
             <UserMenu
-              name={session.user!.name?.split(" ")[0] || session.user!.email!.split("@")[0]}
+              name={userName!}
               plan={plan}
               isAdmin={isAdmin}
             />
@@ -98,11 +101,17 @@ export default async function SiteNav() {
         ) : (
           <Link
             href="/auth/signin"
-            className="rounded-lg bg-purple-600 px-4 py-2 text-sm font-medium text-white hover:bg-purple-700 transition-colors"
+            className="hidden md:inline-flex rounded-lg bg-purple-600 px-4 py-2 text-sm font-medium text-white hover:bg-purple-700 transition-colors"
           >
             Sign In
           </Link>
         )}
+        <MobileNav
+          isAuthenticated={!!session}
+          userName={userName}
+          plan={plan}
+          isAdmin={isAdmin}
+        />
       </div>
     </nav>
   );
