@@ -19,6 +19,7 @@ export async function sendWeeklyBrief({
   periodStart,
   periodEnd,
   profileTerms = [],
+  unsubscribeUrl,
 }: {
   to: string;
   userName?: string;
@@ -27,6 +28,7 @@ export async function sendWeeklyBrief({
   periodStart: Date;
   periodEnd: Date;
   profileTerms?: string[];
+  unsubscribeUrl?: string;
 }) {
   const html = await render(
     WeeklyBriefEmail({
@@ -42,6 +44,7 @@ export async function sendWeeklyBrief({
       }),
       userName,
       profileTerms,
+      unsubscribeUrl,
     }),
   );
 
@@ -51,11 +54,18 @@ export async function sendWeeklyBrief({
     : `Your AI Brief — ${dateRange}`;
 
   const resend = getResend();
+  const headers: Record<string, string> = {};
+  if (unsubscribeUrl) {
+    headers["List-Unsubscribe"] = `<${unsubscribeUrl}>`;
+    headers["List-Unsubscribe-Post"] = "List-Unsubscribe=One-Click";
+  }
+
   const { error } = await resend.emails.send({
     from: "My Weekly AI <digest@myweekly.ai>",
     to,
     subject,
     html,
+    headers,
   });
 
   if (error) {
@@ -66,18 +76,27 @@ export async function sendWeeklyBrief({
 export async function sendWelcomeEmail({
   to,
   userName,
+  unsubscribeUrl,
 }: {
   to: string;
   userName?: string;
+  unsubscribeUrl?: string;
 }) {
-  const html = await render(WelcomeEmail({ userName }));
+  const html = await render(WelcomeEmail({ userName, unsubscribeUrl }));
 
   const resend = getResend();
+  const headers: Record<string, string> = {};
+  if (unsubscribeUrl) {
+    headers["List-Unsubscribe"] = `<${unsubscribeUrl}>`;
+    headers["List-Unsubscribe-Post"] = "List-Unsubscribe=One-Click";
+  }
+
   const { error } = await resend.emails.send({
     from: "My Weekly AI <hello@myweekly.ai>",
     to,
     subject: "Welcome to My Weekly AI — let's get you set up",
     html,
+    headers,
   });
 
   if (error) {

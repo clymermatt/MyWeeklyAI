@@ -4,6 +4,7 @@ import Resend from "next-auth/providers/resend";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@/lib/prisma";
 import { sendWelcomeEmail } from "@/lib/email/send";
+import { generateUnsubscribeUrl } from "@/lib/unsubscribe";
 import { Resend as ResendClient } from "resend";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
@@ -86,9 +87,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async createUser({ user }) {
       try {
         if (user.email) {
+          const unsubscribeUrl = user.id
+            ? generateUnsubscribeUrl(user.id)
+            : undefined;
           await sendWelcomeEmail({
             to: user.email,
             userName: user.name ?? undefined,
+            unsubscribeUrl,
           });
         }
       } catch (err) {

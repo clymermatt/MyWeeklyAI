@@ -98,12 +98,33 @@ export default function SiteFooter() {
                   My Saved Articles
                 </Link>
               </li>
+              <li>
+                <Link
+                  href="/privacy"
+                  className="text-sm text-gray-600 hover:text-gray-900"
+                >
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/terms"
+                  className="text-sm text-gray-600 hover:text-gray-900"
+                >
+                  Terms of Service
+                </Link>
+              </li>
             </ul>
           </div>
         </div>
 
         <div className="mt-12 border-t border-gray-200 pt-6 text-center text-xs text-gray-400">
-          Powered by My Weekly AI
+          <p>&copy; {new Date().getFullYear()} My Weekly AI. All rights reserved.</p>
+          <p className="mt-2 space-x-3">
+            <Link href="/privacy" className="hover:text-gray-600">Privacy Policy</Link>
+            <span>&middot;</span>
+            <Link href="/terms" className="hover:text-gray-600">Terms of Service</Link>
+          </p>
         </div>
       </div>
     </footer>

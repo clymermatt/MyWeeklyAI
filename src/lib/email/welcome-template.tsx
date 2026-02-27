@@ -13,9 +13,10 @@ import {
 
 interface WelcomeEmailProps {
   userName?: string;
+  unsubscribeUrl?: string;
 }
 
-export default function WelcomeEmail({ userName }: WelcomeEmailProps) {
+export default function WelcomeEmail({ userName, unsubscribeUrl }: WelcomeEmailProps) {
   const appUrl =
     process.env.NEXT_PUBLIC_APP_URL || "https://www.myweekly.ai";
 
@@ -107,6 +108,30 @@ export default function WelcomeEmail({ userName }: WelcomeEmailProps) {
               My Weekly AI
             </Link>
             {" "}&middot; Curated by AI
+          </Text>
+          <Text
+            style={{
+              color: "#d1d5db",
+              fontSize: "11px",
+              textAlign: "center" as const,
+              margin: "4px 0 0",
+            }}
+          >
+            <Link href={`${appUrl}/privacy`} style={{ color: "#d1d5db", textDecoration: "underline" }}>
+              Privacy Policy
+            </Link>
+            {" "}&middot;{" "}
+            <Link href={`${appUrl}/terms`} style={{ color: "#d1d5db", textDecoration: "underline" }}>
+              Terms of Service
+            </Link>
+            {unsubscribeUrl && (
+              <>
+                {" "}&middot;{" "}
+                <Link href={unsubscribeUrl} style={{ color: "#d1d5db", textDecoration: "underline" }}>
+                  Unsubscribe
+                </Link>
+              </>
+            )}
           </Text>
           <Text
             style={{

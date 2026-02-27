@@ -3,6 +3,7 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import DashboardUpgradeCard from "@/components/dashboard-upgrade-card";
 import TelegramConnectCard from "@/components/telegram-connect-card";
+import ResubscribeBanner from "@/components/resubscribe-banner";
 
 export default async function DashboardPage({
   searchParams,
@@ -23,7 +24,7 @@ export default async function DashboardPage({
     }),
     prisma.user.findUniqueOrThrow({
       where: { id: userId },
-      select: { telegramChatId: true, deliveryChannel: true },
+      select: { telegramChatId: true, deliveryChannel: true, unsubscribedAt: true },
     }),
   ]);
 
@@ -41,6 +42,8 @@ export default async function DashboardPage({
           Welcome back, {session!.user!.name?.split(" ")[0] || session!.user!.email}
         </p>
       </div>
+
+      {user.unsubscribedAt && <ResubscribeBanner />}
 
       {needsProfile && (
         <div className="rounded-lg border-2 border-amber-400 bg-amber-50 px-6 py-4">

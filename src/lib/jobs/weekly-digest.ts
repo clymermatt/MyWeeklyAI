@@ -82,6 +82,7 @@ export async function runWeeklyDigest(): Promise<DigestResult> {
   const freeUsers = await prisma.user.findMany({
     where: {
       contextProfile: { isNot: null },
+      unsubscribedAt: null,
       OR: [
         { subscription: null },
         { subscription: { status: { not: "ACTIVE" } } },
@@ -136,6 +137,7 @@ export async function runWeeklyDigest(): Promise<DigestResult> {
     where: {
       subscription: { status: "ACTIVE" },
       contextProfile: { isNot: null },
+      unsubscribedAt: null,
     },
     include: {
       contextProfile: true,

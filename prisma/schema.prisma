@@ -24,6 +24,7 @@ model User {
   telegramLinkToken  String?          @unique
   telegramLinkExpires DateTime?
   deliveryChannel    DeliveryChannel  @default(EMAIL)
+  unsubscribedAt     DateTime?
 
   accounts       Account[]
   sessions       Session[]

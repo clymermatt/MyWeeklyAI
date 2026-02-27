@@ -19,6 +19,7 @@ interface WeeklyBriefEmailProps {
   periodEnd: string;
   userName?: string;
   profileTerms?: string[];
+  unsubscribeUrl?: string;
 }
 
 function highlightTerms(text: string, terms: string[]) {
@@ -159,7 +160,9 @@ export default function WeeklyBriefEmail({
   periodEnd,
   userName,
   profileTerms = [],
+  unsubscribeUrl,
 }: WeeklyBriefEmailProps) {
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://www.myweekly.ai";
   return (
     <Html>
       <Head />
@@ -350,6 +353,30 @@ export default function WeeklyBriefEmail({
             >
               My Weekly AI
             </Link>
+          </Text>
+          <Text
+            style={{
+              color: "#d1d5db",
+              fontSize: "11px",
+              textAlign: "center" as const,
+              margin: "4px 0 0",
+            }}
+          >
+            <Link href={`${appUrl}/privacy`} style={{ color: "#d1d5db", textDecoration: "underline" }}>
+              Privacy Policy
+            </Link>
+            {" "}&middot;{" "}
+            <Link href={`${appUrl}/terms`} style={{ color: "#d1d5db", textDecoration: "underline" }}>
+              Terms of Service
+            </Link>
+            {unsubscribeUrl && (
+              <>
+                {" "}&middot;{" "}
+                <Link href={unsubscribeUrl} style={{ color: "#d1d5db", textDecoration: "underline" }}>
+                  Unsubscribe
+                </Link>
+              </>
+            )}
           </Text>
           <Text
             style={{

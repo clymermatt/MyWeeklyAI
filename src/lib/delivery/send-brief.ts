@@ -1,11 +1,13 @@
 import { sendWeeklyBrief } from "@/lib/email/send";
 import { sendTelegramMessage } from "@/lib/telegram";
 import { formatBriefForTelegram } from "@/lib/telegram/format-brief";
+import { generateUnsubscribeUrl } from "@/lib/unsubscribe";
 import type { BriefOutput, FreeBriefStored } from "@/types/brief";
 import type { DeliveryChannel } from "@/generated/prisma/client";
 
 interface DeliverBriefParams {
   user: {
+    id: string;
     email: string;
     name?: string | null;
     telegramChatId?: string | null;
@@ -45,6 +47,7 @@ export async function deliverBrief({
 
   if (shouldEmail) {
     try {
+      const unsubscribeUrl = generateUnsubscribeUrl(user.id);
       await sendWeeklyBrief({
         to: user.email,
         userName: user.name ?? undefined,
@@ -53,6 +56,7 @@ export async function deliverBrief({
         periodStart,
         periodEnd,
         profileTerms,
+        unsubscribeUrl,
       });
       result.emailSent = true;
     } catch (err) {

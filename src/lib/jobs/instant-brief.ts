@@ -18,6 +18,8 @@ export async function generateInstantBriefing(userId: string) {
     include: { subscription: true, contextProfile: true },
   });
 
+  if (user.unsubscribedAt) return;
+
   const profile = user.contextProfile;
   if (!profile) return;
 
