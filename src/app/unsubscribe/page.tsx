@@ -1,6 +1,10 @@
 import Link from "next/link";
+import SiteNav from "@/components/site-nav";
 
-export const metadata = { title: "Unsubscribe" };
+export const metadata = {
+  title: "Unsubscribe",
+  robots: { index: false, follow: false },
+};
 
 export default async function UnsubscribePage({
   searchParams,
@@ -12,7 +16,9 @@ export default async function UnsubscribePage({
   const error = params.error;
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
+    <div className="min-h-screen bg-gray-50">
+    <SiteNav />
+    <div className="flex items-center justify-center px-4 py-24">
       <div className="w-full max-w-md rounded-lg bg-white p-8 text-center shadow-sm">
         {success ? (
           <>
@@ -55,6 +61,7 @@ export default async function UnsubscribePage({
           </Link>
         </div>
       </div>
+    </div>
     </div>
   );
 }
