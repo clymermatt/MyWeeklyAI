@@ -44,7 +44,7 @@ export default function ProPricingCard({ children }: { children: ReactNode }) {
       </p>
       {interval === "yearly" && (
         <p className="mt-1 text-xs font-medium text-green-600">
-          Save ~$6/yr vs monthly
+          Save 17% vs monthly
         </p>
       )}
 
