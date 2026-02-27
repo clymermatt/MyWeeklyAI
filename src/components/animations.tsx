@@ -133,20 +133,20 @@ export function StickyCTA({
     >
       <div className="mx-auto flex max-w-4xl items-center justify-between px-4 py-3">
         <p className="hidden text-sm font-medium text-gray-700 sm:block">
-          Get your personalized AI brief every Sunday
+          Get your AI brief every Sunday
         </p>
         <div className="flex w-full items-center justify-center gap-3 sm:w-auto sm:justify-end">
           <a
             href={freeHref}
             className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50"
           >
-            Start Free — No Personalization
+            Start Free
           </a>
           <a
             href={proHref}
             className="rounded-lg bg-purple-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-purple-700"
           >
-            Start Pro — Personalized to Your Role (7 Days Free)
+            Start Pro — Personalized with Testing Suggestions
           </a>
         </div>
       </div>
