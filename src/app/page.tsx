@@ -108,7 +108,7 @@ export default async function HomePage() {
                   href="/auth/signin"
                   className="rounded-lg bg-purple-600 px-6 py-3 text-sm font-medium text-white shadow-lg shadow-purple-600/25 transition-all hover:bg-purple-700 hover:shadow-xl hover:shadow-purple-600/30"
                 >
-                  Start Free — No Personalization
+                  Start Free — Get Your Brief Today
                 </Link>
               )}
             </div>
