@@ -537,7 +537,7 @@ export default async function HomePage() {
         <div className="relative mx-auto max-w-2xl">
           <FadeIn>
             <h2 className="text-3xl font-bold text-white">
-              Your personalized filter for the AI firehose
+              Your filter for the AI hype firehose
             </h2>
             <p className="mt-4 text-purple-100">
               Set up your context profile in 2 minutes and get your first brief today.
