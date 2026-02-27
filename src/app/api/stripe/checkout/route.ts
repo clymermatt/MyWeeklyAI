@@ -45,7 +45,7 @@ async function createCheckoutSession(userId: string, interval: string) {
       trial_period_days: 7,
     },
     success_url: `${process.env.NEXTAUTH_URL}/dashboard?subscription=success`,
-    cancel_url: `${process.env.NEXTAUTH_URL}/dashboard?subscription=canceled`,
+    cancel_url: `${process.env.NEXTAUTH_URL}/dashboard`,
     metadata: { userId: user.id },
   });
 }
