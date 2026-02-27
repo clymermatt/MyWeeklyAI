@@ -307,7 +307,7 @@ export default async function HomePage() {
                         teams.
                       </p>
                       <p className="mt-1 text-xs italic text-gray-500">
-                        Why this matters to you: Directly relevant to your{" "}
+                        <span className="font-bold not-italic">Why this matters to you:</span> Directly relevant to your{" "}
                         <span className="font-semibold text-purple-600">
                           LegalTech
                         </span>{" "}
@@ -328,7 +328,7 @@ export default async function HomePage() {
                         drafts and SEO.
                       </p>
                       <p className="mt-1 text-xs italic text-gray-500">
-                        Why this matters to you: As a{" "}
+                        <span className="font-bold not-italic">Why this matters to you:</span> As a{" "}
                         <span className="font-semibold text-purple-600">
                           Content Strategist
                         </span>
@@ -356,7 +356,7 @@ export default async function HomePage() {
                           playbook.
                         </p>
                         <p className="mt-1 text-xs italic text-gray-500">
-                          Why this matters to you: A quick way to benchmark whether
+                          <span className="font-bold not-italic">Why this matters to you:</span> A quick way to benchmark whether
                           Google&apos;s{" "}
                           <span className="font-semibold text-purple-600">
                             contract review

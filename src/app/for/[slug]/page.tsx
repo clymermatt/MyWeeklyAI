@@ -360,7 +360,7 @@ export default async function LandingPage({
                           {item.summary}
                         </p>
                         <p className="mt-1 text-xs italic text-gray-500">
-                          Why this matters to you:{" "}
+                          <span className="font-bold not-italic">Why this matters to you:</span>{" "}
                           {highlightTerms(
                             item.relevanceNote,
                             page.mockBrief.highlightTerms
@@ -383,7 +383,7 @@ export default async function LandingPage({
                             {item.summary}
                           </p>
                           <p className="mt-1 text-xs italic text-gray-500">
-                            Why this matters to you:{" "}
+                            <span className="font-bold not-italic">Why this matters to you:</span>{" "}
                             {highlightTerms(
                               item.relevanceNote,
                               page.mockBrief.highlightTerms

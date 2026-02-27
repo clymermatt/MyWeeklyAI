@@ -87,7 +87,7 @@ function ItemSection({
               <p className="mt-0.5 text-sm text-gray-600">{item.summary}</p>
               {showRelevance && item.relevanceNote && (
                 <p className="mt-0.5 text-xs italic text-gray-400">
-                  Why this matters to you: {highlightTerms(item.relevanceNote, profileTerms)}
+                  <span className="font-bold not-italic">Why this matters to you:</span> {highlightTerms(item.relevanceNote, profileTerms)}
                 </p>
               )}
             </div>
@@ -245,7 +245,7 @@ export default function DigestCard({
                           </p>
                           {item.relevanceNote && (
                             <p className="mt-1 text-xs italic text-gray-500">
-                              Why this matters to you: {highlightTerms(item.relevanceNote, profileTerms)}
+                              <span className="font-bold not-italic">Why this matters to you:</span> {highlightTerms(item.relevanceNote, profileTerms)}
                             </p>
                           )}
                         </div>
