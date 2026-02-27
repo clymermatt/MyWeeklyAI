@@ -140,13 +140,13 @@ export function StickyCTA({
             href={freeHref}
             className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50"
           >
-            Start Free
+            Start Free — No Personalization
           </a>
           <a
             href={proHref}
             className="rounded-lg bg-purple-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-purple-700"
           >
-            Start Pro — $2.99/mo
+            Start Pro — Personalized to Your Role (7 Days Free)
           </a>
         </div>
       </div>

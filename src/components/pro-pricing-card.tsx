@@ -55,7 +55,7 @@ export default function ProPricingCard({ children }: { children: ReactNode }) {
           href={`/auth/signin?plan=pro&interval=${interval}`}
           className="block rounded-lg bg-purple-600 py-2.5 text-center text-sm font-medium text-white shadow-lg shadow-purple-600/25 transition-all hover:bg-purple-700 hover:shadow-xl hover:shadow-purple-600/30"
         >
-          Start Pro — 7 Days Free
+          Start Pro — Personalized to Your Role (7 Days Free)
         </Link>
       </div>
     </div>

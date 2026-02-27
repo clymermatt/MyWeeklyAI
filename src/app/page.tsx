@@ -108,7 +108,7 @@ export default async function HomePage() {
                   href="/auth/signin"
                   className="rounded-lg bg-purple-600 px-6 py-3 text-sm font-medium text-white shadow-lg shadow-purple-600/25 transition-all hover:bg-purple-700 hover:shadow-xl hover:shadow-purple-600/30"
                 >
-                  Get your free brief
+                  Start Free — No Personalization
                 </Link>
               )}
             </div>
@@ -546,13 +546,13 @@ export default async function HomePage() {
                 href="/auth/signin"
                 className="rounded-lg border border-purple-400 px-6 py-3 text-sm font-medium text-white transition-all hover:bg-purple-700"
               >
-                Get your free brief
+                Start Free — No Personalization
               </Link>
               <Link
                 href="/auth/signin?plan=pro"
                 className="rounded-lg bg-white px-6 py-3 text-sm font-medium text-purple-600 shadow-lg transition-all hover:bg-purple-50 hover:shadow-xl"
               >
-                Start Pro — 7 Days Free
+                Start Pro — Personalized to Your Role (7 Days Free)
               </Link>
             </div>
           </FadeIn>
