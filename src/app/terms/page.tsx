@@ -1,13 +1,16 @@
 import Link from "next/link";
+import SiteNav from "@/components/site-nav";
 
 export const metadata = {
   title: "Terms of Service",
   description: "My Weekly AI terms of service — rules and guidelines for using our service.",
+  robots: { index: false, follow: false },
 };
 
 export default function TermsPage() {
   return (
     <div className="min-h-screen bg-gray-50">
+    <SiteNav />
     <div className="mx-auto max-w-3xl px-4 py-16">
       <h1 className="text-3xl font-bold text-gray-900">Terms of Service</h1>
       <p className="mt-2 text-sm text-gray-500">Last updated: February 26, 2026</p>
