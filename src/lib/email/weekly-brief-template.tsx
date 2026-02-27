@@ -103,7 +103,7 @@ function ItemList({
                 margin: "4px 0",
               }}
             >
-              Why this matters to you: {highlightTerms(item.relevanceNote, profileTerms)}
+              <span style={{ fontWeight: 700 }}>Why this matters to you:</span> {highlightTerms(item.relevanceNote, profileTerms)}
             </Text>
           )}
         </Section>
