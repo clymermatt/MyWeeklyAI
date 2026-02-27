@@ -1,6 +1,11 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/admin";
+import type { SocialPostStatus } from "@/generated/prisma/client";
+
+const VALID_STATUSES: SocialPostStatus[] = [
+  "DRAFT", "APPROVED", "SCHEDULED", "PUBLISHED", "REJECTED",
+];
 
 export async function PATCH(
   req: Request,
@@ -17,6 +22,10 @@ export async function PATCH(
     hashtags?: string[];
     status?: string;
   };
+
+  if (body.status !== undefined && !VALID_STATUSES.includes(body.status as SocialPostStatus)) {
+    return NextResponse.json({ error: "Invalid status" }, { status: 400 });
+  }
 
   const data: Record<string, unknown> = {};
   if (body.content !== undefined) data.content = body.content;

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { sendTelegramMessage } from "@/lib/telegram";
+import { verifySecret } from "@/lib/verify-secret";
 
 function escMd(text: string): string {
   return text.replace(/[_*[\]()~`>#+\-=|{}.!\\]/g, "\\$&");
@@ -9,7 +10,7 @@ function escMd(text: string): string {
 export async function POST(req: Request) {
   // Validate webhook secret
   const secret = req.headers.get("x-telegram-bot-api-secret-token");
-  if (secret !== process.env.TELEGRAM_WEBHOOK_SECRET) {
+  if (!verifySecret(secret, process.env.TELEGRAM_WEBHOOK_SECRET)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

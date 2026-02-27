@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { Prisma } from "@/generated/prisma/client";
 
 export async function GET(req: NextRequest) {
   const session = await auth();
@@ -16,7 +17,7 @@ export async function GET(req: NextRequest) {
   const pattern = `%${q}%`;
 
   // Search across all JSON sections for matching article titles/summaries
-  const digests = await prisma.$queryRawUnsafe<
+  const digests = await prisma.$queryRaw<
     {
       id: string;
       userId: string;
@@ -27,8 +28,7 @@ export async function GET(req: NextRequest) {
       sentAt: Date;
       createdAt: Date;
     }[]
-  >(
-    `
+  >(Prisma.sql`
     SELECT DISTINCT d."id", d."userId", d."briefJson", d."isFree",
            d."periodStart", d."periodEnd", d."sentAt", d."createdAt"
     FROM "WeeklyDigest" d,
@@ -41,17 +41,14 @@ export async function GET(req: NextRequest) {
         COALESCE(d."briefJson"->'labUpdates', '[]'::jsonb)
       ) AS value
     ) items
-    WHERE d."userId" = $1
+    WHERE d."userId" = ${session.user.id}
       AND (
-        items.value->>'title' ILIKE $2
-        OR items.value->>'summary' ILIKE $2
+        items.value->>'title' ILIKE ${pattern}
+        OR items.value->>'summary' ILIKE ${pattern}
       )
     ORDER BY d."sentAt" DESC
     LIMIT 20
-    `,
-    session.user.id,
-    pattern,
-  );
+  `);
 
   // Serialize dates to ISO strings for client consumption
   const serialized = digests.map((d) => ({

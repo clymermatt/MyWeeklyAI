@@ -4,12 +4,12 @@ import { generatePostsForSegment } from "@/lib/jobs/social-posts";
 import { sendJobAlertEmail } from "@/lib/email/send";
 import { pingHealthCheck } from "@/lib/healthcheck";
 import landingPages from "@/lib/landing-content";
+import { verifyCronSecret } from "@/lib/verify-secret";
 
 export const maxDuration = 60;
 
 export async function POST(req: Request) {
-  const authHeader = req.headers.get("authorization");
-  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+  if (!verifyCronSecret(req.headers.get("authorization"))) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
