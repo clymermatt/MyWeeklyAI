@@ -1,10 +1,23 @@
 import Link from "next/link";
-import SiteNav from "@/components/site-nav";
+import Image from "next/image";
 
 export default function NotFound() {
   return (
     <div className="min-h-screen bg-gray-50">
-      <SiteNav />
+      <nav className="sticky top-0 z-40 border-b border-gray-200 bg-white">
+        <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4">
+          <Link href="/" className="shrink-0">
+            <Image
+              src="/logos/nav-logo.png"
+              alt="My Weekly AI"
+              width={180}
+              height={32}
+              className="h-7 w-auto"
+              priority
+            />
+          </Link>
+        </div>
+      </nav>
       <div className="flex flex-col items-center justify-center px-4 py-32">
         <h1 className="text-8xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
           404
