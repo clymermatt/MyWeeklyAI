@@ -5,192 +5,247 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
+/* ─── shared style constants ─── */
+const h2 = "mt-12 mb-4 text-2xl font-bold text-gray-900 border-b border-gray-200 pb-2";
+const h3 = "mt-8 mb-3 text-lg font-semibold text-gray-900";
+const p = "mt-3 text-sm leading-relaxed text-gray-700";
+const ul = "mt-3 list-disc pl-6 space-y-1.5 text-sm text-gray-700";
+const ol = "mt-3 list-decimal pl-6 space-y-1.5 text-sm text-gray-700";
+const table = "mt-4 w-full text-sm border border-gray-200 rounded-lg overflow-hidden";
+const th = "bg-gray-50 px-4 py-2 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider border-b border-gray-200";
+const td = "px-4 py-2.5 text-gray-700 border-b border-gray-100";
+const link = "text-purple-600 hover:underline";
+const code = "rounded bg-gray-100 px-1.5 py-0.5 text-xs font-mono text-gray-800";
+const pre = "mt-3 overflow-x-auto rounded-lg bg-gray-900 p-4 text-xs text-gray-100 font-mono leading-relaxed";
+const hr = "my-10 border-gray-200";
+
 export default function AdminGuidePage() {
   return (
-    <article className="prose prose-gray max-w-none prose-headings:text-gray-900 prose-a:text-purple-600 prose-a:no-underline hover:prose-a:underline prose-th:text-left prose-table:text-sm">
-      <h1>My Weekly AI — Admin Guide</h1>
-      <p className="lead">Internal operations reference for running My Weekly AI.</p>
+    <div className="max-w-none">
+      <h1 className="text-3xl font-bold text-gray-900">Admin Guide</h1>
+      <p className={p}>Internal operations reference for running My Weekly AI.</p>
 
-      <hr />
+      {/* ─── Table of Contents ─── */}
+      <nav className="mt-8 rounded-lg border border-gray-200 bg-gray-50 p-5">
+        <h2 className="mb-3 text-sm font-semibold uppercase tracking-wider text-gray-500">Table of Contents</h2>
+        <ol className="columns-2 gap-8 list-decimal pl-5 space-y-1 text-sm">
+          <li><a href="#overview" className={link}>Overview</a></li>
+          <li><a href="#weekly-cadence" className={link}>Weekly Cadence</a></li>
+          <li><a href="#rss-sources" className={link}>RSS Sources</a></li>
+          <li><a href="#brief-generation" className={link}>Brief Generation</a></li>
+          <li><a href="#delivery" className={link}>Delivery</a></li>
+          <li><a href="#social-posts" className={link}>Social Posts Workflow</a></li>
+          <li><a href="#admin-pages" className={link}>Admin Pages</a></li>
+          <li><a href="#subscriptions" className={link}>Subscriptions &amp; Stripe</a></li>
+          <li><a href="#telegram" className={link}>Telegram Bot</a></li>
+          <li><a href="#email-addresses" className={link}>Email Addresses</a></li>
+          <li><a href="#env-vars" className={link}>Environment Variables</a></li>
+          <li><a href="#common-ops" className={link}>Common Operations</a></li>
+          <li><a href="#infrastructure" className={link}>Infrastructure</a></li>
+        </ol>
+      </nav>
 
-      <h2>Overview</h2>
-      <p>
+      <hr className={hr} />
+
+      {/* ─── Overview ─── */}
+      <h2 id="overview" className={h2}>Overview</h2>
+      <p className={p}>
         My Weekly AI is a weekly AI news briefing service. Users sign up, set a context profile
         (role, industry, tools, goals), and receive a personalized AI news digest every Sunday.
         Free users get a generic brief; Pro subscribers get a personalized brief ranked by
         relevance to their profile.
       </p>
-      <p><strong>Tech stack:</strong> Next.js 16, Prisma 7 (PrismaPg adapter), Tailwind 4, TypeScript</p>
+      <p className={p}><strong>Tech stack:</strong> Next.js 16, Prisma 7 (PrismaPg adapter), Tailwind 4, TypeScript</p>
 
-      <table>
+      <table className={table}>
         <thead>
-          <tr><th>Resource</th><th>URL</th></tr>
+          <tr><th className={th}>Resource</th><th className={th}>URL</th></tr>
         </thead>
         <tbody>
-          <tr><td>Production</td><td><a href="https://my-weekly-ai.vercel.app">my-weekly-ai.vercel.app</a></td></tr>
-          <tr><td>Admin — Jobs</td><td><a href="/admin/jobs">/admin/jobs</a></td></tr>
-          <tr><td>Admin — Sources</td><td><a href="/admin/sources">/admin/sources</a></td></tr>
-          <tr><td>Admin — Social</td><td><a href="/admin/social">/admin/social</a></td></tr>
-          <tr><td>Vercel Dashboard</td><td><a href="https://vercel.com">vercel.com</a></td></tr>
-          <tr><td>Supabase Dashboard</td><td><a href="https://supabase.com/dashboard">supabase.com/dashboard</a></td></tr>
-          <tr><td>Stripe Dashboard</td><td><a href="https://dashboard.stripe.com">dashboard.stripe.com</a></td></tr>
-          <tr><td>Resend Dashboard</td><td><a href="https://resend.com">resend.com</a></td></tr>
+          <tr><td className={td}>Production</td><td className={td}><a href="https://my-weekly-ai.vercel.app" className={link}>my-weekly-ai.vercel.app</a></td></tr>
+          <tr><td className={td}>Admin — Jobs</td><td className={td}><a href="/admin/jobs" className={link}>/admin/jobs</a></td></tr>
+          <tr><td className={td}>Admin — Sources</td><td className={td}><a href="/admin/sources" className={link}>/admin/sources</a></td></tr>
+          <tr><td className={td}>Admin — Social</td><td className={td}><a href="/admin/social" className={link}>/admin/social</a></td></tr>
+          <tr><td className={td}>Vercel Dashboard</td><td className={td}><a href="https://vercel.com" className={link}>vercel.com</a></td></tr>
+          <tr><td className={td}>Supabase Dashboard</td><td className={td}><a href="https://supabase.com/dashboard" className={link}>supabase.com/dashboard</a></td></tr>
+          <tr><td className={td}>Stripe Dashboard</td><td className={td}><a href="https://dashboard.stripe.com" className={link}>dashboard.stripe.com</a></td></tr>
+          <tr><td className={td}>Resend Dashboard</td><td className={td}><a href="https://resend.com" className={link}>resend.com</a></td></tr>
         </tbody>
       </table>
 
-      <hr />
+      <hr className={hr} />
 
-      <h2>Weekly Cadence</h2>
-      <p>Two cron jobs run every Sunday, defined in <code>vercel.json</code>:</p>
-      <table>
+      {/* ─── Weekly Cadence ─── */}
+      <h2 id="weekly-cadence" className={h2}>Weekly Cadence</h2>
+      <p className={p}>Two cron jobs run every Sunday, defined in <code className={code}>vercel.json</code>:</p>
+      <table className={table}>
         <thead>
-          <tr><th>Time (UTC)</th><th>Job</th><th>API Route</th><th>What it does</th></tr>
+          <tr><th className={th}>Time (UTC)</th><th className={th}>Job</th><th className={th}>API Route</th><th className={th}>What it does</th></tr>
         </thead>
         <tbody>
           <tr>
-            <td>4:00 PM</td><td>Ingestion</td><td><code>POST /api/jobs/ingest</code></td>
-            <td>Fetches all active RSS feeds, filters articles for AI relevance using a 55+ keyword list, and upserts new items into the <code>NewsItem</code> table.</td>
+            <td className={td}>4:00 PM</td><td className={td}>Ingestion</td><td className={td}><code className={code}>POST /api/jobs/ingest</code></td>
+            <td className={td}>Fetches all active RSS feeds, filters articles for AI relevance using a 55+ keyword list, and upserts new items into the <code className={code}>NewsItem</code> table.</td>
           </tr>
           <tr>
-            <td>6:00 PM</td><td>Weekly Digest</td><td><code>POST /api/jobs/weekly-digest</code></td>
-            <td>Re-runs ingestion for freshness, then generates and delivers briefs. One shared Claude call for the free brief, one Claude call per paid user for personalized briefs. Delivers via email, Telegram, or both depending on each user&apos;s preference.</td>
+            <td className={td}>6:00 PM</td><td className={td}>Weekly Digest</td><td className={td}><code className={code}>POST /api/jobs/weekly-digest</code></td>
+            <td className={td}>Re-runs ingestion for freshness, then generates and delivers briefs. One shared Claude call for the free brief, one Claude call per paid user for personalized briefs.</td>
           </tr>
         </tbody>
       </table>
-      <p>The 2-hour gap gives ingestion time to complete before digests are generated.</p>
-      <p>
-        <strong>What happens if a job fails:</strong> If <code>ADMIN_ALERT_EMAIL</code> is set,
+      <p className={p}>The 2-hour gap gives ingestion time to complete before digests are generated.</p>
+      <p className={p}>
+        <strong>What happens if a job fails:</strong> If <code className={code}>ADMIN_ALERT_EMAIL</code> is set,
         you&apos;ll receive an email alert with the job name, status, metrics, and error details. If
         healthcheck URLs are configured, they&apos;ll stop receiving pings and your monitoring service
         will fire an alert.
       </p>
 
-      <hr />
+      <hr className={hr} />
 
-      <h2>RSS Sources</h2>
-      <p>31 feeds across three categories, seeded from <code>prisma/seed.ts</code>:</p>
+      {/* ─── RSS Sources ─── */}
+      <h2 id="rss-sources" className={h2}>RSS Sources</h2>
+      <p className={p}>31 feeds across three categories, seeded from <code className={code}>prisma/seed.ts</code>:</p>
 
-      <h3>Industry News (19 feeds)</h3>
-      <table>
-        <thead><tr><th>Source</th><th>URL</th></tr></thead>
+      <h3 className={h3}>Industry News (19 feeds)</h3>
+      <table className={table}>
+        <thead><tr><th className={th}>Source</th><th className={th}>URL</th></tr></thead>
         <tbody>
-          <tr><td>The Verge - AI</td><td>theverge.com/rss/ai-artificial-intelligence</td></tr>
-          <tr><td>TechCrunch - AI</td><td>techcrunch.com/category/artificial-intelligence/feed/</td></tr>
-          <tr><td>Ars Technica - AI</td><td>feeds.arstechnica.com/arstechnica/technology-lab</td></tr>
-          <tr><td>VentureBeat - AI</td><td>venturebeat.com/category/ai/feed/</td></tr>
-          <tr><td>IEEE Spectrum - AI</td><td>spectrum.ieee.org/feeds/topic/artificial-intelligence.rss</td></tr>
-          <tr><td>The New Stack</td><td>thenewstack.io/feed/</td></tr>
-          <tr><td>SaaStr</td><td>saastr.com/feed/</td></tr>
-          <tr><td>PYMNTS - AI</td><td>pymnts.com/category/artificial-intelligence-2/feed/</td></tr>
-          <tr><td>TechCrunch - Fintech</td><td>techcrunch.com/category/fintech/feed/</td></tr>
-          <tr><td>Fierce Healthcare</td><td>fiercehealthcare.com/rss/xml</td></tr>
-          <tr><td>Fierce Biotech</td><td>fiercebiotech.com/rss/xml</td></tr>
-          <tr><td>Dark Reading</td><td>darkreading.com/rss.xml</td></tr>
-          <tr><td>SecurityWeek</td><td>securityweek.com/feed/</td></tr>
-          <tr><td>Retail Dive - Technology</td><td>retaildive.com/feeds/topic/technology/</td></tr>
-          <tr><td>Artificial Lawyer</td><td>artificiallawyer.com/feed/</td></tr>
-          <tr><td>The Hollywood Reporter - AI</td><td>hollywoodreporter.com/t/ai-3/feed/</td></tr>
-          <tr><td>Variety</td><td>variety.com/feed/</td></tr>
-          <tr><td>EdSurge</td><td>edsurge.com/articles_rss</td></tr>
-          <tr><td>eSchool News</td><td>eschoolnews.com/feed/</td></tr>
+          {[
+            ["The Verge - AI", "theverge.com/rss/ai-artificial-intelligence"],
+            ["TechCrunch - AI", "techcrunch.com/category/artificial-intelligence/feed/"],
+            ["Ars Technica - AI", "feeds.arstechnica.com/arstechnica/technology-lab"],
+            ["VentureBeat - AI", "venturebeat.com/category/ai/feed/"],
+            ["IEEE Spectrum - AI", "spectrum.ieee.org/feeds/topic/artificial-intelligence.rss"],
+            ["The New Stack", "thenewstack.io/feed/"],
+            ["SaaStr", "saastr.com/feed/"],
+            ["PYMNTS - AI", "pymnts.com/category/artificial-intelligence-2/feed/"],
+            ["TechCrunch - Fintech", "techcrunch.com/category/fintech/feed/"],
+            ["Fierce Healthcare", "fiercehealthcare.com/rss/xml"],
+            ["Fierce Biotech", "fiercebiotech.com/rss/xml"],
+            ["Dark Reading", "darkreading.com/rss.xml"],
+            ["SecurityWeek", "securityweek.com/feed/"],
+            ["Retail Dive - Technology", "retaildive.com/feeds/topic/technology/"],
+            ["Artificial Lawyer", "artificiallawyer.com/feed/"],
+            ["The Hollywood Reporter - AI", "hollywoodreporter.com/t/ai-3/feed/"],
+            ["Variety", "variety.com/feed/"],
+            ["EdSurge", "edsurge.com/articles_rss"],
+            ["eSchool News", "eschoolnews.com/feed/"],
+          ].map(([name, url]) => (
+            <tr key={name}><td className={td}>{name}</td><td className={`${td} font-mono text-xs`}>{url}</td></tr>
+          ))}
         </tbody>
       </table>
 
-      <h3>AI Lab (6 feeds)</h3>
-      <table>
-        <thead><tr><th>Source</th><th>URL</th></tr></thead>
+      <h3 className={h3}>AI Lab (6 feeds)</h3>
+      <table className={table}>
+        <thead><tr><th className={th}>Source</th><th className={th}>URL</th></tr></thead>
         <tbody>
-          <tr><td>OpenAI Blog</td><td>openai.com/blog/rss.xml</td></tr>
-          <tr><td>Google AI Blog</td><td>blog.google/technology/ai/rss/</td></tr>
-          <tr><td>Google DeepMind</td><td>deepmind.google/blog/rss.xml</td></tr>
-          <tr><td>Microsoft Research</td><td>microsoft.com/en-us/research/feed/</td></tr>
-          <tr><td>NVIDIA Technical Blog</td><td>developer.nvidia.com/blog/feed/</td></tr>
-          <tr><td>Hugging Face Blog</td><td>huggingface.co/blog/feed.xml</td></tr>
+          {[
+            ["OpenAI Blog", "openai.com/blog/rss.xml"],
+            ["Google AI Blog", "blog.google/technology/ai/rss/"],
+            ["Google DeepMind", "deepmind.google/blog/rss.xml"],
+            ["Microsoft Research", "microsoft.com/en-us/research/feed/"],
+            ["NVIDIA Technical Blog", "developer.nvidia.com/blog/feed/"],
+            ["Hugging Face Blog", "huggingface.co/blog/feed.xml"],
+          ].map(([name, url]) => (
+            <tr key={name}><td className={td}>{name}</td><td className={`${td} font-mono text-xs`}>{url}</td></tr>
+          ))}
         </tbody>
       </table>
 
-      <h3>Research &amp; Analysis (6 feeds)</h3>
-      <table>
-        <thead><tr><th>Source</th><th>URL</th></tr></thead>
+      <h3 className={h3}>Research &amp; Analysis (6 feeds)</h3>
+      <table className={table}>
+        <thead><tr><th className={th}>Source</th><th className={th}>URL</th></tr></thead>
         <tbody>
-          <tr><td>MIT Technology Review - AI</td><td>technologyreview.com/topic/artificial-intelligence/feed</td></tr>
-          <tr><td>Import AI</td><td>importai.substack.com/feed</td></tr>
-          <tr><td>AI Alignment Forum</td><td>alignmentforum.org/feed.xml</td></tr>
-          <tr><td>The Gradient</td><td>thegradient.pub/rss/</td></tr>
-          <tr><td>Interconnects AI</td><td>interconnects.ai/feed</td></tr>
-          <tr><td>MIT News - AI</td><td>news.mit.edu/rss/topic/artificial-intelligence2</td></tr>
+          {[
+            ["MIT Technology Review - AI", "technologyreview.com/topic/artificial-intelligence/feed"],
+            ["Import AI", "importai.substack.com/feed"],
+            ["AI Alignment Forum", "alignmentforum.org/feed.xml"],
+            ["The Gradient", "thegradient.pub/rss/"],
+            ["Interconnects AI", "interconnects.ai/feed"],
+            ["MIT News - AI", "news.mit.edu/rss/topic/artificial-intelligence2"],
+          ].map(([name, url]) => (
+            <tr key={name}><td className={td}>{name}</td><td className={`${td} font-mono text-xs`}>{url}</td></tr>
+          ))}
         </tbody>
       </table>
 
-      <h3>Managing sources</h3>
-      <ul>
-        <li><strong>Add/remove/disable</strong> feeds at <a href="/admin/sources">/admin/sources</a>.</li>
-        <li>To bulk-update the seed list, edit <code>prisma/seed.ts</code> and run <code>npx tsx prisma/seed.ts</code>. Sources removed from the seed list are automatically deactivated.</li>
+      <h3 className={h3}>Managing sources</h3>
+      <ul className={ul}>
+        <li><strong>Add/remove/disable</strong> feeds at <a href="/admin/sources" className={link}>/admin/sources</a>.</li>
+        <li>To bulk-update the seed list, edit <code className={code}>prisma/seed.ts</code> and run <code className={code}>npx tsx prisma/seed.ts</code>. Sources removed from the seed list are automatically deactivated.</li>
       </ul>
 
-      <hr />
+      <hr className={hr} />
 
-      <h2>Brief Generation</h2>
-      <p>All briefs use <strong>Claude Sonnet 4.5</strong> (<code>claude-sonnet-4-5-20250929</code>).</p>
+      {/* ─── Brief Generation ─── */}
+      <h2 id="brief-generation" className={h2}>Brief Generation</h2>
+      <p className={p}>All briefs use <strong>Claude Sonnet 4.5</strong> (<code className={code}>claude-sonnet-4-5-20250929</code>).</p>
 
-      <h3>Free brief</h3>
-      <p>One Claude call per week, shared by all free users. Max 2,048 tokens.</p>
-      <table>
-        <thead><tr><th>Section</th><th>Content</th></tr></thead>
+      <h3 className={h3}>Free brief</h3>
+      <p className={p}>One Claude call per week, shared by all free users. Max 2,048 tokens.</p>
+      <table className={table}>
+        <thead><tr><th className={th}>Section</th><th className={th}>Content</th></tr></thead>
         <tbody>
-          <tr><td><strong>Industry News</strong></td><td>3–5 most significant stories from Industry News sources</td></tr>
-          <tr><td><strong>AI Lab Announcements</strong></td><td>3–5 most significant stories from AI Lab sources</td></tr>
+          <tr><td className={`${td} font-semibold`}>Industry News</td><td className={td}>3–5 most significant stories from Industry News sources</td></tr>
+          <tr><td className={`${td} font-semibold`}>AI Lab Announcements</td><td className={td}>3–5 most significant stories from AI Lab sources</td></tr>
         </tbody>
       </table>
-      <p>Each item includes title, source, URL, and a 1–2 sentence summary. Prioritizes product launches, funding rounds, partnerships, regulatory developments, model releases, and research breakthroughs.</p>
+      <p className={p}>Each item includes title, source, URL, and a 1–2 sentence summary. Prioritizes product launches, funding rounds, partnerships, regulatory developments, model releases, and research breakthroughs.</p>
 
-      <h3>Pro brief</h3>
-      <p>One Claude call per paid user. Max 4,096 tokens. Personalized using the user&apos;s context profile.</p>
-      <table>
-        <thead><tr><th>Section</th><th>Content</th></tr></thead>
+      <h3 className={h3}>Pro brief</h3>
+      <p className={p}>One Claude call per paid user. Max 4,096 tokens. Personalized using the user&apos;s context profile.</p>
+      <table className={table}>
+        <thead><tr><th className={th}>Section</th><th className={th}>Content</th></tr></thead>
         <tbody>
-          <tr><td><strong>What Dropped</strong></td><td>3–5 most significant AI developments this week, regardless of profile</td></tr>
-          <tr><td><strong>Relevant to You</strong></td><td>3–5 items specifically matched to the user&apos;s role, industry, tools, and goals. Each includes a <code>relevanceNote</code> explaining why it matters for their work.</td></tr>
-          <tr><td><strong>What to Test</strong></td><td>1–3 actionable items the user can try this week — names the tool, describes the action, explains the expected outcome</td></tr>
-          <tr><td><strong>Ignore Summary</strong></td><td>A paragraph summarizing what was filtered out and why</td></tr>
+          <tr><td className={`${td} font-semibold`}>What Dropped</td><td className={td}>3–5 most significant AI developments this week, regardless of profile</td></tr>
+          <tr><td className={`${td} font-semibold`}>Relevant to You</td><td className={td}>3–5 items matched to the user&apos;s role, industry, tools, and goals. Each includes a <code className={code}>relevanceNote</code>.</td></tr>
+          <tr><td className={`${td} font-semibold`}>What to Test</td><td className={td}>1–3 actionable items — names the tool, describes the action, explains the expected outcome</td></tr>
+          <tr><td className={`${td} font-semibold`}>Ignore Summary</td><td className={td}>A paragraph summarizing what was filtered out and why</td></tr>
         </tbody>
       </table>
-      <p>In the email, free users see the &quot;Relevant to You&quot; and &quot;What to Test&quot; sections as locked grey boxes (upsell to Pro).</p>
+      <p className={p}>In the email, free users see the &quot;Relevant to You&quot; and &quot;What to Test&quot; sections as locked grey boxes (upsell to Pro).</p>
 
-      <h3>Relevance scoring</h3>
-      <p>Before the Pro brief is generated, articles are ranked using a keyword-based scorer (<code>src/lib/llm/relevance-scorer.ts</code>). Each article gets a score from 0–100:</p>
-      <table>
-        <thead><tr><th>Signal</th><th>Points</th></tr></thead>
+      <h3 className={h3}>Relevance scoring</h3>
+      <p className={p}>Before the Pro brief is generated, articles are ranked using a keyword-based scorer (<code className={code}>src/lib/llm/relevance-scorer.ts</code>). Each article gets a score from 0–100:</p>
+      <table className={table}>
+        <thead><tr><th className={th}>Signal</th><th className={th}>Points</th></tr></thead>
         <tbody>
-          <tr><td>Direct industry name match</td><td>+18</td></tr>
-          <tr><td>Industry expanded keywords (up to 15 terms)</td><td>+5 each, max +15</td></tr>
-          <tr><td>Direct role title match</td><td>+18</td></tr>
-          <tr><td>Role expanded keywords (up to ~20 terms)</td><td>+5 each, max +15</td></tr>
-          <tr><td>Each focus topic match</td><td>+15</td></tr>
-          <tr><td>Each tool/platform match</td><td>+12</td></tr>
-          <tr><td>Goal keywords</td><td>+5 each, up to 3 per goal</td></tr>
-          <tr><td>Matches in 3+ profile fields</td><td>+10 bonus</td></tr>
-          <tr><td>Matches in 5+ profile fields</td><td>+10 bonus</td></tr>
-          <tr><td>Each avoided topic match</td><td>-25 penalty</td></tr>
+          {[
+            ["Direct industry name match", "+18"],
+            ["Industry expanded keywords (up to 15 terms)", "+5 each, max +15"],
+            ["Direct role title match", "+18"],
+            ["Role expanded keywords (up to ~20 terms)", "+5 each, max +15"],
+            ["Each focus topic match", "+15"],
+            ["Each tool/platform match", "+12"],
+            ["Goal keywords", "+5 each, up to 3 per goal"],
+            ["Matches in 3+ profile fields", "+10 bonus"],
+            ["Matches in 5+ profile fields", "+10 bonus"],
+            ["Each avoided topic match", "-25 penalty"],
+          ].map(([signal, points]) => (
+            <tr key={signal}><td className={td}>{signal}</td><td className={`${td} font-mono`}>{points}</td></tr>
+          ))}
         </tbody>
       </table>
-      <p>The top 30 articles (score &gt; 0) are selected, then up to 15 recent general articles are appended. Articles from the user&apos;s last 2 digests are deduplicated.</p>
+      <p className={p}>The top 30 articles (score &gt; 0) are selected, then up to 15 recent general articles are appended. Articles from the user&apos;s last 2 digests are deduplicated.</p>
 
-      <hr />
+      <hr className={hr} />
 
-      <h2>Delivery</h2>
+      {/* ─── Delivery ─── */}
+      <h2 id="delivery" className={h2}>Delivery</h2>
 
-      <h3>Email</h3>
-      <p>Sent via <strong>Resend</strong>. See <a href="#email-addresses">Email Addresses</a> for from addresses.</p>
-      <ul>
-        <li>Free users: subject line <code>Your Free AI Brief — &lt;date range&gt;</code></li>
-        <li>Pro users: subject line <code>Your AI Brief — &lt;date range&gt;</code></li>
+      <h3 className={h3}>Email</h3>
+      <p className={p}>Sent via <strong>Resend</strong>. See <a href="#email-addresses" className={link}>Email Addresses</a> for from addresses.</p>
+      <ul className={ul}>
+        <li>Free users: subject line <code className={code}>Your Free AI Brief — &lt;date range&gt;</code></li>
+        <li>Pro users: subject line <code className={code}>Your AI Brief — &lt;date range&gt;</code></li>
         <li>Profile terms (role, industry, tools, focus topics) are highlighted in Pro emails</li>
       </ul>
 
-      <h3>Telegram</h3>
-      <p>Sent via the <strong>@myweeklyai_bot</strong> Telegram bot.</p>
-      <ul>
+      <h3 className={h3}>Telegram</h3>
+      <p className={p}>Sent via the <strong>@myweeklyai_bot</strong> Telegram bot.</p>
+      <ul className={ul}>
         <li>Messages use MarkdownV2 formatting</li>
         <li>Messages over 4,096 characters are split at paragraph boundaries</li>
         <li>Web page previews are disabled</li>
@@ -199,286 +254,282 @@ export default function AdminGuidePage() {
         <li>Profile terms are bolded in the Telegram message</li>
       </ul>
 
-      <h3>Channel selection</h3>
-      <p>Users choose their delivery channel on the dashboard: <strong>Email Only</strong>, <strong>Telegram Only</strong>, or <strong>Both</strong>. The weekly digest respects this setting — both channels fire independently so one failing doesn&apos;t block the other.</p>
+      <h3 className={h3}>Channel selection</h3>
+      <p className={p}>Users choose their delivery channel on the dashboard: <strong>Email Only</strong>, <strong>Telegram Only</strong>, or <strong>Both</strong>. Both channels fire independently so one failing doesn&apos;t block the other.</p>
 
-      <hr />
+      <hr className={hr} />
 
-      <h2>Social Posts Workflow</h2>
-      <p>Social posts are generated from the week&apos;s news, targeted at specific audience segments for LinkedIn and Twitter/X.</p>
+      {/* ─── Social Posts ─── */}
+      <h2 id="social-posts" className={h2}>Social Posts Workflow</h2>
+      <p className={p}>Social posts are generated from the week&apos;s news, targeted at specific audience segments for LinkedIn and Twitter/X.</p>
 
-      <h3>Segments</h3>
-      <p>37 total segments: 18 role-based + 19 industry-based. Each maps to a landing page target audience.</p>
-      <p><strong>Roles:</strong> Software Engineers, Product Managers, UX Designers, Data Scientists, Engineering Managers, CTO/VP Engineering, CEO/Founders, Marketing Managers, Content Strategists, Sales/Revenue, DevOps Engineers, Research Scientists, Business Analysts, Project Managers, Customer Success, Solutions Architects, Consultants, Students/Researchers.</p>
-      <p><strong>Industries:</strong> SaaS/Software, Fintech, Healthcare, E-commerce/Retail, Education/EdTech, Media/Entertainment, Marketing/Advertising, Consulting, Manufacturing, Real Estate/PropTech, Legal/LegalTech, Government, Nonprofit, Cybersecurity, Gaming, Telecommunications, Energy/CleanTech, Transportation/Logistics, and more.</p>
+      <h3 className={h3}>Segments</h3>
+      <p className={p}>37 total segments: 18 role-based + 19 industry-based. Each maps to a landing page target audience.</p>
+      <p className={p}><strong>Roles:</strong> Software Engineers, Product Managers, UX Designers, Data Scientists, Engineering Managers, CTO/VP Engineering, CEO/Founders, Marketing Managers, Content Strategists, Sales/Revenue, DevOps Engineers, Research Scientists, Business Analysts, Project Managers, Customer Success, Solutions Architects, Consultants, Students/Researchers.</p>
+      <p className={p}><strong>Industries:</strong> SaaS/Software, Fintech, Healthcare, E-commerce/Retail, Education/EdTech, Media/Entertainment, Marketing/Advertising, Consulting, Manufacturing, Real Estate/PropTech, Legal/LegalTech, Government, Nonprofit, Cybersecurity, Gaming, Telecommunications, Energy/CleanTech, Transportation/Logistics, and more.</p>
 
-      <h3>Step-by-step workflow</h3>
-      <ol>
-        <li><strong>Go to</strong> <a href="/admin/social">/admin/social</a></li>
-        <li><strong>Select segments</strong> — check the ones you want to generate for (grouped by Roles and Industries). Already-generated segments show &quot;(done)&quot;.</li>
-        <li><strong>Click Generate</strong> — calls the API for each selected segment sequentially. One Claude call per segment. Each generates 1 LinkedIn post (150–300 words) + 1 Twitter/X post (under 280 chars) about the most relevant story for that audience.</li>
+      <h3 className={h3}>Step-by-step workflow</h3>
+      <ol className={ol}>
+        <li><strong>Go to</strong> <a href="/admin/social" className={link}>/admin/social</a></li>
+        <li><strong>Select segments</strong> — check the ones you want to generate for. Already-generated segments show &quot;(done)&quot;.</li>
+        <li><strong>Click Generate</strong> — one Claude call per segment. Each generates 1 LinkedIn post (150–300 words) + 1 Twitter/X post (under 280 chars).</li>
         <li><strong>Review posts</strong> — posts appear in a 2-column grid with platform badge, segment label, status, content, hashtags, and source link.</li>
-        <li><strong>Edit</strong> — click any post&apos;s content to open an inline editor. Save changes.</li>
+        <li><strong>Edit</strong> — click any post&apos;s content to open an inline editor.</li>
         <li><strong>Approve or reject</strong> — per-card buttons or bulk select + bulk action bar.</li>
-        <li><strong>Regenerate rejected</strong> — rejected posts have a Regenerate button that deletes the old post and creates a fresh one.</li>
-        <li><strong>Schedule to Buffer</strong> — select approved posts, click &quot;Send to Buffer&quot;. Posts are distributed across <strong>Tuesday–Friday</strong>, two slots per day at <strong>10:00 AM ET</strong> and <strong>2:00 PM ET</strong>. Updates post status to <code>SCHEDULED</code>.</li>
+        <li><strong>Regenerate rejected</strong> — rejected posts have a Regenerate button.</li>
+        <li><strong>Schedule to Buffer</strong> — select approved posts, click &quot;Send to Buffer&quot;. Posts are distributed across <strong>Tuesday–Friday</strong>, two slots per day at <strong>10:00 AM ET</strong> and <strong>2:00 PM ET</strong>.</li>
       </ol>
-      <p><strong>Post statuses:</strong> DRAFT → APPROVED → SCHEDULED → PUBLISHED (or REJECTED at any point).</p>
-      <p><strong>Cost estimate:</strong> Each segment = 1 Claude Sonnet call (~2,048 tokens output). At ~37 segments, that&apos;s roughly 37 API calls per week.</p>
+      <p className={p}><strong>Post statuses:</strong> DRAFT → APPROVED → SCHEDULED → PUBLISHED (or REJECTED at any point).</p>
+      <p className={p}><strong>Cost estimate:</strong> ~37 Claude Sonnet calls per week (~2,048 tokens output each).</p>
 
-      <hr />
+      <hr className={hr} />
 
-      <h2>Admin Pages</h2>
+      {/* ─── Admin Pages ─── */}
+      <h2 id="admin-pages" className={h2}>Admin Pages</h2>
 
-      <h3><a href="/admin/jobs">/admin/jobs</a> — Job Health &amp; History</h3>
-      <ul>
-        <li><strong>Summary cards</strong> at top for <code>weekly-digest</code>, <code>ingestion</code>, and <code>social-posts</code> — each shows a health dot (green/yellow/red based on last run status and age), last run time, and key metrics.</li>
-        <li><strong>History table</strong> showing job name, status (SUCCESS/RUNNING/FAILURE), start time, end time, metrics JSON, and error text. Shows last 50 runs.</li>
+      <h3 className={h3}><a href="/admin/jobs" className={link}>/admin/jobs</a> — Job Health &amp; History</h3>
+      <ul className={ul}>
+        <li><strong>Summary cards</strong> for <code className={code}>weekly-digest</code>, <code className={code}>ingestion</code>, and <code className={code}>social-posts</code> — health dot (green/yellow/red), last run time, and key metrics.</li>
+        <li><strong>History table</strong> — job name, status, start/end time, metrics JSON, and error text. Shows last 50 runs.</li>
       </ul>
 
-      <h3><a href="/admin/sources">/admin/sources</a> — RSS Feed Management</h3>
-      <ul>
+      <h3 className={h3}><a href="/admin/sources" className={link}>/admin/sources</a> — RSS Feed Management</h3>
+      <ul className={ul}>
         <li><strong>Add source form</strong> — name, URL, type (RSS or API).</li>
-        <li><strong>Sources table</strong> — lists all sources with name, URL, type, item count, active/inactive toggle, and delete button.</li>
+        <li><strong>Sources table</strong> — name, URL, type, item count, active/inactive toggle, and delete button.</li>
         <li>Changes take effect on the next ingestion run.</li>
       </ul>
 
-      <h3><a href="/admin/social">/admin/social</a> — Social Post Management</h3>
-      <p>See Social Posts Workflow above.</p>
-      <p><strong>Note:</strong> Admin pages are only accessible to users with <code>role = &apos;ADMIN&apos;</code> in the database. The admin link appears in the user dropdown menu.</p>
+      <h3 className={h3}><a href="/admin/social" className={link}>/admin/social</a> — Social Post Management</h3>
+      <p className={p}>See <a href="#social-posts" className={link}>Social Posts Workflow</a> above.</p>
 
-      <hr />
+      <hr className={hr} />
 
-      <h2>Subscriptions &amp; Stripe</h2>
+      {/* ─── Subscriptions ─── */}
+      <h2 id="subscriptions" className={h2}>Subscriptions &amp; Stripe</h2>
 
-      <h3>How the trial works</h3>
-      <ol>
-        <li>User clicks the Pro signup button → redirects to Stripe Checkout with a <strong>7-day free trial</strong> (<code>trial_period_days: 7</code>).</li>
+      <h3 className={h3}>How the trial works</h3>
+      <ol className={ol}>
+        <li>User clicks Pro signup → Stripe Checkout with a <strong>7-day free trial</strong>.</li>
         <li>No payment is charged during the trial.</li>
-        <li>On <code>checkout.session.completed</code>, a <code>Subscription</code> record is created with status <code>ACTIVE</code> (trialing maps to ACTIVE internally).</li>
-        <li>An <strong>instant personalized brief</strong> is generated and delivered immediately — the user doesn&apos;t have to wait until Sunday.</li>
+        <li>On <code className={code}>checkout.session.completed</code>, a Subscription record is created with status <code className={code}>ACTIVE</code>.</li>
+        <li>An <strong>instant personalized brief</strong> is generated and delivered immediately.</li>
         <li>During the trial, the user receives full Pro briefs every Sunday.</li>
-        <li>After 7 days, Stripe charges the card. If payment fails or the user cancels, the status changes to <code>CANCELED</code> or <code>PAST_DUE</code> and the user falls back to free briefs.</li>
+        <li>After 7 days, Stripe charges the card. If payment fails or the user cancels, status changes to <code className={code}>CANCELED</code> or <code className={code}>PAST_DUE</code>.</li>
       </ol>
 
-      <h3>Webhook events handled</h3>
-      <table>
-        <thead><tr><th>Event</th><th>Action</th></tr></thead>
+      <h3 className={h3}>Webhook events handled</h3>
+      <table className={table}>
+        <thead><tr><th className={th}>Event</th><th className={th}>Action</th></tr></thead>
         <tbody>
-          <tr><td><code>checkout.session.completed</code></td><td>Creates/updates subscription record, triggers instant brief</td></tr>
-          <tr><td><code>invoice.paid</code></td><td>Updates <code>currentPeriodEnd</code>, sets status to <code>ACTIVE</code></td></tr>
-          <tr><td><code>customer.subscription.updated</code></td><td>Maps Stripe status (<code>active</code>/<code>trialing</code> → <code>ACTIVE</code>, <code>canceled</code> → <code>CANCELED</code>, <code>past_due</code> → <code>PAST_DUE</code>)</td></tr>
-          <tr><td><code>customer.subscription.deleted</code></td><td>Sets status to <code>CANCELED</code></td></tr>
+          <tr><td className={td}><code className={code}>checkout.session.completed</code></td><td className={td}>Creates/updates subscription record, triggers instant brief</td></tr>
+          <tr><td className={td}><code className={code}>invoice.paid</code></td><td className={td}>Updates <code className={code}>currentPeriodEnd</code>, sets status to ACTIVE</td></tr>
+          <tr><td className={td}><code className={code}>customer.subscription.updated</code></td><td className={td}>Maps Stripe status (active/trialing → ACTIVE, canceled → CANCELED, past_due → PAST_DUE)</td></tr>
+          <tr><td className={td}><code className={code}>customer.subscription.deleted</code></td><td className={td}>Sets status to CANCELED</td></tr>
         </tbody>
       </table>
 
-      <h3>Checking subscription status</h3>
-      <ul>
-        <li><strong>In the database:</strong> Query the <code>Subscription</code> table by user ID.</li>
-        <li><strong>In Stripe:</strong> Go to Stripe Dashboard → Customers → search by email.</li>
-        <li><strong>Billing portal:</strong> Users can manage their subscription at <code>/api/stripe/portal</code> which redirects to Stripe&apos;s hosted billing portal.</li>
+      <h3 className={h3}>Checking subscription status</h3>
+      <ul className={ul}>
+        <li><strong>In the database:</strong> Query the <code className={code}>Subscription</code> table by user ID.</li>
+        <li><strong>In Stripe:</strong> Dashboard → Customers → search by email.</li>
+        <li><strong>Billing portal:</strong> <code className={code}>/api/stripe/portal</code> redirects to Stripe&apos;s hosted billing portal.</li>
       </ul>
 
-      <hr />
+      <hr className={hr} />
 
-      <h2>Telegram Bot</h2>
-      <p>Bot: <strong>@myweeklyai_bot</strong></p>
+      {/* ─── Telegram ─── */}
+      <h2 id="telegram" className={h2}>Telegram Bot</h2>
+      <p className={p}>Bot: <strong>@myweeklyai_bot</strong></p>
 
-      <h3>How users connect</h3>
-      <ol>
+      <h3 className={h3}>How users connect</h3>
+      <ol className={ol}>
         <li>On the dashboard, user clicks to connect Telegram.</li>
         <li>A 16-byte hex token is generated with a 15-minute expiry.</li>
-        <li>User opens a deep link: <code>https://t.me/myweeklyai_bot?start=&lt;token&gt;</code></li>
-        <li>In Telegram, user sends <code>/start &lt;token&gt;</code> → the webhook validates the token, links their <code>telegramChatId</code>, and sets delivery channel to <code>BOTH</code>.</li>
-        <li>The dashboard polls every 5 seconds to detect when the connection completes.</li>
+        <li>User opens a deep link: <code className={code}>https://t.me/myweeklyai_bot?start=&lt;token&gt;</code></li>
+        <li>User sends <code className={code}>/start &lt;token&gt;</code> → webhook validates, links <code className={code}>telegramChatId</code>, sets channel to BOTH.</li>
+        <li>Dashboard polls every 5 seconds to detect when connection completes.</li>
       </ol>
 
-      <h3>Commands</h3>
-      <table>
-        <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+      <h3 className={h3}>Commands</h3>
+      <table className={table}>
+        <thead><tr><th className={th}>Command</th><th className={th}>What it does</th></tr></thead>
         <tbody>
-          <tr><td><code>/start &lt;token&gt;</code></td><td>Links the Telegram account to the user. Token must be valid and not expired.</td></tr>
-          <tr><td><code>/start</code> (no token)</td><td>Replies asking the user to use the dashboard link.</td></tr>
-          <tr><td><code>/stop</code></td><td>Disconnects the Telegram account and resets delivery channel to <code>EMAIL</code>.</td></tr>
-          <tr><td>Any other message</td><td>Replies with available commands.</td></tr>
+          <tr><td className={td}><code className={code}>/start &lt;token&gt;</code></td><td className={td}>Links the Telegram account. Token must be valid and not expired.</td></tr>
+          <tr><td className={td}><code className={code}>/start</code> (no token)</td><td className={td}>Replies asking the user to use the dashboard link.</td></tr>
+          <tr><td className={td}><code className={code}>/stop</code></td><td className={td}>Disconnects Telegram and resets delivery channel to EMAIL.</td></tr>
+          <tr><td className={td}>Any other message</td><td className={td}>Replies with available commands.</td></tr>
         </tbody>
       </table>
 
-      <h3>Disconnecting</h3>
-      <p>Users can disconnect via the dashboard (calls <code>DELETE /api/telegram/link</code>) or by sending <code>/stop</code> in Telegram. Both clear the <code>telegramChatId</code> and reset delivery channel to <code>EMAIL</code>.</p>
+      <h3 className={h3}>Disconnecting</h3>
+      <p className={p}>Users can disconnect via the dashboard (<code className={code}>DELETE /api/telegram/link</code>) or by sending <code className={code}>/stop</code> in Telegram. Both clear <code className={code}>telegramChatId</code> and reset delivery channel to EMAIL.</p>
 
-      <hr />
+      <hr className={hr} />
 
-      <h2 id="email-addresses">Email Addresses</h2>
-      <table>
-        <thead><tr><th>From Address</th><th>Purpose</th><th>Service</th></tr></thead>
+      {/* ─── Email Addresses ─── */}
+      <h2 id="email-addresses" className={h2}>Email Addresses</h2>
+      <table className={table}>
+        <thead><tr><th className={th}>From Address</th><th className={th}>Purpose</th><th className={th}>Service</th></tr></thead>
         <tbody>
-          <tr><td><code>onboarding@resend.dev</code></td><td>Magic link sign-in emails</td><td>Resend (sandbox)</td></tr>
-          <tr><td><code>hello@myweekly.ai</code></td><td>Welcome email sent on account creation</td><td>Resend</td></tr>
-          <tr><td><code>digest@myweekly.ai</code></td><td>Weekly brief delivery</td><td>Resend</td></tr>
-          <tr><td><code>alerts@myweekly.ai</code></td><td>Job failure/warning alerts to admin</td><td>Resend</td></tr>
+          <tr><td className={td}><code className={code}>onboarding@resend.dev</code></td><td className={td}>Magic link sign-in emails</td><td className={td}>Resend (sandbox)</td></tr>
+          <tr><td className={td}><code className={code}>hello@myweekly.ai</code></td><td className={td}>Welcome email on account creation</td><td className={td}>Resend</td></tr>
+          <tr><td className={td}><code className={code}>digest@myweekly.ai</code></td><td className={td}>Weekly brief delivery</td><td className={td}>Resend</td></tr>
+          <tr><td className={td}><code className={code}>alerts@myweekly.ai</code></td><td className={td}>Job failure/warning alerts to admin</td><td className={td}>Resend</td></tr>
         </tbody>
       </table>
-      <p><strong>Note:</strong> The magic link from address uses <code>onboarding@resend.dev</code> (Resend&apos;s sandbox sender). This works for any recipient but shows Resend&apos;s domain. To use a custom from address for magic links, verify the sending domain in Resend and update <code>src/lib/auth.ts</code>.</p>
+      <p className={p}><strong>Note:</strong> The magic link uses <code className={code}>onboarding@resend.dev</code> (Resend sandbox). To use a custom from address, verify the sending domain in Resend and update <code className={code}>src/lib/auth.ts</code>.</p>
 
-      <hr />
+      <hr className={hr} />
 
-      <h2>Environment Variables</h2>
+      {/* ─── Environment Variables ─── */}
+      <h2 id="env-vars" className={h2}>Environment Variables</h2>
 
-      <h3>Authentication</h3>
-      <table>
-        <thead><tr><th>Variable</th><th>Required</th><th>Purpose</th></tr></thead>
-        <tbody>
-          <tr><td><code>NEXTAUTH_SECRET</code></td><td>Yes</td><td>Signs/verifies JWT session tokens</td></tr>
-          <tr><td><code>NEXTAUTH_URL</code></td><td>Yes</td><td>Base URL for auth callbacks and redirects</td></tr>
-          <tr><td><code>GOOGLE_CLIENT_ID</code></td><td>Yes</td><td>Google OAuth client ID</td></tr>
-          <tr><td><code>GOOGLE_CLIENT_SECRET</code></td><td>Yes</td><td>Google OAuth client secret</td></tr>
-        </tbody>
-      </table>
+      {[
+        {
+          title: "Authentication",
+          vars: [
+            ["NEXTAUTH_SECRET", "Yes", "Signs/verifies JWT session tokens"],
+            ["NEXTAUTH_URL", "Yes", "Base URL for auth callbacks and redirects"],
+            ["GOOGLE_CLIENT_ID", "Yes", "Google OAuth client ID"],
+            ["GOOGLE_CLIENT_SECRET", "Yes", "Google OAuth client secret"],
+          ],
+        },
+        {
+          title: "Database",
+          vars: [["DATABASE_URL", "Yes", "Supabase Postgres connection string (session pooler)"]],
+        },
+        {
+          title: "Email",
+          vars: [["RESEND_API_KEY", "Yes", "Resend API key for all emails"]],
+        },
+        {
+          title: "AI",
+          vars: [["ANTHROPIC_API_KEY", "Yes", "Claude API key — auto-read by the Anthropic SDK"]],
+        },
+        {
+          title: "Payments",
+          vars: [
+            ["STRIPE_SECRET_KEY", "Yes", "Stripe server-side API key"],
+            ["STRIPE_WEBHOOK_SECRET", "Yes", "Validates Stripe webhook signatures"],
+            ["STRIPE_PRICE_ID", "Yes", "Price ID for the Pro subscription"],
+            ["NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY", "No", "Client-side Stripe key (currently unused)"],
+          ],
+        },
+        {
+          title: "Telegram",
+          vars: [
+            ["TELEGRAM_BOT_TOKEN", "Yes", "Bot token from @BotFather"],
+            ["TELEGRAM_BOT_USERNAME", "Yes", "Bot username (without @) for deep link URLs"],
+            ["TELEGRAM_WEBHOOK_SECRET", "Yes", "Validates incoming Telegram webhook requests"],
+          ],
+        },
+        {
+          title: "Cron Jobs",
+          vars: [["CRON_SECRET", "Yes", "Bearer token for authenticating cron/job API requests"]],
+        },
+        {
+          title: "Public",
+          vars: [["NEXT_PUBLIC_APP_URL", "Yes", "Public-facing base URL"]],
+        },
+        {
+          title: "Monitoring (optional)",
+          vars: [
+            ["ADMIN_ALERT_EMAIL", "No", "Receives email alerts on job failures"],
+            ["HEALTHCHECK_PING_URL_INGEST", "No", "Dead-man's-switch ping on successful ingestion"],
+            ["HEALTHCHECK_PING_URL_DIGEST", "No", "Dead-man's-switch ping on successful digest delivery"],
+            ["HEALTHCHECK_PING_URL_SOCIAL", "No", "Dead-man's-switch ping on successful social post generation"],
+          ],
+        },
+        {
+          title: "Social Scheduling (optional)",
+          vars: [
+            ["BUFFER_ACCESS_TOKEN", "No", "Buffer API token for scheduling social posts"],
+            ["BUFFER_LINKEDIN_PROFILE_ID", "No", "Buffer profile ID for LinkedIn"],
+            ["BUFFER_TWITTER_PROFILE_ID", "No", "Buffer profile ID for Twitter/X"],
+          ],
+        },
+      ].map((section) => (
+        <div key={section.title}>
+          <h3 className={h3}>{section.title}</h3>
+          <table className={table}>
+            <thead><tr><th className={th}>Variable</th><th className={th}>Required</th><th className={th}>Purpose</th></tr></thead>
+            <tbody>
+              {section.vars.map(([name, req, purpose]) => (
+                <tr key={name}><td className={td}><code className={code}>{name}</code></td><td className={td}>{req}</td><td className={td}>{purpose}</td></tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ))}
 
-      <h3>Database</h3>
-      <table>
-        <thead><tr><th>Variable</th><th>Required</th><th>Purpose</th></tr></thead>
-        <tbody>
-          <tr><td><code>DATABASE_URL</code></td><td>Yes</td><td>Supabase Postgres connection string (session pooler)</td></tr>
-        </tbody>
-      </table>
+      <hr className={hr} />
 
-      <h3>Email</h3>
-      <table>
-        <thead><tr><th>Variable</th><th>Required</th><th>Purpose</th></tr></thead>
-        <tbody>
-          <tr><td><code>RESEND_API_KEY</code></td><td>Yes</td><td>Resend API key for sending all emails (magic links, welcome, briefs, alerts)</td></tr>
-        </tbody>
-      </table>
+      {/* ─── Common Operations ─── */}
+      <h2 id="common-ops" className={h2}>Common Operations</h2>
 
-      <h3>AI</h3>
-      <table>
-        <thead><tr><th>Variable</th><th>Required</th><th>Purpose</th></tr></thead>
-        <tbody>
-          <tr><td><code>ANTHROPIC_API_KEY</code></td><td>Yes</td><td>Claude API key — auto-read by the Anthropic SDK (not referenced as <code>process.env</code> in code)</td></tr>
-        </tbody>
-      </table>
+      <h3 className={h3}>Trigger ingestion manually</h3>
+      <pre className={pre}>{`curl -X POST https://my-weekly-ai.vercel.app/api/jobs/ingest \\
+  -H "Authorization: Bearer YOUR_CRON_SECRET"`}</pre>
 
-      <h3>Payments</h3>
-      <table>
-        <thead><tr><th>Variable</th><th>Required</th><th>Purpose</th></tr></thead>
-        <tbody>
-          <tr><td><code>STRIPE_SECRET_KEY</code></td><td>Yes</td><td>Stripe server-side API key</td></tr>
-          <tr><td><code>STRIPE_WEBHOOK_SECRET</code></td><td>Yes</td><td>Validates Stripe webhook signatures</td></tr>
-          <tr><td><code>STRIPE_PRICE_ID</code></td><td>Yes</td><td>Price ID for the Pro subscription plan</td></tr>
-          <tr><td><code>NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY</code></td><td>No</td><td>Client-side Stripe key (currently unused in code)</td></tr>
-        </tbody>
-      </table>
+      <h3 className={h3}>Trigger weekly digest manually</h3>
+      <pre className={pre}>{`curl -X POST https://my-weekly-ai.vercel.app/api/jobs/weekly-digest \\
+  -H "Authorization: Bearer YOUR_CRON_SECRET"`}</pre>
 
-      <h3>Telegram</h3>
-      <table>
-        <thead><tr><th>Variable</th><th>Required</th><th>Purpose</th></tr></thead>
-        <tbody>
-          <tr><td><code>TELEGRAM_BOT_TOKEN</code></td><td>Yes</td><td>Bot token from @BotFather</td></tr>
-          <tr><td><code>TELEGRAM_BOT_USERNAME</code></td><td>Yes</td><td>Bot username (without <code>@</code>) for deep link URLs</td></tr>
-          <tr><td><code>TELEGRAM_WEBHOOK_SECRET</code></td><td>Yes</td><td>Validates incoming Telegram webhook requests</td></tr>
-        </tbody>
-      </table>
+      <h3 className={h3}>Trigger social post generation manually</h3>
+      <pre className={pre}>{`curl -X POST "https://my-weekly-ai.vercel.app/api/jobs/social-posts?index=0" \\
+  -H "Authorization: Bearer YOUR_CRON_SECRET"`}</pre>
+      <p className={p}>This starts at segment 0 and automatically chains through all segments.</p>
 
-      <h3>Cron Jobs</h3>
-      <table>
-        <thead><tr><th>Variable</th><th>Required</th><th>Purpose</th></tr></thead>
-        <tbody>
-          <tr><td><code>CRON_SECRET</code></td><td>Yes</td><td>Bearer token for authenticating cron/job API requests</td></tr>
-        </tbody>
-      </table>
+      <h3 className={h3}>Make a user an admin</h3>
+      <pre className={pre}>{`UPDATE "User" SET role = 'ADMIN' WHERE email = 'user@example.com';`}</pre>
+      <p className={p}>Run this in the Supabase SQL Editor (Dashboard → SQL Editor → New query).</p>
 
-      <h3>Public</h3>
-      <table>
-        <thead><tr><th>Variable</th><th>Required</th><th>Purpose</th></tr></thead>
-        <tbody>
-          <tr><td><code>NEXT_PUBLIC_APP_URL</code></td><td>Yes</td><td>Public-facing base URL — used in metadata, sitemap, email templates, social post job chaining</td></tr>
-        </tbody>
-      </table>
+      <h3 className={h3}>Check job run history</h3>
+      <p className={p}>Go to <a href="/admin/jobs" className={link}>/admin/jobs</a> or query the database:</p>
+      <pre className={pre}>{`SELECT * FROM "JobRun" ORDER BY "startedAt" DESC LIMIT 20;`}</pre>
 
-      <h3>Monitoring (optional)</h3>
-      <table>
-        <thead><tr><th>Variable</th><th>Required</th><th>Purpose</th></tr></thead>
-        <tbody>
-          <tr><td><code>ADMIN_ALERT_EMAIL</code></td><td>No</td><td>Receives email alerts on job failures</td></tr>
-          <tr><td><code>HEALTHCHECK_PING_URL_INGEST</code></td><td>No</td><td>Dead-man&apos;s-switch ping on successful ingestion</td></tr>
-          <tr><td><code>HEALTHCHECK_PING_URL_DIGEST</code></td><td>No</td><td>Dead-man&apos;s-switch ping on successful digest delivery</td></tr>
-          <tr><td><code>HEALTHCHECK_PING_URL_SOCIAL</code></td><td>No</td><td>Dead-man&apos;s-switch ping on successful social post generation</td></tr>
-        </tbody>
-      </table>
-
-      <h3>Social Scheduling (optional)</h3>
-      <table>
-        <thead><tr><th>Variable</th><th>Required</th><th>Purpose</th></tr></thead>
-        <tbody>
-          <tr><td><code>BUFFER_ACCESS_TOKEN</code></td><td>No</td><td>Buffer API token for scheduling social posts</td></tr>
-          <tr><td><code>BUFFER_LINKEDIN_PROFILE_ID</code></td><td>No</td><td>Buffer profile ID for LinkedIn</td></tr>
-          <tr><td><code>BUFFER_TWITTER_PROFILE_ID</code></td><td>No</td><td>Buffer profile ID for Twitter/X</td></tr>
-        </tbody>
-      </table>
-
-      <hr />
-
-      <h2>Common Operations</h2>
-
-      <h3>Trigger ingestion manually</h3>
-      <pre><code>{`curl -X POST https://my-weekly-ai.vercel.app/api/jobs/ingest \\
-  -H "Authorization: Bearer YOUR_CRON_SECRET"`}</code></pre>
-
-      <h3>Trigger weekly digest manually</h3>
-      <pre><code>{`curl -X POST https://my-weekly-ai.vercel.app/api/jobs/weekly-digest \\
-  -H "Authorization: Bearer YOUR_CRON_SECRET"`}</code></pre>
-
-      <h3>Trigger social post generation manually</h3>
-      <pre><code>{`curl -X POST "https://my-weekly-ai.vercel.app/api/jobs/social-posts?index=0" \\
-  -H "Authorization: Bearer YOUR_CRON_SECRET"`}</code></pre>
-      <p>This starts at segment 0 and automatically chains through all segments.</p>
-
-      <h3>Make a user an admin</h3>
-      <pre><code>{`UPDATE "User" SET role = 'ADMIN' WHERE email = 'user@example.com';`}</code></pre>
-      <p>Run this in the Supabase SQL Editor (Dashboard → SQL Editor → New query).</p>
-
-      <h3>Check job run history</h3>
-      <p>Go to <a href="/admin/jobs">/admin/jobs</a> or query the database:</p>
-      <pre><code>{`SELECT * FROM "JobRun" ORDER BY "startedAt" DESC LIMIT 20;`}</code></pre>
-
-      <h3>Debug a failed job</h3>
-      <ol>
-        <li>Check <a href="/admin/jobs">/admin/jobs</a> — look for the red FAILURE badge and expand the error text.</li>
-        <li>Check Vercel function logs: Vercel Dashboard → your project → Logs → filter by the API route (<code>/api/jobs/ingest</code> or <code>/api/jobs/weekly-digest</code>).</li>
-        <li>If <code>ADMIN_ALERT_EMAIL</code> is set, check your inbox for the alert email with full error details.</li>
+      <h3 className={h3}>Debug a failed job</h3>
+      <ol className={ol}>
+        <li>Check <a href="/admin/jobs" className={link}>/admin/jobs</a> — look for the red FAILURE badge and expand the error text.</li>
+        <li>Check Vercel function logs: Vercel Dashboard → your project → Logs → filter by the API route.</li>
+        <li>If <code className={code}>ADMIN_ALERT_EMAIL</code> is set, check your inbox for the alert email.</li>
       </ol>
 
-      <h3>Apply a Prisma migration to production</h3>
-      <ol>
+      <h3 className={h3}>Apply a Prisma migration to production</h3>
+      <ol className={ol}>
         <li>Write your migration SQL.</li>
         <li>Go to Supabase Dashboard → SQL Editor → New query.</li>
         <li>Paste and run the SQL.</li>
-        <li>If the schema change affects the Prisma schema, update <code>prisma/schema.prisma</code> locally, run <code>npx prisma generate</code>, and deploy.</li>
+        <li>If the schema change affects the Prisma schema, update <code className={code}>prisma/schema.prisma</code> locally, run <code className={code}>npx prisma generate</code>, and deploy.</li>
       </ol>
 
-      <h3>Re-seed RSS sources</h3>
-      <pre><code>npx tsx prisma/seed.ts</code></pre>
-      <p>This upserts all sources from the seed list and deactivates any sources no longer in the list.</p>
+      <h3 className={h3}>Re-seed RSS sources</h3>
+      <pre className={pre}>npx tsx prisma/seed.ts</pre>
+      <p className={p}>This upserts all sources from the seed list and deactivates any sources no longer in the list.</p>
 
-      <hr />
+      <hr className={hr} />
 
-      <h2>Infrastructure</h2>
-      <table>
-        <thead><tr><th>Service</th><th>Provider</th><th>Plan</th><th>Purpose</th></tr></thead>
+      {/* ─── Infrastructure ─── */}
+      <h2 id="infrastructure" className={h2}>Infrastructure</h2>
+      <table className={table}>
+        <thead><tr><th className={th}>Service</th><th className={th}>Provider</th><th className={th}>Plan</th><th className={th}>Purpose</th></tr></thead>
         <tbody>
-          <tr><td>Hosting</td><td>Vercel</td><td>Hobby (free)</td><td>Next.js app hosting, cron jobs, serverless functions</td></tr>
-          <tr><td>Database</td><td>Supabase</td><td>Free tier</td><td>Postgres database (project: <code>myweeklyai</code>)</td></tr>
-          <tr><td>DNS</td><td>GoDaddy</td><td>—</td><td>Domain registration and DNS management</td></tr>
-          <tr><td>Email receiving</td><td>Microsoft 365</td><td>—</td><td>Receives email at the custom domain</td></tr>
-          <tr><td>Email sending</td><td>Resend</td><td>Free tier</td><td>Sends transactional emails (magic links, briefs, alerts)</td></tr>
-          <tr><td>Payments</td><td>Stripe</td><td>—</td><td>Subscription billing, checkout, billing portal</td></tr>
-          <tr><td>AI</td><td>Anthropic</td><td>—</td><td>Claude API for brief and social post generation</td></tr>
-          <tr><td>Telegram</td><td>Telegram Bot API</td><td>Free</td><td>Brief delivery via Telegram</td></tr>
-          <tr><td>Social scheduling</td><td>Buffer</td><td>—</td><td>Schedules LinkedIn and Twitter/X posts</td></tr>
+          {[
+            ["Hosting", "Vercel", "Hobby (free)", "Next.js app hosting, cron jobs, serverless functions"],
+            ["Database", "Supabase", "Free tier", "Postgres database (project: myweeklyai)"],
+            ["DNS", "GoDaddy", "—", "Domain registration and DNS management"],
+            ["Email receiving", "Microsoft 365", "—", "Receives email at the custom domain"],
+            ["Email sending", "Resend", "Free tier", "Sends transactional emails"],
+            ["Payments", "Stripe", "—", "Subscription billing, checkout, billing portal"],
+            ["AI", "Anthropic", "—", "Claude API for brief and social post generation"],
+            ["Telegram", "Telegram Bot API", "Free", "Brief delivery via Telegram"],
+            ["Social scheduling", "Buffer", "—", "Schedules LinkedIn and Twitter/X posts"],
+          ].map(([service, provider, plan, purpose]) => (
+            <tr key={service}><td className={`${td} font-semibold`}>{service}</td><td className={td}>{provider}</td><td className={td}>{plan}</td><td className={td}>{purpose}</td></tr>
+          ))}
         </tbody>
       </table>
-    </article>
+    </div>
   );
 }
