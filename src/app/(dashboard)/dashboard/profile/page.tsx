@@ -1,5 +1,6 @@
 import Link from "next/link";
 import ContextProfileForm from "@/components/context-profile-form";
+import DeleteAccountCard from "@/components/delete-account-card";
 
 export default function ProfilePage() {
   return (
@@ -20,6 +21,8 @@ export default function ProfilePage() {
       <div className="rounded-lg border border-gray-200 bg-white p-6">
         <ContextProfileForm />
       </div>
+
+      <DeleteAccountCard />
     </div>
   );
 }
