@@ -13,6 +13,7 @@ export default function ProPricingCard({ children }: { children: ReactNode }) {
   return (
     <div className="pro-card-glow rounded-lg border-2 border-purple-600 p-6 transition-all hover:-translate-y-0.5 hover:shadow-lg">
       <h3 className="text-lg font-bold text-gray-900">Pro</h3>
+      <p className="mt-2 text-sm font-medium text-gray-700">Your role, your brief. Personalized picks + experiments you can actually try.</p>
 
       {/* Interval toggle */}
       <div className="mt-3 inline-flex rounded-full border border-gray-200 p-0.5 text-sm">

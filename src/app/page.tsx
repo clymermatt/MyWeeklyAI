@@ -434,6 +434,7 @@ export default async function HomePage() {
             <FadeIn delay={0}>
               <div className="rounded-lg border border-gray-200 p-6 transition-all hover:-translate-y-0.5 hover:shadow-md">
                 <h3 className="text-lg font-bold text-gray-900">Free</h3>
+                <p className="mt-2 text-sm font-medium text-gray-700">Stay informed in 5 minutes. The week's top AI news, delivered.</p>
                 <p className="mt-1 text-sm text-gray-500">$0 / forever</p>
                 <ul className="mt-6 space-y-3 text-sm text-gray-700">
                   <li className="flex items-start gap-2">
