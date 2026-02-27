@@ -467,7 +467,7 @@ export default async function LandingPage({
                     href="/auth/signin"
                     className="block rounded-lg border border-gray-300 py-2.5 text-center text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50"
                   >
-                    Get started free
+                    Start Free
                   </Link>
                 </div>
               </div>
