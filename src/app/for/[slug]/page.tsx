@@ -447,7 +447,7 @@ export default async function LandingPage({
                 <ul className="mt-6 space-y-3 text-sm text-gray-700">
                   <li className="flex items-start gap-2">
                     <span className="mt-0.5 text-green-600">&#10003;</span>
-                    Top industry news and lab announcements, curated from 20+ AI industry publications
+                    The week's most impactful AI news and lab announcements, curated from 20+ AI industry publications
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="mt-0.5 text-green-600">&#10003;</span>
