@@ -125,7 +125,7 @@ export default function TermsPage() {
           <h2 className="text-lg font-semibold text-gray-900">12. Contact Us</h2>
           <p className="mt-2">
             If you have questions about these Terms of Service, please contact us at{" "}
-            <a href="mailto:support@myweekly.ai" className="text-purple-600 underline">support@myweekly.ai</a>.
+            <a href="mailto:contact@myweekly.ai" className="text-purple-600 underline">contact@myweekly.ai</a>.
           </p>
         </section>
       </div>

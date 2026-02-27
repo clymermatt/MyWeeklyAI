@@ -118,7 +118,7 @@ export default function PrivacyPage() {
           <h2 className="text-lg font-semibold text-gray-900">11. Contact Us</h2>
           <p className="mt-2">
             If you have questions about this Privacy Policy, please contact us at{" "}
-            <a href="mailto:privacy@myweekly.ai" className="text-purple-600 underline">privacy@myweekly.ai</a>.
+            <a href="mailto:contact@myweekly.ai" className="text-purple-600 underline">contact@myweekly.ai</a>.
           </p>
         </section>
       </div>
