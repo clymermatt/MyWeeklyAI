@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import React from "react";
 import { getLandingPage, allSlugs } from "@/lib/landing-content";
+import ProPricingCard from "@/components/pro-pricing-card";
 import {
   FadeIn,
   StickyCTA,
@@ -97,10 +98,17 @@ export default async function LandingPage({
           },
           {
             "@type": "Offer",
-            name: "Pro",
-            price: "9.99",
+            name: "Pro Monthly",
+            price: "2.99",
             priceCurrency: "USD",
-            description: `Personalized AI brief filtered for ${page.label} with actionable experiments`,
+            description: `Personalized AI brief filtered for ${page.label} with actionable experiments — monthly`,
+          },
+          {
+            "@type": "Offer",
+            name: "Pro Yearly",
+            price: "29.99",
+            priceCurrency: "USD",
+            description: `Personalized AI brief filtered for ${page.label} with actionable experiments — yearly`,
           },
         ],
       },
@@ -464,9 +472,7 @@ export default async function LandingPage({
               </div>
             </FadeIn>
             <FadeIn delay={100}>
-              <div className="pro-card-glow rounded-lg border-2 border-purple-600 p-6 transition-all hover:-translate-y-0.5 hover:shadow-lg">
-                <h3 className="text-lg font-bold text-gray-900">Pro</h3>
-                <p className="mt-1 text-sm text-gray-500">$9.99/mo after 7-day free trial</p>
+              <ProPricingCard>
                 <ul className="mt-6 space-y-3 text-sm text-gray-700">
                   <li className="flex items-start gap-2">
                     <span className="mt-0.5 text-green-600">&#10003;</span>
@@ -492,15 +498,7 @@ export default async function LandingPage({
                     </li>
                   ))}
                 </ul>
-                <div className="mt-8">
-                  <Link
-                    href="/auth/signin?plan=pro"
-                    className="block rounded-lg bg-purple-600 py-2.5 text-center text-sm font-medium text-white shadow-lg shadow-purple-600/25 transition-all hover:bg-purple-700 hover:shadow-xl hover:shadow-purple-600/30"
-                  >
-                    Start Pro — 7 Days Free
-                  </Link>
-                </div>
-              </div>
+              </ProPricingCard>
             </FadeIn>
           </div>
         </div>

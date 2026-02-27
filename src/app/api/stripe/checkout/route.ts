@@ -1,10 +1,17 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { stripe } from "@/lib/stripe";
 
-async function createCheckoutSession(userId: string) {
+function getPriceId(interval: string): string {
+  if (interval === "yearly") {
+    return process.env.STRIPE_PRICE_ID_YEARLY!;
+  }
+  return process.env.STRIPE_PRICE_ID_MONTHLY ?? process.env.STRIPE_PRICE_ID!;
+}
+
+async function createCheckoutSession(userId: string, interval: string) {
   const user = await prisma.user.findUnique({
     where: { id: userId },
     include: { subscription: true },
@@ -30,7 +37,7 @@ async function createCheckoutSession(userId: string) {
     payment_method_types: ["card"],
     line_items: [
       {
-        price: process.env.STRIPE_PRICE_ID!,
+        price: getPriceId(interval),
         quantity: 1,
       },
     ],
@@ -44,13 +51,21 @@ async function createCheckoutSession(userId: string) {
 }
 
 // POST: called by SubscriptionButton component (returns JSON)
-export async function POST() {
+export async function POST(request: NextRequest) {
   const session = await auth();
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const checkoutSession = await createCheckoutSession(session.user.id);
+  let interval = "monthly";
+  try {
+    const body = await request.json();
+    if (body.interval === "yearly") interval = "yearly";
+  } catch {
+    // no body or invalid JSON — default to monthly
+  }
+
+  const checkoutSession = await createCheckoutSession(session.user.id, interval);
   if (!checkoutSession) {
     return NextResponse.json({ error: "User not found" }, { status: 404 });
   }
@@ -59,13 +74,15 @@ export async function POST() {
 }
 
 // GET: called after sign-in redirect for Pro sign-ups (redirects to Stripe)
-export async function GET() {
+export async function GET(request: NextRequest) {
   const session = await auth();
   if (!session?.user?.id) {
     redirect("/auth/signin?plan=pro");
   }
 
-  const checkoutSession = await createCheckoutSession(session.user.id);
+  const interval = request.nextUrl.searchParams.get("interval") === "yearly" ? "yearly" : "monthly";
+
+  const checkoutSession = await createCheckoutSession(session.user.id, interval);
   if (!checkoutSession?.url) {
     redirect("/dashboard");
   }

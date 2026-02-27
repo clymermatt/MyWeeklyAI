@@ -146,7 +146,7 @@ export function StickyCTA({
             href={proHref}
             className="rounded-lg bg-purple-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-purple-700"
           >
-            Start Pro — 7 Days Free
+            Start Pro — $2.99/mo
           </a>
         </div>
       </div>

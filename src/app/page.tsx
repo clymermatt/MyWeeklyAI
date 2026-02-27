@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { auth } from "@/lib/auth";
 import SiteNav from "@/components/site-nav";
+import ProPricingCard from "@/components/pro-pricing-card";
 import {
   FadeIn,
   CountUp,
@@ -53,7 +54,7 @@ export default async function HomePage() {
             name: "How much does My Weekly AI cost?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "My Weekly AI offers a free tier with curated top AI news delivered every Sunday, plus a Pro plan at $9.99/month (with a 7-day free trial) that adds personalized picks, actionable experiments, and advanced filtering.",
+              text: "My Weekly AI offers a free tier with curated top AI news delivered every Sunday, plus a Pro plan at $2.99/month or $29.99/year (with a 7-day free trial) that adds personalized picks, actionable experiments, and advanced filtering.",
             },
           },
         ],
@@ -463,9 +464,7 @@ export default async function HomePage() {
               </div>
             </FadeIn>
             <FadeIn delay={100}>
-              <div className="pro-card-glow rounded-lg border-2 border-purple-600 p-6 transition-all hover:-translate-y-0.5 hover:shadow-lg">
-                <h3 className="text-lg font-bold text-gray-900">Pro</h3>
-                <p className="mt-1 text-sm text-gray-500">$9.99/mo after 7-day free trial</p>
+              <ProPricingCard>
                 <ul className="mt-6 space-y-3 text-sm text-gray-700">
                   <li className="flex items-start gap-2">
                     <span className="mt-0.5 text-green-600">&#10003;</span>
@@ -488,15 +487,7 @@ export default async function HomePage() {
                     Focus &amp; avoid topics for deeper personalization
                   </li>
                 </ul>
-                <div className="mt-8">
-                  <Link
-                    href="/auth/signin?plan=pro"
-                    className="block rounded-lg bg-purple-600 py-2.5 text-center text-sm font-medium text-white shadow-lg shadow-purple-600/25 transition-all hover:bg-purple-700 hover:shadow-xl hover:shadow-purple-600/30"
-                  >
-                    Start Pro — 7 Days Free
-                  </Link>
-                </div>
-              </div>
+              </ProPricingCard>
             </FadeIn>
           </div>
         </div>

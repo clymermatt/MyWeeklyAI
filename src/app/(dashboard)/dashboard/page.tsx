@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import SubscriptionButton from "@/components/subscription-button";
+import DashboardUpgradeCard from "@/components/dashboard-upgrade-card";
 import TelegramConnectCard from "@/components/telegram-connect-card";
 
 export default async function DashboardPage({
@@ -78,7 +78,7 @@ export default async function DashboardPage({
             No charge for 7 days — cancel anytime.
           </p>
           <div className="mt-4">
-            <SubscriptionButton />
+            <DashboardUpgradeCard />
           </div>
         </div>
       )}
@@ -150,7 +150,7 @@ export default async function DashboardPage({
                 items tailored to your role.
               </p>
               <div className="mt-4">
-                <SubscriptionButton variant="outline" />
+                <DashboardUpgradeCard variant="outline" />
               </div>
             </div>
           )}

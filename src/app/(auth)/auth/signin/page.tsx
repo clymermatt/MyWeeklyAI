@@ -5,11 +5,12 @@ import { auth } from "@/lib/auth";
 export default async function SignInPage({
   searchParams,
 }: {
-  searchParams: Promise<{ plan?: string }>;
+  searchParams: Promise<{ plan?: string; interval?: string }>;
 }) {
   const params = await searchParams;
+  const interval = params.interval === "yearly" ? "yearly" : "monthly";
   const redirectTo =
-    params.plan === "pro" ? "/api/stripe/checkout" : "/dashboard";
+    params.plan === "pro" ? `/api/stripe/checkout?interval=${interval}` : "/dashboard";
 
   const session = await auth();
   if (session) redirect(redirectTo);
