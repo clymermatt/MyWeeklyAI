@@ -146,7 +146,7 @@ export function StickyCTA({
             href={proHref}
             className="rounded-lg bg-purple-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-purple-700"
           >
-            Start Pro — Personalized with Testing Suggestions
+            Start Pro — Personalized to Your Role (7 Days Free)
           </a>
         </div>
       </div>
