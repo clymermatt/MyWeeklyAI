@@ -469,7 +469,7 @@ export default async function LandingPage({
                     href="/auth/signin"
                     className="block rounded-lg bg-purple-600 py-2.5 text-center text-sm font-medium text-white shadow-lg shadow-purple-600/25 transition-all hover:bg-purple-700 hover:shadow-xl hover:shadow-purple-600/30"
                   >
-                    Get Started Free
+                    Get Started
                   </Link>
                 </div>
               </div>
@@ -492,7 +492,7 @@ export default async function LandingPage({
                 href="/auth/signin"
                 className="rounded-lg bg-white px-6 py-3 text-sm font-medium text-purple-600 shadow-lg transition-all hover:bg-purple-50 hover:shadow-xl"
               >
-                Get Started Free
+                Get Started
               </Link>
             </div>
           </FadeIn>
