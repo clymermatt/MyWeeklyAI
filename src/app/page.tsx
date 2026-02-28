@@ -525,7 +525,7 @@ export default async function HomePage() {
                 href="/auth/signin"
                 className="rounded-lg bg-white px-6 py-3 text-sm font-medium text-purple-600 shadow-lg transition-all hover:bg-purple-50 hover:shadow-xl"
               >
-                Get Started Free
+                Get Started
               </Link>
             </div>
           </FadeIn>
