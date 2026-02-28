@@ -5,7 +5,6 @@ import SiteNav from "@/components/site-nav";
 import {
   FadeIn,
   CountUp,
-  StickyCTA,
   LogoTicker,
 } from "@/components/animations";
 
@@ -532,7 +531,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <StickyCTA />
     </div>
   );
 }

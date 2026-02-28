@@ -6,7 +6,6 @@ import React from "react";
 import { getLandingPage, allSlugs } from "@/lib/landing-content";
 import {
   FadeIn,
-  StickyCTA,
   LogoTicker,
 } from "@/components/animations";
 
@@ -499,7 +498,6 @@ export default async function LandingPage({
         </div>
       </section>
 
-      <StickyCTA />
     </>
   );
 }
