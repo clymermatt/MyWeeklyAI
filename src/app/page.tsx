@@ -517,7 +517,7 @@ export default async function HomePage() {
               Your filter for the AI hype firehose
             </h2>
             <p className="mt-4 text-purple-100">
-              Set up your context profile in 2 minutes and get your first brief today.
+              Set up your context profile in 2 minutes and get your first brief today and then each Sunday.
             </p>
             <div className="mt-8 flex items-center justify-center">
               <Link
