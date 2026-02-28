@@ -107,7 +107,7 @@ export default async function HomePage() {
                   href="/auth/signin"
                   className="rounded-lg bg-purple-600 px-6 py-3 text-sm font-medium text-white shadow-lg shadow-purple-600/25 transition-all hover:bg-purple-700 hover:shadow-xl hover:shadow-purple-600/30"
                 >
-                  Start Free — Get Your Brief Today
+                  Get Your Personalized AI Brief Today
                 </Link>
               )}
             </div>
@@ -410,6 +410,60 @@ export default async function HomePage() {
               <FadeIn key={card.title} delay={i * 80}>
                 <div className="rounded-lg border border-gray-200 bg-white p-6 transition-all hover:-translate-y-0.5 hover:shadow-md">
                   <h3 className="font-semibold text-gray-900">{card.title}</h3>
+                  <p className="mt-2 text-sm text-gray-600">{card.desc}</p>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* What you get */}
+      <section className="border-t border-gray-200 bg-white px-4 py-20">
+        <div className="mx-auto max-w-4xl">
+          <FadeIn>
+            <h2 className="text-center text-3xl font-bold text-gray-900">
+              What you get
+            </h2>
+            <p className="mx-auto mt-4 max-w-2xl text-center text-gray-600">
+              Everything you need to stay ahead — completely free.
+            </p>
+          </FadeIn>
+          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {[
+              {
+                title: "Personalized weekly brief",
+                desc: "Filtered for your role, industry, and interests — not a generic roundup.",
+              },
+              {
+                title: "\u201CWhat To Test\u201D experiments",
+                desc: "Actionable things you can try at work this week, tailored to your context.",
+              },
+              {
+                title: "\u201CFiltered Out\u201D transparency",
+                desc: "See what we skipped and why, so you never miss something important.",
+              },
+              {
+                title: "Focus & avoid topics",
+                desc: "Go deeper on what matters, skip what doesn\u2019t. Your brief adapts to you.",
+              },
+              {
+                title: "Web dashboard",
+                desc: "Browse all your past briefings, search across issues, and track trends.",
+              },
+              {
+                title: "Bookmark articles",
+                desc: "Save articles for later and build your own reading list over time.",
+              },
+            ].map((card, i) => (
+              <FadeIn key={card.title} delay={i * 60}>
+                <div className="rounded-lg border border-gray-200 bg-white p-6 transition-all hover:-translate-y-0.5 hover:shadow-md">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-100">
+                    <svg className="h-4 w-4 text-green-600" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                    </svg>
+                  </div>
+                  <h3 className="mt-3 font-semibold text-gray-900">{card.title}</h3>
                   <p className="mt-2 text-sm text-gray-600">{card.desc}</p>
                 </div>
               </FadeIn>
