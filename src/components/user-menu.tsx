@@ -5,11 +5,10 @@ import Link from "next/link";
 
 interface UserMenuProps {
   name: string;
-  plan: "Free" | "Pro";
   isAdmin?: boolean;
 }
 
-export default function UserMenu({ name, plan, isAdmin }: UserMenuProps) {
+export default function UserMenu({ name, isAdmin }: UserMenuProps) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -30,9 +29,6 @@ export default function UserMenu({ name, plan, isAdmin }: UserMenuProps) {
         className="flex items-center gap-1 text-sm text-gray-600 hover:text-gray-900"
       >
         Hi, {name}
-        <span className={`rounded px-1.5 py-0.5 text-xs font-medium ${plan === "Pro" ? "bg-purple-100 text-purple-700" : "bg-gray-100 text-gray-500"}`}>
-          {plan}
-        </span>
         <svg
           className={`h-3.5 w-3.5 transition-transform ${open ? "rotate-180" : ""}`}
           xmlns="http://www.w3.org/2000/svg"

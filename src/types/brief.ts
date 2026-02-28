@@ -18,12 +18,6 @@ export interface FreeBriefOutput {
   labUpdates: BriefItem[];
 }
 
-/** The stored JSON shape for free digests — includes subsections for rendering */
-export interface FreeBriefStored extends BriefOutput {
-  industryNews: BriefItem[];
-  labUpdates: BriefItem[];
-}
-
 /** Pad a free brief into the full BriefOutput shape (empty personalized sections) */
 export function freeBriefToBriefOutput(free: FreeBriefOutput): BriefOutput {
   return {

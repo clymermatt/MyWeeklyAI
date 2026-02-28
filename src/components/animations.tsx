@@ -109,11 +109,9 @@ export function CountUp({
 
 /* ─── Sticky CTA bar ─── */
 export function StickyCTA({
-  freeHref = "/auth/signin",
-  proHref = "/auth/signin?plan=pro",
+  href = "/auth/signin",
 }: {
-  freeHref?: string;
-  proHref?: string;
+  href?: string;
 }) {
   const [show, setShow] = useState(false);
 
@@ -137,16 +135,10 @@ export function StickyCTA({
         </p>
         <div className="flex w-full items-center justify-center gap-3 sm:w-auto sm:justify-end">
           <a
-            href={freeHref}
-            className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50"
-          >
-            Start Free
-          </a>
-          <a
-            href={proHref}
+            href={href}
             className="rounded-lg bg-purple-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-purple-700"
           >
-            Start Pro — Personalized to Your Role (7 Days Free)
+            Get Started Free
           </a>
         </div>
       </div>

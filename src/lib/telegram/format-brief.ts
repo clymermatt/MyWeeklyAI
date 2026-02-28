@@ -1,4 +1,4 @@
-import type { BriefOutput, BriefItem, FreeBriefStored } from "@/types/brief";
+import type { BriefOutput, BriefItem } from "@/types/brief";
 
 /** Escape all 18 MarkdownV2 special characters */
 function escMd(text: string): string {
@@ -53,13 +53,11 @@ function formatSection(heading: string, items: BriefItem[], profileTerms: string
 
 export function formatBriefForTelegram({
   brief,
-  isFree,
   periodStart,
   periodEnd,
   profileTerms = [],
 }: {
-  brief: BriefOutput | FreeBriefStored;
-  isFree: boolean;
+  brief: BriefOutput;
   periodStart: Date;
   periodEnd: Date;
   profileTerms?: string[];
@@ -67,38 +65,20 @@ export function formatBriefForTelegram({
   const fmtDate = (d: Date) =>
     d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
   const dateRange = `${fmtDate(periodStart)} to ${fmtDate(periodEnd)}`;
-  const tier = isFree ? "Free" : "Pro";
 
   const lines: string[] = [
-    `*${escMd("My Weekly AI")}*  \\[${escMd(tier)}\\]`,
+    `*${escMd("My Weekly AI")}*`,
     escMd(dateRange),
     "",
   ];
 
-  if (isFree && "industryNews" in brief) {
-    const stored = brief as FreeBriefStored;
-    lines.push(formatSection("Industry News", stored.industryNews));
-    lines.push("");
-    lines.push(formatSection("AI Lab Announcements", stored.labUpdates));
-    lines.push("");
-    lines.push(
-      `_${escMd("Upgrade to Pro for personalized picks and action items tailored to your role.")}_`,
-    );
-  } else if (isFree) {
-    lines.push(formatSection("Industry News", brief.whatDropped));
-    lines.push("");
-    lines.push(
-      `_${escMd("Upgrade to Pro for personalized picks and action items tailored to your role.")}_`,
-    );
-  } else {
-    lines.push(formatSection("News Relevant to You", brief.relevantToYou, profileTerms));
-    lines.push("");
-    lines.push(formatSection("What To Test This Week", brief.whatToTest, profileTerms));
-    lines.push("");
-    if (brief.ignoreSummary) {
-      lines.push(`*${escMd("What We Filtered Out")}*`);
-      lines.push(escMd(brief.ignoreSummary));
-    }
+  lines.push(formatSection("News Relevant to You", brief.relevantToYou, profileTerms));
+  lines.push("");
+  lines.push(formatSection("What To Test This Week", brief.whatToTest, profileTerms));
+  lines.push("");
+  if (brief.ignoreSummary) {
+    lines.push(`*${escMd("What We Filtered Out")}*`);
+    lines.push(escMd(brief.ignoreSummary));
   }
 
   lines.push("");

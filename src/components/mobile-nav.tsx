@@ -6,7 +6,6 @@ import Link from "next/link";
 interface MobileNavProps {
   isAuthenticated: boolean;
   userName?: string;
-  plan?: "Free" | "Pro";
   isAdmin?: boolean;
 }
 
@@ -19,7 +18,6 @@ const navLinks = [
 export default function MobileNav({
   isAuthenticated,
   userName,
-  plan,
   isAdmin,
 }: MobileNavProps) {
   const [open, setOpen] = useState(false);
@@ -77,17 +75,8 @@ export default function MobileNav({
         <div className="absolute left-0 right-0 top-16 z-50 border-b border-gray-200 bg-white shadow-lg">
           <div className="mx-auto max-w-5xl px-4 py-3">
             {isAuthenticated && userName && (
-              <div className="mb-3 flex items-center gap-2 border-b border-gray-100 pb-3">
+              <div className="mb-3 border-b border-gray-100 pb-3">
                 <span className="text-sm text-gray-600">Hi, {userName}</span>
-                <span
-                  className={`rounded px-1.5 py-0.5 text-xs font-medium ${
-                    plan === "Pro"
-                      ? "bg-purple-100 text-purple-700"
-                      : "bg-gray-100 text-gray-500"
-                  }`}
-                >
-                  {plan}
-                </span>
               </div>
             )}
             <div className="flex flex-col gap-1">

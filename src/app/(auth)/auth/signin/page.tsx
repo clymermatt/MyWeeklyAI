@@ -2,18 +2,9 @@ import { signIn } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 
-export default async function SignInPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ plan?: string; interval?: string }>;
-}) {
-  const params = await searchParams;
-  const interval = params.interval === "yearly" ? "yearly" : "monthly";
-  const redirectTo =
-    params.plan === "pro" ? `/api/stripe/checkout?interval=${interval}` : "/dashboard";
-
+export default async function SignInPage() {
   const session = await auth();
-  if (session) redirect(redirectTo);
+  if (session) redirect("/dashboard");
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50">
@@ -31,7 +22,7 @@ export default async function SignInPage({
           <form
             action={async () => {
               "use server";
-              await signIn("google", { redirectTo });
+              await signIn("google", { redirectTo: "/dashboard" });
             }}
           >
             <button
@@ -74,7 +65,7 @@ export default async function SignInPage({
               "use server";
               await signIn("resend", {
                 email: formData.get("email") as string,
-                redirectTo,
+                redirectTo: "/dashboard",
               });
             }}
             className="space-y-3"

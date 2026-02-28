@@ -50,7 +50,7 @@ async function createCheckoutSession(userId: string, interval: string) {
   });
 }
 
-// POST: called by SubscriptionButton component (returns JSON)
+// POST: create a Stripe checkout session (returns JSON)
 export async function POST(request: NextRequest) {
   const session = await auth();
   if (!session?.user?.id) {

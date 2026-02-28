@@ -2,7 +2,7 @@ import { sendWeeklyBrief } from "@/lib/email/send";
 import { sendTelegramMessage } from "@/lib/telegram";
 import { formatBriefForTelegram } from "@/lib/telegram/format-brief";
 import { generateUnsubscribeUrl } from "@/lib/unsubscribe";
-import type { BriefOutput, FreeBriefStored } from "@/types/brief";
+import type { BriefOutput } from "@/types/brief";
 import type { DeliveryChannel } from "@/generated/prisma/client";
 
 interface DeliverBriefParams {
@@ -13,8 +13,7 @@ interface DeliverBriefParams {
     telegramChatId?: string | null;
     deliveryChannel: DeliveryChannel;
   };
-  brief: BriefOutput | FreeBriefStored;
-  isFree: boolean;
+  brief: BriefOutput;
   periodStart: Date;
   periodEnd: Date;
   profileTerms?: string[];
@@ -29,7 +28,6 @@ interface DeliverBriefResult {
 export async function deliverBrief({
   user,
   brief,
-  isFree,
   periodStart,
   periodEnd,
   profileTerms = [],
@@ -51,8 +49,7 @@ export async function deliverBrief({
       await sendWeeklyBrief({
         to: user.email,
         userName: user.name ?? undefined,
-        brief: brief as BriefOutput,
-        isFree,
+        brief,
         periodStart,
         periodEnd,
         profileTerms,
@@ -69,7 +66,6 @@ export async function deliverBrief({
     try {
       const text = formatBriefForTelegram({
         brief,
-        isFree,
         periodStart,
         periodEnd,
         profileTerms,

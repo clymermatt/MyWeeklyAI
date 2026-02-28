@@ -1,22 +1,15 @@
 import Link from "next/link";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import DashboardUpgradeCard from "@/components/dashboard-upgrade-card";
 import TelegramConnectCard from "@/components/telegram-connect-card";
 import ResubscribeBanner from "@/components/resubscribe-banner";
 
-export default async function DashboardPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ upgrade?: string; subscription?: string }>;
-}) {
+export default async function DashboardPage() {
   const session = await auth();
   const userId = session!.user!.id!;
-  const params = await searchParams;
 
-  const [profile, subscription, recentDigests, user] = await Promise.all([
+  const [profile, recentDigests, user] = await Promise.all([
     prisma.contextProfile.findUnique({ where: { userId } }),
-    prisma.subscription.findUnique({ where: { userId } }),
     prisma.weeklyDigest.findMany({
       where: { userId },
       orderBy: { sentAt: "desc" },
@@ -27,10 +20,6 @@ export default async function DashboardPage({
       select: { telegramChatId: true, deliveryChannel: true, unsubscribedAt: true },
     }),
   ]);
-
-  const justSubscribed = params.subscription === "success";
-  const isActive = subscription?.status === "ACTIVE" || justSubscribed;
-  const showUpgradeBanner = params.upgrade === "pro" && !isActive;
 
   const needsProfile = !profile;
 
@@ -67,21 +56,6 @@ export default async function DashboardPage({
             >
               Set up profile
             </Link>
-          </div>
-        </div>
-      )}
-
-      {showUpgradeBanner && (
-        <div className="rounded-lg border-2 border-purple-600 bg-purple-50 p-6 text-center">
-          <h2 className="text-lg font-bold text-gray-900">
-            Start your 7-day free trial
-          </h2>
-          <p className="mt-2 text-sm text-gray-600">
-            Get personalized AI briefings tailored to your role and industry.
-            No charge for 7 days — cancel anytime.
-          </p>
-          <div className="mt-4">
-            <DashboardUpgradeCard />
           </div>
         </div>
       )}
@@ -126,37 +100,15 @@ export default async function DashboardPage({
           </Link>
         </div>
 
-        {/* Subscription Card */}
+        {/* Plan Card */}
         <div className="rounded-lg border border-gray-200 bg-white p-6">
           <h2 className="text-sm font-medium text-gray-500">Plan</h2>
-          {isActive ? (
-            <div className="mt-2">
-              <p className="text-lg font-semibold text-green-600">Pro</p>
-              <p className="mt-1 text-sm text-gray-600">
-                {subscription?.currentPeriodEnd
-                  ? `Renews ${subscription.currentPeriodEnd.toLocaleDateString()}`
-                  : "7-day free trial started"}
-              </p>
-              <a
-                href="/api/stripe/portal"
-                className="mt-4 inline-block text-sm font-medium text-blue-600 hover:text-blue-700"
-              >
-                Manage subscription &rarr;
-              </a>
-            </div>
-          ) : (
-            <div className="mt-2">
-              <p className="text-lg font-semibold text-gray-900">Free</p>
-              <p className="mt-1 text-sm text-gray-600">
-                You get the weekly &ldquo;Industry News&rdquo; section.
-                Upgrade to Pro and unlock personalized picks and action
-                items tailored to your role.
-              </p>
-              <div className="mt-4">
-                <DashboardUpgradeCard variant="outline" />
-              </div>
-            </div>
-          )}
+          <div className="mt-2">
+            <p className="text-lg font-semibold text-green-600">My Weekly AI</p>
+            <p className="mt-1 text-sm text-gray-600">
+              Personalized briefings delivered every Sunday
+            </p>
+          </div>
         </div>
 
         {/* Recent Digests Card */}

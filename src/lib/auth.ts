@@ -21,8 +21,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       async sendVerificationRequest({ identifier: email, url }) {
         const resend = new ResendClient(process.env.RESEND_API_KEY);
 
-        // Determine persona from callback URL and existing account
-        const isProSignup = url.includes("stripe") || url.includes("plan%3Dpro");
         const existingUser = await prisma.user.findUnique({ where: { email } });
 
         let subject: string;
@@ -36,17 +34,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           heading = "Welcome back!";
           body = "Click the button below to sign in to your account.";
           buttonText = "Sign in to My Weekly AI";
-        } else if (isProSignup) {
-          // New user — Pro trial
-          subject = "Welcome to My Weekly AI — let's get you set up";
-          heading = "Let\u2019s get you started!";
-          body = "Sign in to set up your 7-day free trial and get your first personalized AI briefing today.";
-          buttonText = "Start my free trial";
         } else {
-          // New user — Free
+          // New user
           subject = "Welcome to My Weekly AI — let's get you set up";
           heading = "Welcome to My Weekly AI!";
-          body = "Sign in to set up your profile and get your first brief today.";
+          body = "Sign in to set up your profile and get your first personalized AI briefing today.";
           buttonText = "Get started";
         }
 

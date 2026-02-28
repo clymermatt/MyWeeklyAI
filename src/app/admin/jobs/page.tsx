@@ -135,8 +135,7 @@ export default async function AdminJobsPage() {
           title="Weekly Digest"
           lastRun={lastDigest}
           metricKeys={[
-            "freeUsersProcessed",
-            "paidUsersProcessed",
+            "usersProcessed",
             "emailsSent",
             "telegramsSent",
             "errorCount",

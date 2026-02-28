@@ -1,12 +1,10 @@
 import { prisma } from "@/lib/prisma";
-import { generateBrief, generateFreeBrief } from "@/lib/llm/generate-brief";
+import { generateBrief } from "@/lib/llm/generate-brief";
 import { rankNewsForUser } from "@/lib/llm/relevance-scorer";
 import { deliverBrief } from "@/lib/delivery/send-brief";
-import { freeBriefToBriefOutput } from "@/types/brief";
 
 /**
- * Generate and deliver an instant brief for a user.
- * Works for both free and paid users based on subscription status.
+ * Generate and deliver an instant personalized brief for a user.
  */
 export async function generateInstantBriefing(userId: string) {
   const periodEnd = new Date();
@@ -15,15 +13,13 @@ export async function generateInstantBriefing(userId: string) {
 
   const user = await prisma.user.findUniqueOrThrow({
     where: { id: userId },
-    include: { subscription: true, contextProfile: true },
+    include: { contextProfile: true },
   });
 
   if (user.unsubscribedAt) return;
 
   const profile = user.contextProfile;
   if (!profile) return;
-
-  const isPaid = user.subscription?.status === "ACTIVE";
 
   const allNewsItems = await prisma.newsItem.findMany({
     where: { publishedAt: { gte: periodStart } },
@@ -34,36 +30,15 @@ export async function generateInstantBriefing(userId: string) {
 
   if (allNewsItems.length === 0) return;
 
-  let briefJson: Record<string, unknown>;
-  let isFree: boolean;
-
-  if (isPaid) {
-    const rankedItems = rankNewsForUser(allNewsItems, profile);
-    const brief = await generateBrief(profile, rankedItems);
-    briefJson = JSON.parse(JSON.stringify(brief));
-    isFree = false;
-  } else {
-    const industryItems = allNewsItems.filter(
-      (i) => i.source.category === "INDUSTRY_NEWS",
-    );
-    const labItems = allNewsItems.filter(
-      (i) => i.source.category === "AI_LAB",
-    );
-    const freeBrief = await generateFreeBrief(industryItems, labItems);
-    const freeBriefFull = freeBriefToBriefOutput(freeBrief);
-    briefJson = {
-      ...JSON.parse(JSON.stringify(freeBriefFull)),
-      industryNews: freeBrief.industryNews,
-      labUpdates: freeBrief.labUpdates,
-    };
-    isFree = true;
-  }
+  const rankedItems = rankNewsForUser(allNewsItems, profile);
+  const brief = await generateBrief(profile, rankedItems);
+  const briefJson = JSON.parse(JSON.stringify(brief));
 
   await prisma.weeklyDigest.create({
     data: {
       userId,
       briefJson: briefJson as never,
-      isFree,
+      isFree: false,
       periodStart,
       periodEnd,
     },
@@ -80,7 +55,6 @@ export async function generateInstantBriefing(userId: string) {
     await deliverBrief({
       user,
       brief: briefJson as never,
-      isFree,
       periodStart,
       periodEnd,
       profileTerms,

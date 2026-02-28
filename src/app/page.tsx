@@ -2,7 +2,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { auth } from "@/lib/auth";
 import SiteNav from "@/components/site-nav";
-import ProPricingCard from "@/components/pro-pricing-card";
 import {
   FadeIn,
   CountUp,
@@ -54,7 +53,7 @@ export default async function HomePage() {
             name: "How much does My Weekly AI cost?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "My Weekly AI offers a free tier with curated top AI news delivered every Sunday, plus a Pro plan at $2.99/month or $29.99/year (with a 7-day free trial) that adds personalized picks, actionable experiments, and advanced filtering.",
+              text: "My Weekly AI is completely free. Sign up, set up your context profile in 2 minutes, and get a personalized AI brief delivered to your inbox every Sunday.",
             },
           },
         ],
@@ -419,81 +418,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Free vs Pro */}
-      <section className="border-t border-gray-200 bg-white px-4 py-20">
-        <div className="mx-auto max-w-4xl">
-          <FadeIn>
-            <h2 className="text-center text-3xl font-bold text-gray-900">
-              Free vs Pro
-            </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-center text-gray-600">
-              Start free. Upgrade when you want the full picture.
-            </p>
-          </FadeIn>
-          <div className="mt-12 grid gap-6 sm:grid-cols-2">
-            <FadeIn delay={0}>
-              <div className="rounded-lg border border-gray-200 p-6 transition-all hover:-translate-y-0.5 hover:shadow-md">
-                <h3 className="text-lg font-bold text-gray-900">Free</h3>
-                <p className="mt-2 text-sm font-medium text-gray-700">Stay informed in 5 minutes. The week's top AI news, delivered.</p>
-                <p className="mt-1 text-sm text-gray-500">$0 / forever</p>
-                <ul className="mt-6 space-y-3 text-sm text-gray-700">
-                  <li className="flex items-start gap-2">
-                    <span className="mt-0.5 text-green-600">&#10003;</span>
-                    The week's most impactful AI news and lab announcements, curated from 20+ AI industry publications
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="mt-0.5 text-green-600">&#10003;</span>
-                    Weekly email every Sunday - your first delivered TODAY
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="mt-0.5 text-green-600">&#10003;</span>
-                    Web dashboard to browse briefings
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="mt-0.5 text-green-600">&#10003;</span>
-                    Bookmark articles for later
-                  </li>
-                </ul>
-                <div className="mt-8">
-                  <Link
-                    href="/auth/signin"
-                    className="block rounded-lg border border-gray-300 py-2.5 text-center text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50"
-                  >
-                    Start Free
-                  </Link>
-                </div>
-              </div>
-            </FadeIn>
-            <FadeIn delay={100}>
-              <ProPricingCard>
-                <ul className="mt-6 space-y-3 text-sm text-gray-700">
-                  <li className="flex items-start gap-2">
-                    <span className="mt-0.5 text-green-600">&#10003;</span>
-                    Everything in Free
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="mt-0.5 text-green-600">&#10003;</span>
-                    &quot;Relevant To You&quot; — personalized picks for your role
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="mt-0.5 text-green-600">&#10003;</span>
-                    &quot;What To Test&quot; — actionable experiments for your work
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="mt-0.5 text-green-600">&#10003;</span>
-                    &quot;Filtered Out&quot; — see what was skipped and why
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="mt-0.5 text-green-600">&#10003;</span>
-                    Focus &amp; avoid topics for deeper personalization
-                  </li>
-                </ul>
-              </ProPricingCard>
-            </FadeIn>
-          </div>
-        </div>
-      </section>
-
       {/* Stats */}
       <section className="border-t border-gray-200 bg-gradient-to-b from-gray-50 to-white px-4 py-20">
         <div className="mx-auto max-w-4xl text-center">
@@ -542,18 +466,12 @@ export default async function HomePage() {
             <p className="mt-4 text-purple-100">
               Set up your context profile in 2 minutes and get your first brief today.
             </p>
-            <div className="mt-8 flex items-center justify-center gap-4">
+            <div className="mt-8 flex items-center justify-center">
               <Link
                 href="/auth/signin"
-                className="rounded-lg border border-purple-400 px-6 py-3 text-sm font-medium text-white transition-all hover:bg-purple-700"
-              >
-                Start Free — No Personalization
-              </Link>
-              <Link
-                href="/auth/signin?plan=pro"
                 className="rounded-lg bg-white px-6 py-3 text-sm font-medium text-purple-600 shadow-lg transition-all hover:bg-purple-50 hover:shadow-xl"
               >
-                Start Pro — Personalized to Your Role (7 Days Free)
+                Get Started Free
               </Link>
             </div>
           </FadeIn>

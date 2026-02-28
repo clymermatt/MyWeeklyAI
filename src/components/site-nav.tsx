@@ -8,20 +8,12 @@ import MobileNav from "@/components/mobile-nav";
 export default async function SiteNav() {
   const session = await auth();
 
-  let plan: "Free" | "Pro" = "Free";
   let isAdmin = false;
   if (session?.user?.id) {
-    const [subscription, user] = await Promise.all([
-      prisma.subscription.findUnique({
-        where: { userId: session.user.id },
-        select: { status: true },
-      }),
-      prisma.user.findUnique({
-        where: { id: session.user.id },
-        select: { role: true },
-      }),
-    ]);
-    plan = subscription?.status === "ACTIVE" ? "Pro" : "Free";
+    const user = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: { role: true },
+    });
     isAdmin = user?.role === "ADMIN";
   }
 
@@ -66,7 +58,6 @@ export default async function SiteNav() {
           <div className="hidden md:flex items-center gap-4">
             <UserMenu
               name={userName!}
-              plan={plan}
               isAdmin={isAdmin}
             />
             <form
@@ -94,7 +85,6 @@ export default async function SiteNav() {
         <MobileNav
           isAuthenticated={!!session}
           userName={userName}
-          plan={plan}
           isAdmin={isAdmin}
         />
       </div>

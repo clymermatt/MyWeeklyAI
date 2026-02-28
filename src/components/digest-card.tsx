@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import type { BriefOutput, BriefItem, FreeBriefStored } from "@/types/brief";
+import type { BriefOutput, BriefItem } from "@/types/brief";
 import BookmarkButton from "@/components/bookmark-button";
 
 interface DigestProps {
@@ -107,35 +107,6 @@ function ItemSection({
   );
 }
 
-function LockedSectionPlaceholder({ title }: { title: string }) {
-  return (
-    <div className="relative overflow-hidden rounded-lg border border-gray-200 bg-gray-50 p-4">
-      {/* Blurred placeholder lines */}
-      <div className="select-none blur-sm" aria-hidden="true">
-        <h3 className="mb-2 font-semibold text-gray-400">{title}</h3>
-        <div className="space-y-2">
-          <div className="h-3 w-3/4 rounded bg-gray-300" />
-          <div className="h-3 w-full rounded bg-gray-200" />
-          <div className="h-3 w-2/3 rounded bg-gray-300" />
-          <div className="h-3 w-5/6 rounded bg-gray-200" />
-        </div>
-      </div>
-      {/* Overlay */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/60">
-        <p className="mb-2 text-sm font-medium text-gray-700">
-          {title} — Pro only
-        </p>
-        <Link
-          href="/dashboard"
-          className="rounded-md bg-purple-600 px-4 py-1.5 text-xs font-medium text-white hover:bg-purple-700"
-        >
-          Upgrade to unlock
-        </Link>
-      </div>
-    </div>
-  );
-}
-
 export default function DigestCard({
   digest,
   bookmarkedUrls,
@@ -163,135 +134,95 @@ export default function DigestCard({
           <span className="text-sm font-medium text-gray-900">
             {start} &ndash; {end}
           </span>
-          {digest.isFree && (
-            <span className="rounded bg-gray-100 px-1.5 py-0.5 text-xs font-medium text-gray-500">
-              Free
-            </span>
-          )}
           <span className="text-xs text-gray-400">
             Sent {new Date(digest.sentAt).toLocaleDateString()}
           </span>
         </div>
-        <span className="text-gray-400">{expanded ? "−" : "+"}</span>
+        <span className="text-gray-400">{expanded ? "\u2212" : "+"}</span>
       </button>
 
       {expanded && (
         <div className="space-y-6 border-t border-gray-100 px-6 py-4">
-          {digest.isFree ? (
-            <>
-              {"industryNews" in brief ? (
-                <>
-                  <ItemSection
-                    title="Industry News"
-                    items={(brief as FreeBriefStored).industryNews}
-                    digestId={digest.id}
-                    bookmarkedUrls={bookmarkedUrls}
-                    onBookmarkToggle={onBookmarkToggle}
-                  />
-                  <ItemSection
-                    title="AI Lab Announcements"
-                    items={(brief as FreeBriefStored).labUpdates}
-                    digestId={digest.id}
-                    bookmarkedUrls={bookmarkedUrls}
-                    onBookmarkToggle={onBookmarkToggle}
-                  />
-                </>
-              ) : (
-                <ItemSection
-                  title="Industry News"
-                  items={brief.whatDropped}
-                  digestId={digest.id}
-                  bookmarkedUrls={bookmarkedUrls}
-                  onBookmarkToggle={onBookmarkToggle}
-                />
-              )}
-              <LockedSectionPlaceholder title="News Relevant to You" />
-              <LockedSectionPlaceholder title="What To Test This Week" />
-            </>
-          ) : (
-            <>
-              {/* Personalized sections — highlighted together */}
-              <div className="rounded-lg border border-purple-100 bg-purple-50/50 p-4 space-y-6">
-                <div>
-                  <div className="mb-3 flex items-center gap-2">
-                    <h3 className="font-semibold text-purple-900">
-                      News Relevant to You
-                    </h3>
-                    <Link
-                      href="/dashboard/profile"
-                      className="text-xs text-purple-500 hover:text-purple-600"
-                      title="Changes apply to your next digest"
-                    >
-                      Edit profile &rarr;
-                    </Link>
-                    <span className="text-xs text-gray-400">
-                      (changes apply next week)
-                    </span>
-                  </div>
-                  <ul className="space-y-3">
-                    {brief.relevantToYou.map((item, i) => (
-                      <li key={i} className="flex items-start gap-2">
-                        <div className="min-w-0 flex-1">
-                          <a
-                            href={item.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-sm font-medium text-purple-700 hover:text-purple-800"
-                          >
-                            {item.title}
-                          </a>
-                          <p className="mt-0.5 text-sm text-gray-700">
-                            {item.summary}
-                          </p>
-                          {item.relevanceNote && (
-                            <p className="mt-1 text-xs italic text-gray-500">
-                              <span className="font-bold not-italic">Why this matters to you:</span> {highlightTerms(item.relevanceNote, profileTerms)}
-                            </p>
-                          )}
-                        </div>
-                        <BookmarkButton
-                          url={item.url}
-                          title={item.title}
-                          summary={item.summary}
-                          source={item.source}
-                          digestId={digest.id}
-                          initialBookmarked={
-                            bookmarkedUrls?.has(item.url) ?? false
-                          }
-                          onToggle={onBookmarkToggle}
-                        />
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="border-t border-purple-200 pt-4">
-                  <ItemSection
-                    title="What To Test This Week"
-                    items={brief.whatToTest}
-                    showRelevance
-                    digestId={digest.id}
-                    bookmarkedUrls={bookmarkedUrls}
-                    onBookmarkToggle={onBookmarkToggle}
-                    profileTerms={profileTerms}
-                  />
-                </div>
+          {/* Personalized sections */}
+          <div className="rounded-lg border border-purple-100 bg-purple-50/50 p-4 space-y-6">
+            <div>
+              <div className="mb-3 flex items-center gap-2">
+                <h3 className="font-semibold text-purple-900">
+                  News Relevant to You
+                </h3>
+                <Link
+                  href="/dashboard/profile"
+                  className="text-xs text-purple-500 hover:text-purple-600"
+                  title="Changes apply to your next digest"
+                >
+                  Edit profile &rarr;
+                </Link>
+                <span className="text-xs text-gray-400">
+                  (changes apply next week)
+                </span>
               </div>
+              <ul className="space-y-3">
+                {(brief.relevantToYou ?? []).map((item, i) => (
+                  <li key={i} className="flex items-start gap-2">
+                    <div className="min-w-0 flex-1">
+                      <a
+                        href={item.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm font-medium text-purple-700 hover:text-purple-800"
+                      >
+                        {item.title}
+                      </a>
+                      <p className="mt-0.5 text-sm text-gray-700">
+                        {item.summary}
+                      </p>
+                      {item.relevanceNote && (
+                        <p className="mt-1 text-xs italic text-gray-500">
+                          <span className="font-bold not-italic">Why this matters to you:</span> {highlightTerms(item.relevanceNote, profileTerms)}
+                        </p>
+                      )}
+                    </div>
+                    <BookmarkButton
+                      url={item.url}
+                      title={item.title}
+                      summary={item.summary}
+                      source={item.source}
+                      digestId={digest.id}
+                      initialBookmarked={
+                        bookmarkedUrls?.has(item.url) ?? false
+                      }
+                      onToggle={onBookmarkToggle}
+                    />
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="border-t border-purple-200 pt-4">
               <ItemSection
-                title="Industry News"
-                items={brief.whatDropped}
+                title="What To Test This Week"
+                items={brief.whatToTest ?? []}
+                showRelevance
                 digestId={digest.id}
                 bookmarkedUrls={bookmarkedUrls}
                 onBookmarkToggle={onBookmarkToggle}
+                profileTerms={profileTerms}
               />
-              <div>
-                <h3 className="mb-1 font-semibold text-gray-500">
-                  Filtered Out
-                </h3>
-                <p className="text-sm text-gray-400">{brief.ignoreSummary}</p>
-              </div>
-            </>
-          )}
+            </div>
+          </div>
+          <ItemSection
+            title="Industry News"
+            items={brief.whatDropped ?? []}
+            digestId={digest.id}
+            bookmarkedUrls={bookmarkedUrls}
+            onBookmarkToggle={onBookmarkToggle}
+          />
+          <div>
+            <h3 className="mb-1 font-semibold text-gray-500">
+              Filtered Out
+            </h3>
+            <p className="text-sm text-gray-400">{brief.ignoreSummary}</p>
+          </div>
         </div>
       )}
     </div>

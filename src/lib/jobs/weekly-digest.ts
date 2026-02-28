@@ -8,8 +8,7 @@ import type { BriefOutput } from "@/types/brief";
 import { freeBriefToBriefOutput } from "@/types/brief";
 
 export interface DigestResult {
-  freeUsersProcessed: number;
-  paidUsersProcessed: number;
+  usersProcessed: number;
   emailsSent: number;
   telegramsSent: number;
   errors: string[];
@@ -51,7 +50,7 @@ export async function runWeeklyDigest(): Promise<DigestResult> {
   let telegramsSent = 0;
   const errors: string[] = [];
 
-  // ── Phase A: Generate shared free brief (1 Claude call) ──
+  // ── Phase A: Generate shared free brief for social posts (1 Claude call) ──
   const freeBrief = await generateFreeBrief(industryItems, labItems);
   const freeBriefFull = freeBriefToBriefOutput(freeBrief);
   // Store subsections alongside the full shape for rendering
@@ -78,82 +77,24 @@ export async function runWeeklyDigest(): Promise<DigestResult> {
     },
   });
 
-  // ── Phase B: Free users (have profile, no ACTIVE subscription) ──
-  const freeUsers = await prisma.user.findMany({
+  // ── Phase B: All users with profiles ──
+  const users = await prisma.user.findMany({
     where: {
       contextProfile: { isNot: null },
       unsubscribedAt: null,
-      OR: [
-        { subscription: null },
-        { subscription: { status: { not: "ACTIVE" } } },
-      ],
     },
     include: { contextProfile: true },
   });
 
-  for (const user of freeUsers) {
+  for (const user of users) {
+    if (!user.contextProfile) continue;
+
     try {
       // Skip if user already received a digest this period
       const existing = await prisma.weeklyDigest.findFirst({
         where: { userId: user.id, periodStart: { gte: periodStart } },
       });
       if (existing) continue;
-
-      await prisma.weeklyDigest.create({
-        data: {
-          userId: user.id,
-          briefJson: JSON.parse(JSON.stringify(freeBriefJson)),
-          isFree: true,
-          periodStart,
-          periodEnd,
-        },
-      });
-
-      try {
-        const delivery = await deliverBrief({
-          user,
-          brief: freeBriefJson,
-          isFree: true,
-          periodStart,
-          periodEnd,
-        });
-        if (delivery.emailSent) emailsSent++;
-        if (delivery.telegramSent) telegramsSent++;
-        errors.push(...delivery.errors);
-      } catch (deliveryErr) {
-        const msg = deliveryErr instanceof Error ? deliveryErr.message : "Unknown delivery error";
-        console.log(`Delivery skipped for ${user.email}: ${msg}`);
-        errors.push(`Delivery skipped for ${user.email}: ${msg}`);
-      }
-    } catch (err) {
-      errors.push(
-        `Free user ${user.email}: ${err instanceof Error ? err.message : "Unknown error"}`,
-      );
-    }
-  }
-
-  // ── Phase C: Paid users (ACTIVE subscription + profile) ──
-  const paidUsers = await prisma.user.findMany({
-    where: {
-      subscription: { status: "ACTIVE" },
-      contextProfile: { isNot: null },
-      unsubscribedAt: null,
-    },
-    include: {
-      contextProfile: true,
-      subscription: true,
-    },
-  });
-
-  for (const user of paidUsers) {
-    if (!user.contextProfile) continue;
-
-    try {
-      // Skip if user already received a digest this period
-      const existingPaid = await prisma.weeklyDigest.findFirst({
-        where: { userId: user.id, periodStart: { gte: periodStart } },
-      });
-      if (existingPaid) continue;
 
       // Dedup: get URLs from the user's last 2 digests
       const recentDigests = await prisma.weeklyDigest.findMany({
@@ -201,7 +142,6 @@ export async function runWeeklyDigest(): Promise<DigestResult> {
         const delivery = await deliverBrief({
           user,
           brief,
-          isFree: false,
           periodStart,
           periodEnd,
           profileTerms,
@@ -222,8 +162,7 @@ export async function runWeeklyDigest(): Promise<DigestResult> {
   }
 
   return {
-    freeUsersProcessed: freeUsers.length,
-    paidUsersProcessed: paidUsers.length,
+    usersProcessed: users.length,
     emailsSent,
     telegramsSent,
     errors,

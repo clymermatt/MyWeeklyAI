@@ -15,7 +15,6 @@ export async function sendWeeklyBrief({
   to,
   userName,
   brief,
-  isFree = false,
   periodStart,
   periodEnd,
   profileTerms = [],
@@ -24,7 +23,6 @@ export async function sendWeeklyBrief({
   to: string;
   userName?: string;
   brief: BriefOutput;
-  isFree?: boolean;
   periodStart: Date;
   periodEnd: Date;
   profileTerms?: string[];
@@ -33,7 +31,6 @@ export async function sendWeeklyBrief({
   const html = await render(
     WeeklyBriefEmail({
       brief,
-      isFree,
       periodStart: periodStart.toLocaleDateString("en-US", {
         month: "short",
         day: "numeric",
@@ -49,9 +46,7 @@ export async function sendWeeklyBrief({
   );
 
   const dateRange = `${periodStart.toLocaleDateString("en-US", { month: "short", day: "numeric" })} to ${periodEnd.toLocaleDateString("en-US", { month: "short", day: "numeric" })}`;
-  const subject = isFree
-    ? `Your Free AI Brief — ${dateRange}`
-    : `Your AI Brief — ${dateRange}`;
+  const subject = `Your AI Brief — ${dateRange}`;
 
   const resend = getResend();
   const headers: Record<string, string> = {};
