@@ -419,61 +419,65 @@ export default async function LandingPage({
               Everything you need to stay ahead — completely free.
             </p>
           </FadeIn>
-          <div className="mt-12 mx-auto max-w-lg">
-            <FadeIn delay={0}>
-              <div className="rounded-lg border border-gray-200 p-6">
-                <ul className="space-y-3 text-sm text-gray-700">
-                  <li className="flex items-start gap-2">
-                    <span className="mt-0.5 text-green-600">&#10003;</span>
-                    Personalized weekly brief filtered for your role and industry
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="mt-0.5 text-green-600">&#10003;</span>
-                    &quot;Relevant To You&quot; — personalized picks for your role
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="mt-0.5 text-green-600">&#10003;</span>
-                    &quot;What To Test&quot; — actionable experiments for your work
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="mt-0.5 text-green-600">&#10003;</span>
-                    &quot;Filtered Out&quot; — see what was skipped and why
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="mt-0.5 text-green-600">&#10003;</span>
-                    Focus &amp; avoid topics for deeper personalization
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="mt-0.5 text-green-600">&#10003;</span>
-                    Web dashboard to browse briefings
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="mt-0.5 text-green-600">&#10003;</span>
-                    Bookmark articles for later
-                  </li>
-                </ul>
-                <p className="mt-4 text-xs font-medium uppercase tracking-wide text-gray-400">
-                  Topics we watch for you include
+          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {[
+              {
+                title: "Personalized weekly brief",
+                desc: "Filtered for your role, industry, and interests — not a generic roundup.",
+              },
+              {
+                title: "\u201CWhat To Test\u201D experiments",
+                desc: "Actionable things you can try at work this week, tailored to your context.",
+              },
+              {
+                title: "\u201CFiltered Out\u201D transparency",
+                desc: "See what we skipped and why, so you never miss something important.",
+              },
+              {
+                title: "Focus & avoid topics",
+                desc: "Go deeper on what matters, skip what doesn\u2019t. Your brief adapts to you.",
+              },
+              {
+                title: "Web dashboard",
+                desc: "Browse all your past briefings, search across issues, and track trends.",
+              },
+              {
+                title: "Bookmark articles",
+                desc: "Save articles for later and build your own reading list over time.",
+              },
+            ].map((card, i) => (
+              <FadeIn key={card.title} delay={i * 60}>
+                <div className="rounded-lg border border-gray-200 bg-white p-6 transition-all hover:-translate-y-0.5 hover:shadow-md">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-100">
+                    <svg className="h-4 w-4 text-green-600" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                    </svg>
+                  </div>
+                  <h3 className="mt-3 font-semibold text-gray-900">{card.title}</h3>
+                  <p className="mt-2 text-sm text-gray-600">{card.desc}</p>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+          {page.whatYouGet.length > 0 && (
+            <FadeIn delay={400}>
+              <div className="mt-10 text-center">
+                <p className="text-xs font-medium uppercase tracking-wide text-gray-400">
+                  Topics we watch for {page.label} professionals
                 </p>
-                <ul className="mt-2 space-y-2 text-sm text-gray-500">
+                <div className="mt-3 flex flex-wrap justify-center gap-2">
                   {page.whatYouGet.map((item) => (
-                    <li key={item} className="flex items-start gap-2">
-                      <span className="mt-0.5">&#128269;</span>
+                    <span
+                      key={item}
+                      className="rounded-full bg-purple-50 px-3 py-1 text-xs font-medium text-purple-700"
+                    >
                       {item}
-                    </li>
+                    </span>
                   ))}
-                </ul>
-                <div className="mt-8">
-                  <Link
-                    href="/auth/signin"
-                    className="block rounded-lg bg-purple-600 py-2.5 text-center text-sm font-medium text-white shadow-lg shadow-purple-600/25 transition-all hover:bg-purple-700 hover:shadow-xl hover:shadow-purple-600/30"
-                  >
-                    Get Started
-                  </Link>
                 </div>
               </div>
             </FadeIn>
-          </div>
+          )}
         </div>
       </section>
 
