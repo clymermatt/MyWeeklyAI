@@ -57,31 +57,8 @@ export default async function HomepageV2() {
         </div>
       </section>
 
-      {/* 2. Social Proof Bar */}
-      <section className="px-4 pb-16">
-        <FadeIn>
-          <p className="text-center text-sm text-gray-500 mb-4">
-            Trusted by professionals in:
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-2">
-            {[
-              "Product",
-              "Marketing",
-              "Engineering",
-              "Design",
-              "Operations",
-              "Leadership",
-            ].map((role) => (
-              <span
-                key={role}
-                className="rounded-full bg-purple-50 px-4 py-1.5 text-sm font-medium text-purple-700"
-              >
-                {role}
-              </span>
-            ))}
-          </div>
-        </FadeIn>
-      </section>
+      {/* Spacer between hero and problem section */}
+      <div className="pb-8" />
 
       {/* 3. Problem Section — The Hook */}
       <section className="border-t border-gray-200 bg-white px-4 py-20">
@@ -147,8 +124,76 @@ export default async function HomepageV2() {
               deliver a concise briefing with only what&apos;s relevant to you.
             </p>
           </FadeIn>
+          <FadeIn delay={150}>
+            <div className="mt-8 space-y-4">
+              <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">
+                Roles
+              </p>
+              <div className="flex flex-wrap justify-center gap-2">
+                {[
+                  "Software Engineer",
+                  "Product Manager",
+                  "UX / Product Designer",
+                  "Data Scientist / ML Engineer",
+                  "Engineering Manager",
+                  "CTO / VP Engineering",
+                  "CEO / Founder",
+                  "Marketing Manager",
+                  "Content Strategist",
+                  "Sales / Revenue",
+                  "DevOps / Platform Engineer",
+                  "Research Scientist",
+                  "Business Analyst",
+                  "Project Manager",
+                  "Customer Success",
+                  "Solutions Architect",
+                  "Consultant",
+                  "Student / Researcher",
+                ].map((role) => (
+                  <span
+                    key={role}
+                    className="rounded-full bg-purple-50 px-3 py-1 text-xs font-medium text-purple-700"
+                  >
+                    {role}
+                  </span>
+                ))}
+              </div>
+              <p className="text-xs font-semibold uppercase tracking-wide text-gray-400 pt-2">
+                Industries
+              </p>
+              <div className="flex flex-wrap justify-center gap-2">
+                {[
+                  "SaaS / Software",
+                  "Fintech / Financial Services",
+                  "Healthcare / Life Sciences",
+                  "E-commerce / Retail",
+                  "Education / EdTech",
+                  "Media / Entertainment",
+                  "Marketing / Advertising",
+                  "Consulting / Professional Services",
+                  "Manufacturing / Industrial",
+                  "Real Estate / PropTech",
+                  "Legal / LegalTech",
+                  "Government / Public Sector",
+                  "Nonprofit / Social Impact",
+                  "Cybersecurity",
+                  "Gaming",
+                  "Telecommunications",
+                  "Energy / CleanTech",
+                  "Transportation / Logistics",
+                ].map((industry) => (
+                  <span
+                    key={industry}
+                    className="rounded-full bg-indigo-50 px-3 py-1 text-xs font-medium text-indigo-700"
+                  >
+                    {industry}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </FadeIn>
           <FadeIn delay={200}>
-            <p className="mt-4 text-base font-medium text-gray-500">
+            <p className="mt-8 text-base font-medium text-gray-500">
               No hype. No noise. No doom-scrolling.
               <br />
               Just the signal you need to stay sharp.
