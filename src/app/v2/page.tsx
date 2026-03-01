@@ -58,9 +58,6 @@ export default async function HomepageV2() {
       {/* Source logos — ticker */}
       <section className="px-4 pb-16">
         <FadeIn>
-          <p className="text-center text-sm text-gray-400 mb-6">
-            Curated from 20+ industry labs and publications
-          </p>
           <div className="mx-auto max-w-3xl grayscale opacity-50">
             <LogoTicker>
               <Image src="/logos/openai.svg" alt="OpenAI" width={88} height={25} className="flex-shrink-0" />
@@ -73,6 +70,9 @@ export default async function HomepageV2() {
               <Image src="/logos/ieee-spectrum.svg" alt="IEEE Spectrum" width={88} height={12} className="flex-shrink-0" />
             </LogoTicker>
           </div>
+          <p className="text-center text-sm text-gray-400 mt-6">
+            Curated from 20+ industry labs and publications
+          </p>
         </FadeIn>
       </section>
 
