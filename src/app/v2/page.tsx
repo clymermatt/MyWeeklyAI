@@ -48,7 +48,7 @@ export default async function HomepageV2() {
                 </Link>
               )}
               <p className="text-sm text-gray-400">
-                I built this for myself. Use it for yourself. It&apos;s free.
+                I built this for myself. You&apos;re welcome to use it too. It&apos;s free.
               </p>
             </div>
           </FadeIn>
