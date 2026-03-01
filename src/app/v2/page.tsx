@@ -670,9 +670,9 @@ export default async function HomepageV2() {
         <div className="relative mx-auto max-w-2xl">
           <FadeIn>
             <h2 className="text-3xl font-bold text-white">
-              The AI wave isn&apos;t slowing down.
+              I built this for myself to cut through the AI noise.
               <br />
-              Make sure you&apos;re riding it.
+              You&apos;re welcome to use it too.
             </h2>
             <div className="mt-8 flex flex-col items-center gap-3">
               <Link
