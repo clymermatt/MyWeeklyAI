@@ -1,8 +1,7 @@
 import Link from "next/link";
-import Image from "next/image";
 import { auth } from "@/lib/auth";
 import SiteNav from "@/components/site-nav";
-import { FadeIn, LogoTicker } from "@/components/animations";
+import { FadeIn } from "@/components/animations";
 
 export default async function HomepageV2() {
   const session = await auth();
@@ -58,23 +57,28 @@ export default async function HomepageV2() {
         </div>
       </section>
 
-      {/* 2. Source Logos — Ticker */}
+      {/* 2. Social Proof Bar */}
       <section className="px-4 pb-16">
         <FadeIn>
-          <p className="text-center text-sm text-gray-400 mb-6">
-            Curated from 20+ industry labs and publications
+          <p className="text-center text-sm text-gray-500 mb-4">
+            Trusted by professionals in:
           </p>
-          <div className="mx-auto max-w-3xl grayscale opacity-50">
-            <LogoTicker>
-              <Image src="/logos/openai.svg" alt="OpenAI" width={88} height={25} className="flex-shrink-0" />
-              <Image src="/logos/anthropic.svg" alt="Anthropic" width={100} height={15} className="flex-shrink-0" />
-              <Image src="/logos/deepmind.svg" alt="Google DeepMind" width={112} height={18} className="flex-shrink-0" />
-              <Image src="/logos/the-verge.svg" alt="The Verge" width={62} height={12} className="flex-shrink-0" />
-              <Image src="/logos/techcrunch.svg" alt="TechCrunch" width={72} height={12} className="flex-shrink-0" />
-              <Image src="/logos/venturebeat.svg" alt="VentureBeat" width={106} height={15} className="flex-shrink-0" />
-              <Image src="/logos/mit-tech-review.svg" alt="MIT Technology Review" width={88} height={44} className="flex-shrink-0" />
-              <Image src="/logos/ieee-spectrum.svg" alt="IEEE Spectrum" width={88} height={12} className="flex-shrink-0" />
-            </LogoTicker>
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            {[
+              "Product",
+              "Marketing",
+              "Engineering",
+              "Design",
+              "Operations",
+              "Leadership",
+            ].map((role) => (
+              <span
+                key={role}
+                className="rounded-full bg-purple-50 px-4 py-1.5 text-sm font-medium text-purple-700"
+              >
+                {role}
+              </span>
+            ))}
           </div>
         </FadeIn>
       </section>
