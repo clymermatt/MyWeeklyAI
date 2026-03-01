@@ -19,9 +19,9 @@ export default async function HomepageV2() {
         <div className="relative mx-auto max-w-3xl">
           <FadeIn>
             <h1 className="text-5xl font-bold tracking-tight text-gray-900">
-              Stay current with AI News,{" "}
+              Stay Current with AI News,{" "}
               <span className="bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
-                personalized to your role
+                Personalized to Your Role
               </span>
             </h1>
           </FadeIn>
