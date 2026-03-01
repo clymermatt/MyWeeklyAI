@@ -1,7 +1,8 @@
 import Link from "next/link";
+import Image from "next/image";
 import { auth } from "@/lib/auth";
 import SiteNav from "@/components/site-nav";
-import { FadeIn } from "@/components/animations";
+import { FadeIn, LogoTicker } from "@/components/animations";
 
 export default async function HomepageV2() {
   const session = await auth();
@@ -54,8 +55,26 @@ export default async function HomepageV2() {
         </div>
       </section>
 
-      {/* Spacer between hero and problem section */}
-      <div className="pb-8" />
+      {/* Source logos — ticker */}
+      <section className="px-4 pb-16">
+        <FadeIn>
+          <p className="text-center text-sm text-gray-400 mb-6">
+            Curated from 20+ industry labs and publications
+          </p>
+          <div className="mx-auto max-w-3xl grayscale opacity-50">
+            <LogoTicker>
+              <Image src="/logos/openai.svg" alt="OpenAI" width={88} height={25} className="flex-shrink-0" />
+              <Image src="/logos/anthropic.svg" alt="Anthropic" width={100} height={15} className="flex-shrink-0" />
+              <Image src="/logos/deepmind.svg" alt="Google DeepMind" width={112} height={18} className="flex-shrink-0" />
+              <Image src="/logos/the-verge.svg" alt="The Verge" width={62} height={12} className="flex-shrink-0" />
+              <Image src="/logos/techcrunch.svg" alt="TechCrunch" width={72} height={12} className="flex-shrink-0" />
+              <Image src="/logos/venturebeat.svg" alt="VentureBeat" width={106} height={15} className="flex-shrink-0" />
+              <Image src="/logos/mit-tech-review.svg" alt="MIT Technology Review" width={88} height={44} className="flex-shrink-0" />
+              <Image src="/logos/ieee-spectrum.svg" alt="IEEE Spectrum" width={88} height={12} className="flex-shrink-0" />
+            </LogoTicker>
+          </div>
+        </FadeIn>
+      </section>
 
       {/* 3. Problem Section — The Hook */}
       <section className="border-t border-gray-200 bg-white px-4 py-20">
