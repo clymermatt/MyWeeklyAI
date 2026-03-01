@@ -131,31 +131,32 @@ export default async function HomepageV2() {
               </p>
               <div className="flex flex-wrap justify-center gap-2">
                 {[
-                  "Software Engineer",
-                  "Product Manager",
-                  "UX / Product Designer",
-                  "Data Scientist / ML Engineer",
-                  "Engineering Manager",
-                  "CTO / VP Engineering",
-                  "CEO / Founder",
-                  "Marketing Manager",
-                  "Content Strategist",
-                  "Sales / Revenue",
-                  "DevOps / Platform Engineer",
-                  "Research Scientist",
-                  "Business Analyst",
-                  "Project Manager",
-                  "Customer Success",
-                  "Solutions Architect",
-                  "Consultant",
-                  "Student / Researcher",
+                  { label: "Software Engineer", slug: "software-engineers" },
+                  { label: "Product Manager", slug: "product-managers" },
+                  { label: "UX / Product Designer", slug: "ux-designers" },
+                  { label: "Data Scientist / ML Engineer", slug: "data-scientists" },
+                  { label: "Engineering Manager", slug: "engineering-managers" },
+                  { label: "CTO / VP Engineering", slug: "cto-vp-engineering" },
+                  { label: "CEO / Founder", slug: "ceo-founders" },
+                  { label: "Marketing Manager", slug: "marketing-managers" },
+                  { label: "Content Strategist", slug: "content-strategists" },
+                  { label: "Sales / Revenue", slug: "sales-revenue" },
+                  { label: "DevOps / Platform Engineer", slug: "devops-engineers" },
+                  { label: "Research Scientist", slug: "research-scientists" },
+                  { label: "Business Analyst", slug: "business-analysts" },
+                  { label: "Project Manager", slug: "project-managers" },
+                  { label: "Customer Success", slug: "customer-success" },
+                  { label: "Solutions Architect", slug: "solutions-architects" },
+                  { label: "Consultant", slug: "consultants" },
+                  { label: "Student / Researcher", slug: "students-researchers" },
                 ].map((role) => (
-                  <span
-                    key={role}
-                    className="rounded-full bg-purple-50 px-3 py-1 text-xs font-medium text-purple-700"
+                  <Link
+                    key={role.slug}
+                    href={`/for/${role.slug}`}
+                    className="rounded-full bg-purple-50 px-3 py-1 text-xs font-medium text-purple-700 transition-colors hover:bg-purple-100"
                   >
-                    {role}
-                  </span>
+                    {role.label}
+                  </Link>
                 ))}
               </div>
               <p className="text-xs font-semibold uppercase tracking-wide text-gray-400 pt-2">
@@ -163,31 +164,32 @@ export default async function HomepageV2() {
               </p>
               <div className="flex flex-wrap justify-center gap-2">
                 {[
-                  "SaaS / Software",
-                  "Fintech / Financial Services",
-                  "Healthcare / Life Sciences",
-                  "E-commerce / Retail",
-                  "Education / EdTech",
-                  "Media / Entertainment",
-                  "Marketing / Advertising",
-                  "Consulting / Professional Services",
-                  "Manufacturing / Industrial",
-                  "Real Estate / PropTech",
-                  "Legal / LegalTech",
-                  "Government / Public Sector",
-                  "Nonprofit / Social Impact",
-                  "Cybersecurity",
-                  "Gaming",
-                  "Telecommunications",
-                  "Energy / CleanTech",
-                  "Transportation / Logistics",
+                  { label: "SaaS / Software", slug: "saas-software" },
+                  { label: "Fintech / Financial Services", slug: "fintech" },
+                  { label: "Healthcare / Life Sciences", slug: "healthcare" },
+                  { label: "E-commerce / Retail", slug: "ecommerce-retail" },
+                  { label: "Education / EdTech", slug: "education-edtech" },
+                  { label: "Media / Entertainment", slug: "media-entertainment" },
+                  { label: "Marketing / Advertising", slug: "marketing-advertising" },
+                  { label: "Consulting / Professional Services", slug: "consulting" },
+                  { label: "Manufacturing / Industrial", slug: "manufacturing" },
+                  { label: "Real Estate / PropTech", slug: "real-estate-proptech" },
+                  { label: "Legal / LegalTech", slug: "legal-legaltech" },
+                  { label: "Government / Public Sector", slug: "government" },
+                  { label: "Nonprofit / Social Impact", slug: "nonprofit" },
+                  { label: "Cybersecurity", slug: "cybersecurity" },
+                  { label: "Gaming", slug: "gaming" },
+                  { label: "Telecommunications", slug: "telecommunications" },
+                  { label: "Energy / CleanTech", slug: "energy-cleantech" },
+                  { label: "Transportation / Logistics", slug: "transportation-logistics" },
                 ].map((industry) => (
-                  <span
-                    key={industry}
-                    className="rounded-full bg-indigo-50 px-3 py-1 text-xs font-medium text-indigo-700"
+                  <Link
+                    key={industry.slug}
+                    href={`/for/${industry.slug}`}
+                    className="rounded-full bg-indigo-50 px-3 py-1 text-xs font-medium text-indigo-700 transition-colors hover:bg-indigo-100"
                   >
-                    {industry}
-                  </span>
+                    {industry.label}
+                  </Link>
                 ))}
               </div>
             </div>
