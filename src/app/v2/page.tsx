@@ -47,7 +47,7 @@ export default async function HomepageV2() {
                 </Link>
               )}
               <p className="text-sm text-gray-400">
-                Free forever &middot; 5-minute read &middot; Unsubscribe anytime
+                Free forever &middot; 5-minute read per week &middot; Unsubscribe anytime
               </p>
             </div>
           </FadeIn>
