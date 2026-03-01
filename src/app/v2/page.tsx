@@ -683,50 +683,23 @@ export default async function HomepageV2() {
         </div>
       </section>
 
-      {/* 10. CTA Block */}
+      {/* 10. Final CTA Block */}
       <section className="relative dot-pattern bg-gradient-to-br from-purple-600 to-blue-600 px-4 py-20 text-center">
         <div className="relative mx-auto max-w-2xl">
           <FadeIn>
             <h2 className="text-3xl font-bold text-white">
-              Join thousands of professionals staying ahead of AI
+              The AI wave isn&apos;t slowing down.
+              <br />
+              Make sure you&apos;re riding it.
             </h2>
-            <p className="mt-4 text-purple-100">
-              Set up your context profile in 2 minutes and get your first brief
-              this Sunday.
-            </p>
-            <div className="mt-8 flex items-center justify-center">
+            <div className="mt-8 flex flex-col items-center gap-3">
               <Link
                 href="/auth/signin"
                 className="rounded-lg bg-white px-6 py-3 text-sm font-medium text-purple-600 shadow-lg transition-all hover:bg-purple-50 hover:shadow-xl"
               >
-                Create your brief &rarr;
-              </Link>
-            </div>
-          </FadeIn>
-        </div>
-      </section>
-
-      {/* 11. Final CTA */}
-      <section className="border-t border-gray-200 bg-white px-4 py-20">
-        <div className="mx-auto max-w-3xl text-center">
-          <FadeIn>
-            <h2 className="text-3xl font-bold text-gray-900">
-              The AI wave isn&apos;t slowing down.
-              <br />
-              <span className="bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
-                Make sure you&apos;re riding it.
-              </span>
-            </h2>
-          </FadeIn>
-          <FadeIn delay={100}>
-            <div className="mt-8 flex flex-col items-center gap-3">
-              <Link
-                href="/auth/signin"
-                className="rounded-lg bg-purple-600 px-6 py-3 text-sm font-medium text-white shadow-lg shadow-purple-600/25 transition-all hover:bg-purple-700 hover:shadow-xl hover:shadow-purple-600/30"
-              >
                 Get your free personalized brief
               </Link>
-              <p className="text-sm text-gray-400">
+              <p className="text-sm text-purple-200">
                 Free forever &middot; No credit card required
               </p>
             </div>
