@@ -26,10 +26,7 @@ export default async function HomepageV2() {
           </FadeIn>
           <FadeIn delay={100}>
             <p className="mt-6 text-xl text-gray-600">
-              My Weekly AI turns the chaos of AI into a personalized weekly brief{" "}
-              <span className="font-semibold text-purple-600">built for your role.</span>
-              <br />
-              No hype. No noise. Just what matters to you.
+              One weekly email with the AI updates that matter for your work.
             </p>
           </FadeIn>
           <FadeIn delay={200}>
