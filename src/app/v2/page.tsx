@@ -26,7 +26,7 @@ export default async function HomepageV2() {
           </FadeIn>
           <FadeIn delay={100}>
             <p className="mt-6 text-xl text-gray-600">
-              MyWeeklAI turns the chaos of AI into a personalized weekly brief
+              My Weekly AI turns the chaos of AI into a personalized weekly brief
               built for your role.
               <br />
               No hype. No noise. Just what matters to you.
@@ -134,7 +134,7 @@ export default async function HomepageV2() {
         <div className="mx-auto max-w-3xl text-center">
           <FadeIn>
             <h2 className="text-3xl font-bold text-gray-900">
-              MyWeeklAI is your{" "}
+              My Weekly AI is your{" "}
               <span className="bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
                 personal AI filter.
               </span>
@@ -502,7 +502,7 @@ export default async function HomepageV2() {
         <div className="mx-auto max-w-4xl">
           <FadeIn>
             <h2 className="text-center text-3xl font-bold text-gray-900">
-              Why MyWeeklAI is different
+              Why My Weekly AI is different
             </h2>
           </FadeIn>
           <FadeIn delay={100}>
@@ -539,10 +539,10 @@ export default async function HomepageV2() {
                   ))}
                 </ul>
               </div>
-              {/* MyWeeklAI */}
+              {/* My Weekly AI */}
               <div className="rounded-lg border border-purple-200 bg-purple-50 p-6">
                 <h3 className="mb-4 text-sm font-semibold uppercase tracking-wide text-purple-600">
-                  MyWeeklAI
+                  My Weekly AI
                 </h3>
                 <ul className="space-y-3">
                   {[
@@ -670,7 +670,7 @@ export default async function HomepageV2() {
           </FadeIn>
           <FadeIn delay={200}>
             <p className="mt-4 text-lg text-gray-600">
-              So I built MyWeeklAI — the tool I wished existed. An AI that reads
+              So I built My Weekly AI — the tool I wished existed. An AI that reads
               everything so you don&apos;t have to, and surfaces only what
               matters based on who you are and what you do.
             </p>
