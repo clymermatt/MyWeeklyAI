@@ -121,7 +121,8 @@ export default async function HomepageV2() {
             <p className="mt-6 text-lg text-gray-600">
               Every week, we scan hundreds of articles, filter them through your
               context profile — your role, industry, tools, and focus areas — and
-              deliver a concise briefing with only what&apos;s relevant to you.
+              deliver a concise AI briefing with{" "}
+              <span className="text-purple-600">only what&apos;s relevant to you.</span>
             </p>
           </FadeIn>
           <FadeIn delay={150}>
