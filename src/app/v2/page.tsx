@@ -27,7 +27,7 @@ export default async function HomepageV2() {
           </FadeIn>
           <FadeIn delay={100}>
             <p className="mt-6 text-xl text-gray-600">
-              A 5-minute weekly brief with the AI updates that matter for your work.
+              A 5-minute weekly brief with the AI news that matters for your work.
             </p>
           </FadeIn>
           <FadeIn delay={200}>
@@ -44,7 +44,7 @@ export default async function HomepageV2() {
                   href="/auth/signin"
                   className="rounded-lg bg-purple-600 px-6 py-3 text-sm font-medium text-white shadow-lg shadow-purple-600/25 transition-all hover:bg-purple-700 hover:shadow-xl hover:shadow-purple-600/30"
                 >
-                  Get your free personalized brief
+                  Get your personalized AI news
                 </Link>
               )}
               <p className="text-sm text-gray-400">
