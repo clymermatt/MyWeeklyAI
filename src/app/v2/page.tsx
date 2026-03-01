@@ -670,9 +670,7 @@ export default async function HomepageV2() {
         <div className="relative mx-auto max-w-2xl">
           <FadeIn>
             <h2 className="text-3xl font-bold text-white">
-              I built this for myself to cut through the AI noise.
-              <br />
-              You&apos;re welcome to use it too.
+              I built this to cut the AI noise. Join me.
             </h2>
             <div className="mt-8 flex flex-col items-center gap-3">
               <Link
