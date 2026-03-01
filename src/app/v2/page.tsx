@@ -27,7 +27,7 @@ export default async function HomepageV2() {
           </FadeIn>
           <FadeIn delay={100}>
             <p className="mt-6 text-xl text-gray-600">
-              One weekly brief with the AI updates that matter for your work.
+              A 5-minute weekly brief with the AI updates that matter for your work.
             </p>
           </FadeIn>
           <FadeIn delay={200}>
