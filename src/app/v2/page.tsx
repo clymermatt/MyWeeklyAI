@@ -26,9 +26,10 @@ export default async function HomepageV2() {
           </FadeIn>
           <FadeIn delay={100}>
             <p className="mt-6 text-xl text-gray-600">
-              MyWeekly turns the overwhelming flood of AI news into a
-              personalized 5-minute briefing — filtered for your role, your
-              tools, and the decisions you actually need to make.
+              MyWeekly turns the chaos of AI into a personalized weekly brief
+              built for your role.
+              <br />
+              No hype. No noise. Just what matters to you.
             </p>
           </FadeIn>
           <FadeIn delay={200}>
