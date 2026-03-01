@@ -50,7 +50,7 @@ export default async function HomepageV2() {
                 </Link>
               )}
               <p className="text-sm text-gray-400">
-                Takes 30 seconds &middot; No spam &middot; Unsubscribe anytime
+                Free forever &middot; 5-minute read &middot; Unsubscribe anytime
               </p>
             </div>
           </FadeIn>
