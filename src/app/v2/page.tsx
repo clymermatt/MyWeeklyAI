@@ -705,32 +705,7 @@ export default async function HomepageV2() {
         </div>
       </section>
 
-      {/* 11. Pricing Teaser */}
-      <section className="border-t border-gray-200 bg-gradient-to-b from-gray-50 to-white px-4 py-20">
-        <div className="mx-auto max-w-3xl text-center">
-          <FadeIn>
-            <h2 className="text-3xl font-bold text-gray-900">
-              Start free. Upgrade anytime.
-            </h2>
-          </FadeIn>
-          <FadeIn delay={100}>
-            <p className="mt-6 text-lg text-gray-600">
-              Your weekly personalized AI brief is completely free — no credit
-              card, no trial period, no catch.
-            </p>
-          </FadeIn>
-          <FadeIn delay={200}>
-            <p className="mt-4 text-base text-gray-500">
-              Coming soon:{" "}
-              <span className="font-medium text-gray-700">MyWeekly Pro</span>{" "}
-              with deeper insights, more customization tools, and advanced
-              filtering for power users.
-            </p>
-          </FadeIn>
-        </div>
-      </section>
-
-      {/* 12. Final CTA */}
+      {/* 11. Final CTA */}
       <section className="border-t border-gray-200 bg-white px-4 py-20">
         <div className="mx-auto max-w-3xl text-center">
           <FadeIn>
