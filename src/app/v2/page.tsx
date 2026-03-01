@@ -71,7 +71,7 @@ export default async function HomepageV2() {
             </LogoTicker>
           </div>
           <p className="text-center text-sm text-gray-400 mt-6">
-            AI updates from industry labs and publications. Hand-picked and decoded by Claude.
+            AI updates from industry labs and publications. Hand-picked and decoded FOR YOU by Claude.
           </p>
         </FadeIn>
       </section>
