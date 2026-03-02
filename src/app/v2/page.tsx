@@ -32,21 +32,29 @@ export default async function HomepageV2() {
           </FadeIn>
           <FadeIn delay={200}>
             <div className="mt-8 flex flex-col items-center gap-3">
-              {session ? (
-                <Link
-                  href="/dashboard"
-                  className="rounded-lg bg-purple-600 px-6 py-3 text-sm font-medium text-white shadow-lg shadow-purple-600/25 transition-all hover:bg-purple-700 hover:shadow-xl hover:shadow-purple-600/30"
+              <div className="flex items-center gap-4">
+                {session ? (
+                  <Link
+                    href="/dashboard"
+                    className="rounded-lg bg-purple-600 px-6 py-3 text-sm font-medium text-white shadow-lg shadow-purple-600/25 transition-all hover:bg-purple-700 hover:shadow-xl hover:shadow-purple-600/30"
+                  >
+                    Go to Dashboard
+                  </Link>
+                ) : (
+                  <Link
+                    href="/auth/signin"
+                    className="rounded-lg bg-purple-600 px-6 py-3 text-sm font-medium text-white shadow-lg shadow-purple-600/25 transition-all hover:bg-purple-700 hover:shadow-xl hover:shadow-purple-600/30"
+                  >
+                    Get your personalized AI news
+                  </Link>
+                )}
+                <a
+                  href="#how-it-works"
+                  className="rounded-lg border border-gray-300 px-6 py-3 text-sm font-medium text-gray-700 transition-all hover:border-purple-300 hover:text-purple-600"
                 >
-                  Go to Dashboard
-                </Link>
-              ) : (
-                <Link
-                  href="/auth/signin"
-                  className="rounded-lg bg-purple-600 px-6 py-3 text-sm font-medium text-white shadow-lg shadow-purple-600/25 transition-all hover:bg-purple-700 hover:shadow-xl hover:shadow-purple-600/30"
-                >
-                  Get your personalized AI news
-                </Link>
-              )}
+                  Tell me more
+                </a>
+              </div>
               <p className="text-sm text-gray-400">
                 Always free. Unsubscribe any time.
               </p>
@@ -123,7 +131,7 @@ export default async function HomepageV2() {
       </section>
 
       {/* 4. Solution Positioning */}
-      <section className="border-t border-gray-200 bg-gradient-to-b from-gray-50 to-white px-4 py-20">
+      <section id="how-it-works" className="border-t border-gray-200 bg-gradient-to-b from-gray-50 to-white px-4 py-20">
         <div className="mx-auto max-w-3xl text-center">
           <FadeIn>
             <h2 className="text-3xl font-bold text-gray-900">
