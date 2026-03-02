@@ -16,16 +16,17 @@ export default function AboutPage() {
 
         <div className="mt-8 space-y-4 text-sm leading-relaxed text-gray-700">
           <p>
-            I was spending hours each week trying to keep up with AI news &mdash;
-            scrolling Twitter threads, skimming newsletters, bookmarking articles
-            I&apos;d never read. Most of it was noise. The breakthroughs that
-            actually affected my work? Buried under fundraising announcements and
-            hot takes.
+            I&apos;m Matt &mdash; a UX/UI strategist at a leader in the tech industry.
+            I help teams turn complex systems into intuitive experiences, with a more
+            recent focus on how AI is changing the way people work and interact with
+            products. My Weekly AI grew out of that obsession &mdash; I wanted a better
+            way to stay on top of AI news relevant to my work without it taking over
+            my week.
           </p>
           <p>
-            So I built My Weekly AI &mdash; the tool I wished existed. An AI that
-            reads everything so you don&apos;t have to, and surfaces only what
-            matters based on who you are and what you do.
+            So I built the tool I wished existed. An AI that reads everything so you
+            don&apos;t have to, and surfaces only what matters based on who you are
+            and what you do.
           </p>
           <p>
             Because staying informed shouldn&apos;t feel like a second job.
@@ -37,7 +38,7 @@ export default function AboutPage() {
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1 text-purple-600 hover:text-purple-700"
             >
-              Matt Clymer on LinkedIn
+              Connect with me on LinkedIn
               <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
               </svg>
