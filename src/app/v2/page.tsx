@@ -297,7 +297,7 @@ export default async function HomepageV2() {
         <div className="mx-auto max-w-5xl">
           <FadeIn>
             <h2 className="text-center text-3xl font-bold text-gray-900">
-              How it works
+              How your personalized AI brief is created
             </h2>
           </FadeIn>
           <div className="mt-16 space-y-20">
@@ -309,11 +309,10 @@ export default async function HomepageV2() {
                     1
                   </div>
                   <h3 className="mt-4 text-xl font-semibold text-gray-900">
-                    Tell us about yourself
+                    Create your context profile
                   </h3>
                   <p className="mt-2 text-gray-600">
-                    Your role, industry, tools you use, and what you care about.
-                    Takes 2 minutes.
+                    Choose your job, industry, and interests.
                   </p>
                 </div>
                 <div className="rounded-lg border border-gray-200 bg-white px-4 py-3 shadow-sm">
@@ -369,11 +368,11 @@ export default async function HomepageV2() {
                     2
                   </div>
                   <h3 className="mt-4 text-xl font-semibold text-gray-900">
-                    AI curates your brief
+                    AI filters the firehose
                   </h3>
                   <p className="mt-2 text-gray-600">
-                    Every week, AI reads hundreds of articles and picks
-                    what&apos;s relevant to your specific context.
+                    Claude scans hundreds of sources across research, tools and
+                    industry news.
                   </p>
                 </div>
                 <div className="rounded-lg border border-gray-200 bg-white px-4 py-3 shadow-sm">
@@ -481,11 +480,10 @@ export default async function HomepageV2() {
                     3
                   </div>
                   <h3 className="mt-4 text-xl font-semibold text-gray-900">
-                    Get it Sunday morning
+                    Get a weekly brief built for you
                   </h3>
                   <p className="mt-2 text-gray-600">
-                    A concise brief with what dropped, what&apos;s relevant to
-                    you, and what to try this week.
+                    Delivered every week in a clean, 5-minute read.
                   </p>
                   <div className="mt-3 flex gap-2">
                     <span className="inline-flex items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700">
