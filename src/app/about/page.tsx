@@ -73,9 +73,13 @@ export default function AboutPage() {
           <section>
             <h2 className="text-lg font-semibold text-gray-900">When do I get my first brief?</h2>
             <p className="mt-2">
-              Briefings are generated every Sunday. If you sign up mid-week, you&apos;ll
-              receive your first personalized brief the following Sunday. In the meantime,
-              you can explore your dashboard and fine-tune your context profile.
+              Right away. As soon as you complete your{" "}
+              <Link href="/dashboard/profile" className="text-purple-600 hover:text-purple-700 underline">
+                context profile
+              </Link>
+              , we generate your first personalized briefing on the spot and deliver it
+              to your inbox (and Telegram, if connected). After that, you&apos;ll receive
+              a new brief every Sunday automatically.
             </p>
           </section>
 
