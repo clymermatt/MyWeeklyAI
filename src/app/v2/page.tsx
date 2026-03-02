@@ -572,7 +572,7 @@ export default async function HomepageV2() {
         <div className="mx-auto max-w-4xl">
           <FadeIn>
             <h2 className="text-center text-3xl font-bold text-gray-900">
-              Why My Weekly AI is different
+              Not another one-size-fits-all AI roundup.
             </h2>
           </FadeIn>
           <FadeIn delay={100}>
