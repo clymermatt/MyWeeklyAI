@@ -700,7 +700,7 @@ export default async function HomepageV2() {
               Stay sharp. Stay relevant. Stay ahead.
             </h2>
             <p className="mt-4 text-lg text-purple-100">
-              Set up your context profile in 2 minutes and get your first brief today and then each Sunday.
+              Set up your context profile in 2 minutes and get your first brief today, then each Sunday.
             </p>
             <div className="mt-8 flex flex-col items-center gap-3">
               <Link
