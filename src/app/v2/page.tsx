@@ -81,7 +81,7 @@ export default async function HomepageV2() {
         <div className="mx-auto max-w-4xl">
           <FadeIn>
             <h2 className="text-center text-3xl font-bold text-gray-900">
-              Keeping up with AI has become a full-time job.
+              Keeping up with AI is starting to feel like a second job.
             </h2>
           </FadeIn>
           <div className="mt-12 grid gap-6 sm:grid-cols-2">
