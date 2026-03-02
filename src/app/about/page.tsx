@@ -25,7 +25,7 @@ export default function AboutPage() {
           />
           <div className="space-y-4 text-sm leading-relaxed text-gray-700">
           <p>
-            Hey, I&apos;m Matt &mdash; a UX/UI strategist at a leader in the tech industry.
+            Hey, I&apos;m Matt &mdash; a UX/UI strategist with 20+ years in the tech industry.
             I help teams turn complex systems into intuitive experiences, with a more
             recent focus on how AI is changing the way people work and interact with
             products. My Weekly AI grew out of that obsession &mdash; I wanted a better
