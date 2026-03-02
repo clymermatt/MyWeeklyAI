@@ -685,7 +685,7 @@ export default async function HomepageV2() {
               href="/about"
               className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-purple-600 hover:text-purple-700"
             >
-              Learn more about how it works
+              About My Weekly AI &amp; FAQs
               <span aria-hidden="true">&rarr;</span>
             </Link>
           </FadeIn>
