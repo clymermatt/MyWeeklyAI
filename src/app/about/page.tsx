@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import SiteNav from "@/components/site-nav";
 
 export const metadata = {
@@ -14,9 +15,17 @@ export default function AboutPage() {
         {/* About section */}
         <h1 className="text-3xl font-bold text-gray-900">About My Weekly AI</h1>
 
-        <div className="mt-8 space-y-4 text-sm leading-relaxed text-gray-700">
+        <div className="mt-8 flex items-start gap-5">
+          <Image
+            src="/matt-clymer.jpeg"
+            alt="Matt Clymer"
+            width={64}
+            height={64}
+            className="flex-shrink-0 rounded-full"
+          />
+          <div className="space-y-4 text-sm leading-relaxed text-gray-700">
           <p>
-            I&apos;m Matt &mdash; a UX/UI strategist at a leader in the tech industry.
+            Hey, I&apos;m Matt &mdash; a UX/UI strategist at a leader in the tech industry.
             I help teams turn complex systems into intuitive experiences, with a more
             recent focus on how AI is changing the way people work and interact with
             products. My Weekly AI grew out of that obsession &mdash; I wanted a better
@@ -44,6 +53,7 @@ export default function AboutPage() {
               </svg>
             </a>
           </p>
+          </div>
         </div>
 
         {/* FAQ section */}
