@@ -697,17 +697,17 @@ export default async function HomepageV2() {
         <div className="relative mx-auto max-w-2xl">
           <FadeIn>
             <h2 className="text-3xl font-bold text-white">
-              I built this to cut the AI noise. Join me.
+              Stay sharp. Stay relevant. Stay ahead.
             </h2>
             <div className="mt-8 flex flex-col items-center gap-3">
               <Link
                 href="/auth/signin"
                 className="rounded-lg bg-white px-6 py-3 text-sm font-medium text-purple-600 shadow-lg transition-all hover:bg-purple-50 hover:shadow-xl"
               >
-                Get your free personalized brief
+                Get your personalized AI brief
               </Link>
               <p className="text-sm text-purple-200">
-                Free forever &middot; No credit card required
+                Always free. Unsubscribe any time.
               </p>
             </div>
           </FadeIn>
