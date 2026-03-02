@@ -223,7 +223,7 @@ export default async function HomepageV2() {
             <p className="mt-8 text-base font-medium text-gray-500">
               No hype. No noise. No doom-scrolling.
               <br />
-              Just the signal you need to stay sharp in your work.
+              <span className="text-purple-600">Just the signal you need to stay sharp in your work.</span>
             </p>
           </FadeIn>
         </div>
