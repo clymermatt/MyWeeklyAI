@@ -146,7 +146,7 @@ export default function AboutPage() {
                 <Link href="/dashboard/profile" className="text-purple-600 hover:text-purple-700 underline">
                   profile settings
                 </Link>
-                . No guilt trips, no hoops to jump through.
+                .
               </p>
             </section>
           </div>
