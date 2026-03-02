@@ -667,9 +667,7 @@ export default async function HomepageV2() {
             <p className="mt-6 text-lg text-gray-600">
               I was spending hours each week trying to keep up with AI news —
               scrolling Twitter threads, skimming newsletters, bookmarking
-              articles I&apos;d never read. Most of it was noise. The
-              breakthroughs that actually affected my work? Buried under
-              fundraising announcements and hot takes.
+              articles I&apos;d never read. Most of it was noise.
             </p>
           </FadeIn>
           <FadeIn delay={200}>
@@ -683,6 +681,13 @@ export default async function HomepageV2() {
             <p className="mt-6 text-base font-medium text-purple-600">
               Because staying informed shouldn&apos;t feel like a second job.
             </p>
+            <Link
+              href="/about"
+              className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-purple-600 hover:text-purple-700"
+            >
+              Learn more about how it works
+              <span aria-hidden="true">&rarr;</span>
+            </Link>
           </FadeIn>
         </div>
       </section>

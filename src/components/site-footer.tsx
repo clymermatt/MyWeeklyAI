@@ -76,6 +76,14 @@ export default function SiteFooter() {
               </li>
               <li>
                 <Link
+                  href="/about"
+                  className="text-sm text-gray-600 hover:text-gray-900"
+                >
+                  About
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/dashboard/profile"
                   className="text-sm text-gray-600 hover:text-gray-900"
                 >
