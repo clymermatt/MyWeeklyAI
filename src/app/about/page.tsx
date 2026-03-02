@@ -57,7 +57,7 @@ export default function AboutPage() {
         </div>
 
         {/* FAQ section */}
-        <div className="mt-16 border-t border-gray-200 pt-16">
+        <div className="mt-16 -mx-4 rounded-lg border border-gray-200 bg-white px-8 py-12">
           <h2 className="text-2xl font-bold text-gray-900">Frequently Asked Questions</h2>
 
           <div className="mt-8 space-y-8 text-sm leading-relaxed text-gray-700">
