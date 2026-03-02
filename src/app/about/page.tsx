@@ -11,53 +11,57 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <SiteNav />
-      <div className="mx-auto max-w-3xl px-4 py-16">
-        {/* About section */}
-        <h1 className="text-3xl font-bold text-gray-900">About My Weekly AI</h1>
+      {/* About section */}
+      <div className="px-4 py-16">
+        <div className="mx-auto max-w-3xl">
+          <h1 className="text-3xl font-bold text-gray-900">About My Weekly AI</h1>
 
-        <div className="mt-8 flex items-start gap-5">
-          <Image
-            src="/matt-clymer.jpeg"
-            alt="Matt Clymer"
-            width={64}
-            height={64}
-            className="flex-shrink-0 rounded-full"
-          />
-          <div className="space-y-4 text-sm leading-relaxed text-gray-700">
-          <p>
-            Hey, I&apos;m Matt &mdash; a UX/UI strategist with 20+ years in the tech industry.
-            I help teams turn complex systems into intuitive experiences, with a more
-            recent focus on how AI is changing the way people work and interact with
-            products. My Weekly AI grew out of that obsession &mdash; I wanted a better
-            way to stay on top of AI news relevant to my work without it taking over
-            my week.
-          </p>
-          <p>
-            So I built the tool I wished existed. An AI that reads everything so you
-            don&apos;t have to, and surfaces only what matters based on who you are
-            and what you do.
-          </p>
-          <p>
-            Because staying informed shouldn&apos;t feel like a second job.
-          </p>
-          <p>
-            <a
-              href="https://www.linkedin.com/in/mattclymer/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 text-purple-600 hover:text-purple-700"
-            >
-              Connect with me on LinkedIn
-              <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
-              </svg>
-            </a>
-          </p>
+          <div className="mt-8 flex items-start gap-5">
+            <Image
+              src="/matt-clymer.jpeg"
+              alt="Matt Clymer"
+              width={64}
+              height={64}
+              className="flex-shrink-0 rounded-full"
+            />
+            <div className="space-y-4 text-sm leading-relaxed text-gray-700">
+              <p>
+                Hey, I&apos;m Matt &mdash; a UX/UI strategist with 20+ years in the tech industry.
+                I help teams turn complex systems into intuitive experiences, with a more
+                recent focus on how AI is changing the way people work and interact with
+                products. My Weekly AI grew out of that obsession &mdash; I wanted a better
+                way to stay on top of AI news relevant to my work without it taking over
+                my week.
+              </p>
+              <p>
+                So I built the tool I wished existed. An AI that reads everything so you
+                don&apos;t have to, and surfaces only what matters based on who you are
+                and what you do.
+              </p>
+              <p>
+                Because staying informed shouldn&apos;t feel like a second job.
+              </p>
+              <p>
+                <a
+                  href="https://www.linkedin.com/in/mattclymer/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-purple-600 hover:text-purple-700"
+                >
+                  Connect with me on LinkedIn
+                  <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                  </svg>
+                </a>
+              </p>
+            </div>
           </div>
         </div>
+      </div>
 
-        {/* FAQ section */}
-        <div className="mt-16 -mx-4 rounded-lg border border-gray-200 bg-white px-8 py-12">
+      {/* FAQ section */}
+      <div className="border-t border-gray-200 bg-white px-4 py-16">
+        <div className="mx-auto max-w-3xl">
           <h2 className="text-2xl font-bold text-gray-900">Frequently Asked Questions</h2>
 
           <div className="mt-8 space-y-8 text-sm leading-relaxed text-gray-700">
