@@ -52,7 +52,7 @@ export default async function HomepageV2() {
                   href="#how-it-works"
                   className="rounded-lg border border-gray-300 px-6 py-3 text-sm font-medium text-gray-700 transition-all hover:border-purple-300 hover:text-purple-600"
                 >
-                  Tell me more
+                  Learn more
                 </a>
               </div>
               <p className="text-sm text-gray-400">
