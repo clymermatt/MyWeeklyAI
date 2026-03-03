@@ -678,7 +678,7 @@ export default async function HomepageV2() {
             </p>
           </FadeIn>
           <FadeIn delay={300}>
-            <p className="mt-6 text-base font-medium text-purple-600">
+            <p className="mt-6 text-lg font-medium text-purple-600">
               Because staying informed shouldn&apos;t feel like a second job.
             </p>
             <Link
