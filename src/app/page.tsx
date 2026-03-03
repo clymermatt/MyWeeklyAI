@@ -371,7 +371,7 @@ export default async function HomepageV2() {
                     AI filters the firehose
                   </h3>
                   <p className="mt-2 text-gray-600">
-                    Claude scans hundreds of sources across research, tools and
+                    Our AI scans hundreds of articles across research, tools and
                     industry news.
                   </p>
                 </div>
