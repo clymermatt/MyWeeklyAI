@@ -5,7 +5,15 @@ import { sendJobAlertEmail } from "@/lib/email/send";
 import { pingHealthCheck } from "@/lib/healthcheck";
 import { verifyCronSecret } from "@/lib/verify-secret";
 
+export async function GET(req: Request) {
+  return handler(req);
+}
+
 export async function POST(req: Request) {
+  return handler(req);
+}
+
+async function handler(req: Request) {
   if (!verifyCronSecret(req.headers.get("authorization"))) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
