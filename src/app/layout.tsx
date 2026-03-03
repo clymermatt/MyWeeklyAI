@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     process.env.NEXT_PUBLIC_APP_URL || "https://www.myweekly.ai"
   ),
   title: {
-    default: "My Weekly AI — Personalized AI News Digest",
+    default: "My Weekly AI — Personalized AI News That Matters For Your Job",
     template: "%s | My Weekly AI",
   },
   description:
@@ -28,13 +28,13 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: "My Weekly AI",
-    title: "My Weekly AI — Personalized AI News Digest",
+    title: "My Weekly AI — Personalized AI News That Matters For Your Job",
     description:
       "A personalized weekly AI news digest, tailored to your role, tools, and interests.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "My Weekly AI — Personalized AI News Digest",
+    title: "My Weekly AI — Personalized AI News That Matters For Your Job",
     description:
       "A personalized weekly AI news digest, tailored to your role, tools, and interests.",
   },
