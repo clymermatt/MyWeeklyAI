@@ -138,7 +138,7 @@ export default function WeeklyBriefEmail({
           }}
         >
           <Img
-            src={`${appUrl}/logos/nav-logo.svg`}
+            src={`${appUrl}/logos/nav-logo.png`}
             alt="myweeklyai"
             width="160"
             height="37"
