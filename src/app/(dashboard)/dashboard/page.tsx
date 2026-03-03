@@ -104,7 +104,7 @@ export default async function DashboardPage() {
         <div className="rounded-lg border border-gray-200 bg-white p-6">
           <h2 className="text-sm font-medium text-gray-500">Plan</h2>
           <div className="mt-2">
-            <p className="text-lg font-semibold text-green-600">My Weekly AI</p>
+            <p className="text-lg font-semibold text-green-600">Free</p>
             <p className="mt-1 text-sm text-gray-600">
               Personalized briefings delivered every Sunday
             </p>
