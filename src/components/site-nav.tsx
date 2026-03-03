@@ -28,8 +28,8 @@ export default async function SiteNav() {
               src="/logos/nav-logo.svg"
               alt="My Weekly AI"
               width={180}
-              height={32}
-              className="h-7 w-auto"
+              height={46}
+              className="h-9 w-auto"
               priority
             />
           </Link>
