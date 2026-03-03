@@ -18,9 +18,9 @@ function getClientIp(req: NextRequest): string {
 }
 
 export async function middleware(req: NextRequest) {
-  // 301 redirect .vercel.app to custom domain
+  // 301 redirect .vercel.app to custom domain (skip cron job routes)
   const host = req.headers.get("host") || "";
-  if (host.endsWith(".vercel.app")) {
+  if (host.endsWith(".vercel.app") && !req.nextUrl.pathname.startsWith("/api/jobs")) {
     const url = new URL(req.url);
     url.host = "www.myweekly.ai";
     url.port = "";
