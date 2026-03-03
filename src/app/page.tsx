@@ -79,7 +79,7 @@ export default async function HomepageV2() {
             </LogoTicker>
           </div>
           <p className="text-center text-sm text-gray-400 mt-6">
-            AI updates from industry labs and publications. Hand-picked and <span className="text-purple-600">&ldquo;DECODED&rdquo;</span> <span className="text-purple-600">FOR YOUR JOB ROLE</span>.
+            The signal from 20+ AI labs and publications — <span className="text-purple-600">decoded for your role</span>.
           </p>
         </FadeIn>
       </section>
