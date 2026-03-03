@@ -137,7 +137,7 @@ export default async function HomepageV2() {
             <h2 className="text-3xl font-bold text-gray-900">
               My Weekly AI is your{" "}
               <span className="bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
-                personal AI filter.
+                personal filter for AI news.
               </span>
             </h2>
           </FadeIn>
