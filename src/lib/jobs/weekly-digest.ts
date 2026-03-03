@@ -90,9 +90,11 @@ export async function runWeeklyDigest(): Promise<DigestResult> {
     if (!user.contextProfile) continue;
 
     try {
-      // Skip if user already received a digest this period
+      // Skip if user already received a personalized digest today (prevents double-runs)
+      const todayStart = new Date();
+      todayStart.setHours(0, 0, 0, 0);
       const existing = await prisma.weeklyDigest.findFirst({
-        where: { userId: user.id, periodStart: { gte: periodStart } },
+        where: { userId: user.id, createdAt: { gte: todayStart }, isFree: false },
       });
       if (existing) continue;
 

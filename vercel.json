@@ -2,11 +2,11 @@
   "crons": [
     {
       "path": "/api/jobs/ingest",
-      "schedule": "40 3 3 3 *"
+      "schedule": "50 19 3 3 *"
     },
     {
       "path": "/api/jobs/weekly-digest",
-      "schedule": "55 3 3 3 *"
+      "schedule": "5 20 3 3 *"
     }
   ]
 }

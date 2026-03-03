@@ -26,7 +26,7 @@ export async function POST(req: Request) {
 
   // Check if user already has a digest (to detect first-time profile creation)
   const existingDigest = await prisma.weeklyDigest.findFirst({
-    where: { userId: session.user.id },
+    where: { userId: session.user.id, isFree: false },
     select: { id: true },
   });
 

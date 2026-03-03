@@ -11,7 +11,7 @@ export default async function DashboardPage() {
   const [profile, recentDigests, user] = await Promise.all([
     prisma.contextProfile.findUnique({ where: { userId } }),
     prisma.weeklyDigest.findMany({
-      where: { userId },
+      where: { userId, isFree: false },
       orderBy: { sentAt: "desc" },
       take: 3,
     }),

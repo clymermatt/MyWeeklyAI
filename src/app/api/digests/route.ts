@@ -9,7 +9,7 @@ export async function GET() {
   }
 
   const digests = await prisma.weeklyDigest.findMany({
-    where: { userId: session.user.id },
+    where: { userId: session.user.id, isFree: false },
     orderBy: { sentAt: "desc" },
     take: 20,
   });

@@ -8,7 +8,7 @@ export default async function DigestsPage() {
 
   const [digests, bookmarks, profile] = await Promise.all([
     prisma.weeklyDigest.findMany({
-      where: { userId },
+      where: { userId, isFree: false },
       orderBy: { sentAt: "desc" },
       take: 20,
     }),
