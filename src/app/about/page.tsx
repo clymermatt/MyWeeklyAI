@@ -91,10 +91,6 @@ export default function AboutPage() {
                 specific work. It also suggests concrete experiments you can try that week based
                 on the news.
               </p>
-              <p className="mt-2">
-                To keep things fresh, articles that appeared in your last two briefings are
-                automatically excluded so you never see the same story twice.
-              </p>
             </section>
 
             <section>
