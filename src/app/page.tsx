@@ -662,25 +662,27 @@ export default async function HomepageV2() {
             <h2 className="text-3xl font-bold text-gray-900">
               Built by someone tired of the AI hype cycle
             </h2>
-          </FadeIn>
-          <FadeIn delay={100}>
-            <p className="mt-6 text-lg text-gray-600">
-              I was spending hours each week trying to keep up with AI news —
-              scrolling Twitter threads, skimming newsletters, bookmarking
-              articles I&apos;d never read. Most of it was noise.
-            </p>
-          </FadeIn>
-          <FadeIn delay={200}>
-            <p className="mt-4 text-lg text-gray-600">
-              So I built My Weekly AI — the tool I wished existed. An AI that reads
-              everything so you don&apos;t have to, and surfaces only what
-              matters based on who you are and what you do.
-            </p>
-          </FadeIn>
-          <FadeIn delay={300}>
-            <p className="mt-6 text-lg font-medium text-purple-600">
+            <p className="mt-4 text-lg font-medium text-purple-600">
               Because staying informed shouldn&apos;t feel like a second job.
             </p>
+          </FadeIn>
+          <FadeIn delay={100}>
+            <div className="relative mx-auto mt-10 max-w-2xl">
+              <span className="absolute -left-4 -top-4 text-6xl leading-none text-purple-200">&ldquo;</span>
+              <p className="text-lg text-gray-600">
+                I was spending hours each week trying to keep up with AI news —
+                scrolling Twitter threads, skimming newsletters, bookmarking
+                articles I&apos;d never read. Most of it was noise.
+              </p>
+              <p className="mt-4 text-lg text-gray-600">
+                So I built My Weekly AI — the tool I wished existed. An AI that reads
+                everything so you don&apos;t have to, and surfaces only what
+                matters based on who you are and what you do.
+              </p>
+              <span className="absolute -bottom-6 -right-2 text-6xl leading-none text-purple-200">&rdquo;</span>
+            </div>
+          </FadeIn>
+          <FadeIn delay={200}>
             <Link
               href="/about"
               className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-purple-600 hover:text-purple-700"
