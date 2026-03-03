@@ -8,6 +8,7 @@ import {
   Heading,
   Link,
   Hr,
+  Img,
   Preview,
 } from "@react-email/components";
 import type { BriefOutput, BriefItem } from "@/types/brief";
@@ -136,32 +137,34 @@ export default function WeeklyBriefEmail({
             borderRadius: "8px",
           }}
         >
+          <Img
+            src={`${appUrl}/logos/nav-logo.svg`}
+            alt="myweeklyai"
+            width="160"
+            height="37"
+            style={{ marginBottom: "16px" }}
+          />
           <Heading
             style={{
-              color: "#9333ea",
-              fontSize: "24px",
-              marginBottom: "0",
+              color: "#1f2937",
+              fontSize: "18px",
+              fontWeight: 700,
+              margin: "0 0 4px",
             }}
           >
-            My Weekly AI
+            The week&apos;s biggest AI stories, personalized to your job.
           </Heading>
           <Text
             style={{
               color: "#6b7280",
               fontSize: "14px",
-              margin: "4px 0 0",
+              margin: "0 0 12px",
             }}
           >
-            {periodStart} to {periodEnd}
-          </Text>
-          <Text style={{ color: "#374151", fontSize: "14px", lineHeight: "1.6", marginTop: "12px" }}>
-            No hype, no noise, no one-size-fits-all roundups. Every week we
-            surface the AI developments, tools, and ideas that matter to you —
-            so you spend less time scrolling and more time applying AI to your
-            actual work.
+            A 5-minute weekly brief with the AI news that matters for your work.
           </Text>
           <Link
-            href={`${process.env.NEXT_PUBLIC_APP_URL || "https://www.myweekly.ai"}/dashboard`}
+            href={`${appUrl}/dashboard`}
             style={{
               color: "#9333ea",
               fontSize: "14px",
@@ -173,40 +176,40 @@ export default function WeeklyBriefEmail({
 
           <Hr style={{ borderColor: "#e5e7eb", margin: "24px 0" }} />
 
-          <Section
+          <Heading
+            as="h2"
             style={{
-              backgroundColor: "#faf5ff",
-              borderRadius: "8px",
-              padding: "20px",
-              border: "1px solid #e9d5ff",
+              color: "#1f2937",
+              fontSize: "18px",
+              marginBottom: "4px",
             }}
           >
-            <Heading
-              as="h2"
-              style={{
-                color: "#581c87",
-                fontSize: "18px",
-                marginBottom: "12px",
-              }}
-            >
-              News Relevant to You
-            </Heading>
-            <ItemList items={brief.relevantToYou} showRelevance profileTerms={profileTerms} />
+            News Relevant to You
+          </Heading>
+          <Text
+            style={{
+              color: "#9ca3af",
+              fontSize: "13px",
+              margin: "0 0 16px",
+            }}
+          >
+            {periodStart} to {periodEnd}
+          </Text>
+          <ItemList items={brief.relevantToYou} showRelevance profileTerms={profileTerms} />
 
-            <Hr style={{ borderColor: "#e9d5ff", margin: "20px 0" }} />
+          <Hr style={{ borderColor: "#e5e7eb", margin: "20px 0" }} />
 
-            <Heading
-              as="h2"
-              style={{
-                color: "#581c87",
-                fontSize: "18px",
-                marginBottom: "12px",
-              }}
-            >
-              What To Test This Week
-            </Heading>
-            <ItemList items={brief.whatToTest} showRelevance profileTerms={profileTerms} />
-          </Section>
+          <Heading
+            as="h2"
+            style={{
+              color: "#1f2937",
+              fontSize: "18px",
+              marginBottom: "12px",
+            }}
+          >
+            What To Test This Week
+          </Heading>
+          <ItemList items={brief.whatToTest} showRelevance profileTerms={profileTerms} />
 
           <Hr style={{ borderColor: "#e5e7eb", margin: "24px 0" }} />
 
