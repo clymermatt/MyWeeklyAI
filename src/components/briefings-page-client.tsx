@@ -34,9 +34,9 @@ function getNextSunday(): string {
 
 function NextNewsletterBanner() {
   return (
-    <div className="flex items-start gap-3 rounded-lg border border-purple-200 bg-purple-50 px-4 py-3">
+    <div className="flex items-start gap-3 rounded-lg border border-gray-200 bg-gray-50 px-4 py-3">
       <svg
-        className="mt-0.5 h-4 w-4 flex-shrink-0 text-purple-600"
+        className="mt-0.5 h-4 w-4 flex-shrink-0 text-gray-400"
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"
@@ -49,7 +49,7 @@ function NextNewsletterBanner() {
           d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0zm-9-3.75h.008v.008H12V8.25z"
         />
       </svg>
-      <p className="text-sm text-purple-800">
+      <p className="text-sm text-gray-600">
         Your next briefing will arrive on{" "}
         <span className="font-medium">{getNextSunday()}</span>.
       </p>
