@@ -8,6 +8,7 @@ import {
   Heading,
   Link,
   Hr,
+  Img,
   Preview,
 } from "@react-email/components";
 
@@ -36,18 +37,32 @@ export default function WelcomeEmail({ userName, unsubscribeUrl }: WelcomeEmailP
             borderRadius: "8px",
           }}
         >
+          <Img
+            src={`${appUrl}/logos/nav-logo.png`}
+            alt="myweeklyai"
+            width="160"
+            height="37"
+            style={{ marginBottom: "16px" }}
+          />
+
           <Heading
             style={{
-              color: "#9333ea",
-              fontSize: "24px",
-              marginBottom: "4px",
+              color: "#1f2937",
+              fontSize: "18px",
+              fontWeight: 700,
+              margin: "0 0 4px",
             }}
           >
-            My Weekly AI
+            {userName ? `${userName}, welcome!` : "Welcome!"}
           </Heading>
-
-          <Text style={{ color: "#374151", fontSize: "16px", lineHeight: "1.6" }}>
-            {userName ? `${userName}, welcome` : "Welcome"} to My Weekly AI!
+          <Text
+            style={{
+              color: "#6b7280",
+              fontSize: "14px",
+              margin: "0 0 16px",
+            }}
+          >
+            The week&apos;s biggest AI stories, personalized to your job.
           </Text>
 
           <Text style={{ color: "#374151", fontSize: "14px", lineHeight: "1.6" }}>
@@ -57,22 +72,17 @@ export default function WelcomeEmail({ userName, unsubscribeUrl }: WelcomeEmailP
 
           <Hr style={{ borderColor: "#e5e7eb", margin: "24px 0" }} />
 
-          <Section>
-            <Heading
-              as="h2"
-              style={{ color: "#111827", fontSize: "18px", marginBottom: "8px" }}
-            >
-              Get your first briefing now
-            </Heading>
-            <Text style={{ color: "#374151", fontSize: "14px", lineHeight: "1.6" }}>
-              Complete your context profile so we know what to focus on. Once you
-              do, we&apos;ll generate your first briefing right away — no need to
-              wait until Sunday.
-            </Text>
-            <Text style={{ color: "#374151", fontSize: "14px", lineHeight: "1.6" }}>
-              After that, expect your briefing in your inbox every Sunday morning.
-            </Text>
-          </Section>
+          <Heading
+            as="h2"
+            style={{ color: "#1f2937", fontSize: "18px", marginBottom: "8px" }}
+          >
+            Get your first briefing now
+          </Heading>
+          <Text style={{ color: "#374151", fontSize: "14px", lineHeight: "1.6" }}>
+            Complete your context profile so we know what to focus on. Once you
+            do, we&apos;ll generate your first briefing right away — no need to
+            wait until Sunday.
+          </Text>
 
           <Section style={{ textAlign: "center" as const, margin: "24px 0" }}>
             <Link
@@ -107,7 +117,6 @@ export default function WelcomeEmail({ userName, unsubscribeUrl }: WelcomeEmailP
             >
               My Weekly AI
             </Link>
-            {" "}&middot; Curated by AI
           </Text>
           <Text
             style={{

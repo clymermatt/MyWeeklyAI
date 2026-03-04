@@ -20,6 +20,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       from: "My Weekly AI <onboarding@resend.dev>",
       async sendVerificationRequest({ identifier: email, url }) {
         const resend = new ResendClient(process.env.RESEND_API_KEY);
+        const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://www.myweekly.ai";
 
         const existingUser = await prisma.user.findUnique({ where: { email } });
 
@@ -29,13 +30,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         let buttonText: string;
 
         if (existingUser) {
-          // Returning user
           subject = "Sign in to My Weekly AI";
           heading = "Welcome back!";
           body = "Click the button below to sign in to your account.";
           buttonText = "Sign in to My Weekly AI";
         } else {
-          // New user
           subject = "Welcome to My Weekly AI — let's get you set up";
           heading = "Welcome to My Weekly AI!";
           body = "Sign in to set up your profile and get your first personalized AI briefing today.";
@@ -50,9 +49,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             <body style="background-color:#f9fafb;font-family:sans-serif;padding:40px 0">
               <table width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;margin:0 auto;background-color:#ffffff;border-radius:8px;padding:32px">
                 <tr><td>
-                  <h1 style="color:#9333ea;font-size:24px;margin:0 0 16px">My Weekly AI</h1>
-                  <h2 style="color:#111827;font-size:20px;margin:0 0 8px">${heading}</h2>
-                  <p style="color:#374151;font-size:16px;line-height:1.6;margin:0 0 24px">
+                  <img src="${appUrl}/logos/nav-logo.png" alt="myweeklyai" width="160" height="37" style="margin-bottom:16px" />
+                  <h2 style="color:#1f2937;font-size:18px;font-weight:700;margin:0 0 8px">${heading}</h2>
+                  <p style="color:#374151;font-size:14px;line-height:1.6;margin:0 0 24px">
                     ${body}
                   </p>
                   <table cellpadding="0" cellspacing="0"><tr><td style="border-radius:6px;background-color:#9333ea">
