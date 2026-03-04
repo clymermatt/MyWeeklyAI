@@ -1,4 +1,14 @@
 import { prisma } from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
+import { generateInstantBriefing } from "@/lib/jobs/instant-brief";
+
+async function sendBrief(formData: FormData) {
+  "use server";
+  const userId = formData.get("userId") as string;
+  if (!userId) return;
+  await generateInstantBriefing(userId);
+  revalidatePath("/admin/subscribers");
+}
 
 export default async function SubscribersPage() {
   const users = await prisma.user.findMany({
@@ -11,7 +21,7 @@ export default async function SubscribersPage() {
         select: { status: true },
       },
       _count: {
-        select: { weeklyDigests: true },
+        select: { weeklyDigests: { where: { isFree: false } } },
       },
     },
   });
@@ -59,6 +69,7 @@ export default async function SubscribersPage() {
               <th className="px-4 py-3 font-medium">Briefs</th>
               <th className="px-4 py-3 font-medium">Joined</th>
               <th className="px-4 py-3 font-medium">Status</th>
+              <th className="px-4 py-3 font-medium">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100">
@@ -111,6 +122,19 @@ export default async function SubscribersPage() {
                     <span className="inline-block rounded-full bg-green-50 px-2 py-0.5 text-xs font-medium text-green-700">
                       Active
                     </span>
+                  )}
+                </td>
+                <td className="px-4 py-3">
+                  {user.contextProfile && (
+                    <form action={sendBrief}>
+                      <input type="hidden" name="userId" value={user.id} />
+                      <button
+                        type="submit"
+                        className="text-xs text-purple-600 hover:text-purple-700"
+                      >
+                        Send brief
+                      </button>
+                    </form>
                   )}
                 </td>
               </tr>
