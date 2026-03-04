@@ -21,6 +21,12 @@ export default async function AdminLayout({
             </Link>
             <div className="flex gap-6">
               <Link
+                href="/admin/subscribers"
+                className="text-sm text-gray-600 hover:text-gray-900"
+              >
+                Subscribers
+              </Link>
+              <Link
                 href="/admin/sources"
                 className="text-sm text-gray-600 hover:text-gray-900"
               >
