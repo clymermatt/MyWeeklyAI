@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { generateInstantBriefing } from "@/lib/jobs/instant-brief";
@@ -55,11 +55,16 @@ export async function POST(req: Request) {
     },
   });
 
-  // Trigger instant briefing on first profile creation (non-blocking)
+  // Trigger instant briefing on first profile creation (runs after response)
   if (!existingDigest) {
-    generateInstantBriefing(session.user.id).catch((err) =>
-      console.error("Instant briefing failed:", err),
-    );
+    const userId = session.user.id;
+    after(async () => {
+      try {
+        await generateInstantBriefing(userId);
+      } catch (err) {
+        console.error("Instant briefing failed:", err);
+      }
+    });
   }
 
   return NextResponse.json(profile);

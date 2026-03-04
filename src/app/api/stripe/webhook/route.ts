@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { stripe } from "@/lib/stripe";
 import { generateInstantBriefing } from "@/lib/jobs/instant-brief";
@@ -62,10 +62,14 @@ export async function POST(req: Request) {
         },
       });
 
-      // Trigger instant Pro brief on upgrade (non-blocking)
-      generateInstantBriefing(userId).catch((err) =>
-        console.error("Pro upgrade instant brief failed:", err),
-      );
+      // Trigger instant Pro brief on upgrade (runs after response)
+      after(async () => {
+        try {
+          await generateInstantBriefing(userId);
+        } catch (err) {
+          console.error("Pro upgrade instant brief failed:", err);
+        }
+      });
       break;
     }
 
