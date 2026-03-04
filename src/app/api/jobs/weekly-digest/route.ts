@@ -5,6 +5,8 @@ import { sendJobAlertEmail } from "@/lib/email/send";
 import { pingHealthCheck } from "@/lib/healthcheck";
 import { verifyCronSecret } from "@/lib/verify-secret";
 
+export const maxDuration = 300;
+
 export async function GET(req: Request) {
   return handler(req);
 }
