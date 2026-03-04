@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { generateInstantBriefing } from "@/lib/jobs/instant-brief";
+import SendBriefButton from "@/components/send-brief-button";
 
 async function sendBrief(formData: FormData) {
   "use server";
@@ -128,12 +129,7 @@ export default async function SubscribersPage() {
                   {user.contextProfile && (
                     <form action={sendBrief}>
                       <input type="hidden" name="userId" value={user.id} />
-                      <button
-                        type="submit"
-                        className="text-xs text-purple-600 hover:text-purple-700"
-                      >
-                        Send brief
-                      </button>
+                      <SendBriefButton />
                     </form>
                   )}
                 </td>
