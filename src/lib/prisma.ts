@@ -22,7 +22,16 @@ function getDirectDatabaseUrl(): string {
 }
 
 function createPrismaClient() {
-  const pool = new pg.Pool({ connectionString: getDirectDatabaseUrl() });
+  const pool = new pg.Pool({
+    connectionString: getDirectDatabaseUrl(),
+    connectionTimeoutMillis: 10_000,
+  });
+  // Required: idle clients emit 'error' on a backend failure / network
+  // partition (e.g. Supabase pausing the project). Without this listener the
+  // unhandled event crashes the function instance.
+  pool.on("error", (err) => {
+    console.error("Postgres pool error (idle client):", err.message);
+  });
   const adapter = new PrismaPg(pool);
   return new PrismaClient({ adapter });
 }
