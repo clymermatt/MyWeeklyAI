@@ -59,7 +59,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         }
 
         const { error: sendError } = await resend.emails.send({
-          from: "My Weekly AI <onboarding@resend.dev>",
+          // Use the verified domain sender (matches the other transactional
+          // emails). `onboarding@resend.dev` is Resend's sandbox sender and is
+          // restricted to the account-owner email only.
+          from: "My Weekly AI <hello@myweekly.ai>",
           to: email,
           subject,
           html: `
