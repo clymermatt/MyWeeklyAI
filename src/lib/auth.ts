@@ -58,7 +58,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           buttonText = "Get started";
         }
 
-        await resend.emails.send({
+        const { error: sendError } = await resend.emails.send({
           from: "My Weekly AI <onboarding@resend.dev>",
           to: email,
           subject,
@@ -84,6 +84,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             </body>
           `,
         });
+        if (sendError) {
+          // Surface to Vercel logs AND propagate so NextAuth redirects the user
+          // to the error page instead of silently sending them to verify-request.
+          console.error("Resend sendVerificationRequest failed:", sendError);
+          throw new Error(`Failed to send verification email: ${sendError.message}`);
+        }
       },
     }),
   ],
