@@ -26,12 +26,13 @@ model User {
   deliveryChannel    DeliveryChannel  @default(EMAIL)
   unsubscribedAt     DateTime?
 
-  accounts       Account[]
-  sessions       Session[]
-  contextProfile ContextProfile?
-  subscription   Subscription?
-  weeklyDigests  WeeklyDigest[]
-  bookmarks      Bookmark[]
+  accounts          Account[]
+  sessions          Session[]
+  contextProfile    ContextProfile?
+  subscription      Subscription?
+  weeklyDigests     WeeklyDigest[]
+  bookmarks         Bookmark[]
+  assessmentResults AssessmentResult[]
 }
 
 model Account {
@@ -196,11 +197,72 @@ model SocialPost {
   @@index([segment, weekOf])
 }
 
+// ─── AI Job Risk Assessment models ──────────────────────────────────────────
+
+model AssessmentResult {
+  id                      String   @id @default(cuid())
+  resultId                String   @unique // URL-safe shareable slug, e.g. "sw-eng-7f3a9b2c"
+  userId                  String? // nullable: anonymous result before the auth gate is passed
+  sequence                Int      @default(1) // 1 = first assessment, increments on retake
+  roleAssessed            String // role slug, e.g. "software-engineers"
+  industryAssessed        String
+  seniorityLevel          String
+  yearsExperience         String
+  responses               Json // all raw quiz responses
+  compositeScore          Int
+  tier                    RiskTier
+  taskAutomatability      Int
+  adoptionVelocity        Int
+  skillDifferentiationRaw Int
+  careerPortabilityRaw    Int
+  timeToImpactUrgency     Int
+  selectedPivotPaths      Json // array of { pathId, fitScore }
+  reportContent           Json? // generated narrative, populated after report generation
+  pdfUrl                  String?
+  completionTimeSeconds   Int?
+  referrerUrl             String?
+  retakenFromId           String?
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+
+  user        User?              @relation(fields: [userId], references: [id], onDelete: SetNull)
+  retakenFrom AssessmentResult?  @relation("AssessmentRetake", fields: [retakenFromId], references: [id], onDelete: SetNull)
+  retakes     AssessmentResult[] @relation("AssessmentRetake")
+
+  @@index([userId, createdAt])
+  @@index([roleAssessed, createdAt])
+}
+
+// Anonymized rows for percentile benchmarking. No PII, no subscriber link.
+model AssessmentBenchmark {
+  id                      String   @id @default(cuid())
+  role                    String
+  industry                String
+  seniorityLevel          String
+  compositeScore          Int
+  taskAutomatability      Int
+  adoptionVelocity        Int
+  skillDifferentiationRaw Int
+  careerPortabilityRaw    Int
+  timeToImpactUrgency     Int
+  createdAt               DateTime @default(now())
+
+  @@index([role, createdAt])
+}
+
 // ─── Enums ──────────────────────────────────────────────────────────────────
 
 enum Role {
   USER
   ADMIN
+}
+
+enum RiskTier {
+  LOW
+  MODERATE
+  MODERATE_HIGH
+  HIGH
+  SEVERE
 }
 
 enum SubscriptionStatus {

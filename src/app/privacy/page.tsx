@@ -13,7 +13,7 @@ export default function PrivacyPage() {
     <SiteNav />
     <div className="mx-auto max-w-3xl px-4 py-16">
       <h1 className="text-3xl font-bold text-gray-900">Privacy Policy</h1>
-      <p className="mt-2 text-sm text-gray-500">Last updated: February 26, 2026</p>
+      <p className="mt-2 text-sm text-gray-500">Last updated: May 26, 2026</p>
 
       <div className="mt-8 space-y-8 text-sm leading-relaxed text-gray-700">
         <section>
@@ -30,6 +30,8 @@ export default function PrivacyPage() {
           <h2 className="text-lg font-semibold text-gray-900">2. Information We Collect</h2>
           <p className="mt-2"><strong>Account information:</strong> When you sign up, we collect your name, email address, and profile image via Google OAuth or email sign-in.</p>
           <p className="mt-2"><strong>Context profile:</strong> You may provide your job title, industry, goals, tools, workflows, experience level, and topic preferences to personalize your briefings.</p>
+          <p className="mt-2"><strong>AI Job Risk Assessment responses:</strong> If you take an AI Job Risk Assessment, we collect your responses about your role, industry, how you spend your time across job tasks, your work environment, your self-rated strengths, and an optional free-text comment. We also store the computed score, risk tier, factor breakdown, and selected pivot-path recommendations associated with your account.</p>
+          <p className="mt-2"><strong>Anonymized benchmarks:</strong> When you complete an assessment, we also store an anonymized record of your role, industry, seniority level, and scores — with no name, email, or other identifying information — to compute percentile comparisons across all users.</p>
           <p className="mt-2"><strong>Payment information:</strong> If you subscribe to a paid plan, payment is processed by Stripe. We do not store your credit card number. We receive your Stripe customer ID and subscription status.</p>
           <p className="mt-2"><strong>Usage data:</strong> We collect basic analytics data (page views, feature usage) via Vercel Analytics. This data is anonymized and does not include personal identifiers.</p>
           <p className="mt-2"><strong>Telegram:</strong> If you connect Telegram, we store your Telegram chat ID to deliver briefings.</p>
@@ -52,7 +54,7 @@ export default function PrivacyPage() {
           <ul className="mt-2 list-disc space-y-1 pl-5">
             <li><strong>Google</strong> — OAuth authentication</li>
             <li><strong>Stripe</strong> — payment processing</li>
-            <li><strong>Anthropic (Claude)</strong> — AI-powered briefing generation. Your context profile data is sent to generate personalized content. Anthropic does not use this data for training.</li>
+            <li><strong>Anthropic (Claude)</strong> — AI-powered briefing generation and the personalized narrative content of your AI Job Risk Assessment report. Your context profile and assessment responses are sent to generate this content. Anthropic does not use this data for training.</li>
             <li><strong>Resend</strong> — email delivery</li>
             <li><strong>Supabase</strong> — database hosting (PostgreSQL)</li>
             <li><strong>Vercel</strong> — application hosting and analytics</li>
@@ -69,11 +71,18 @@ export default function PrivacyPage() {
         </section>
 
         <section>
-          <h2 className="text-lg font-semibold text-gray-900">6. Data Retention</h2>
+          <h2 className="text-lg font-semibold text-gray-900">6. Data Retention and Sharing</h2>
           <p className="mt-2">
             We retain your account and profile data for as long as your account is active. Briefing history
-            is retained indefinitely to allow you to access past briefings. If you delete your account,
-            all associated data is permanently removed within 30 days.
+            and AI Job Risk Assessment results are retained indefinitely so you can access them later. If you
+            delete your account, all associated data — including assessment results — is permanently removed
+            within 30 days. Anonymized benchmark records are not tied to your account and persist after deletion.
+          </p>
+          <p className="mt-2">
+            <strong>Shareable result URLs:</strong> Each completed assessment has a unique URL you can share
+            with others (e.g. <code>/ai-job-risk/[role]/results/[id]</code>). The URL itself does not include
+            your name or email, but anyone with the link can view your score, tier, and report content. Treat
+            sharing the URL as you would sharing the PDF.
           </p>
         </section>
 

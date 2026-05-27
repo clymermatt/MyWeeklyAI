@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import React from "react";
 import { getLandingPage, allSlugs } from "@/lib/landing-content";
+import { getRoleConfig } from "@/lib/ai-job-risk/roles";
 import {
   FadeIn,
   LogoTicker,
@@ -480,6 +481,31 @@ export default async function LandingPage({
           )}
         </div>
       </section>
+
+      {/* AI Job Risk Assessment cross-link (spec §2.3) — shown only when an
+          assessment exists for this slug. */}
+      {getRoleConfig(slug) && (
+        <section className="bg-white px-4 py-12">
+          <div className="mx-auto max-w-2xl rounded-2xl border border-purple-100 bg-purple-50/40 p-6 text-center shadow-sm">
+            <p className="text-sm font-semibold uppercase tracking-wide text-purple-600">
+              AI Job Risk Assessment
+            </p>
+            <h2 className="mt-2 text-xl font-bold text-gray-900">
+              Worried AI is coming for your role?
+            </h2>
+            <p className="mt-2 text-sm text-gray-600">
+              Take our 5-minute AI Job Risk Assessment for {page.label} and see
+              exactly which of your tasks are most exposed.
+            </p>
+            <Link
+              href={`/ai-job-risk/${slug}`}
+              className="mt-4 inline-block rounded-lg bg-purple-600 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-purple-700"
+            >
+              Take the assessment →
+            </Link>
+          </div>
+        </section>
+      )}
 
       {/* Bottom CTA */}
       <section className="relative dot-pattern bg-gradient-to-br from-purple-600 to-blue-600 px-4 py-20 text-center">

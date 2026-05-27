@@ -2,6 +2,7 @@ import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 import Resend from "next-auth/providers/resend";
 import { PrismaAdapter } from "@auth/prisma-adapter";
+import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import { sendWelcomeEmail } from "@/lib/email/send";
 import { generateUnsubscribeUrl } from "@/lib/unsubscribe";
@@ -22,6 +23,16 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         const resend = new ResendClient(process.env.RESEND_API_KEY);
         const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://www.myweekly.ai";
 
+        // Detect funnel via the magic-link's callbackUrl — assessment takers get
+        // a results-oriented email, not a newsletter-onboarding one.
+        let callbackUrl = "";
+        try {
+          callbackUrl = new URL(url).searchParams.get("callbackUrl") ?? "";
+        } catch {
+          // Malformed url — fall through to default branches.
+        }
+        const isAssessmentFunnel = callbackUrl.includes("/ai-job-risk/");
+
         const existingUser = await prisma.user.findUnique({ where: { email } });
 
         let subject: string;
@@ -29,7 +40,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         let body: string;
         let buttonText: string;
 
-        if (existingUser) {
+        if (isAssessmentFunnel) {
+          subject = "Your AI Job Risk Report is ready";
+          heading = "Your AI Job Risk Report is ready";
+          body =
+            "Click below to view your personalized AI Job Risk Assessment results and unlock the full breakdown.";
+          buttonText = "View my report";
+        } else if (existingUser) {
           subject = "Sign in to My Weekly AI";
           heading = "Welcome back!";
           body = "Click the button below to sign in to your account.";
@@ -77,16 +94,28 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   events: {
     async createUser({ user }) {
       try {
-        if (user.email) {
-          const unsubscribeUrl = user.id
-            ? generateUnsubscribeUrl(user.id)
-            : undefined;
-          await sendWelcomeEmail({
-            to: user.email,
-            userName: user.name ?? undefined,
-            unsubscribeUrl,
-          });
+        if (!user.email) return;
+
+        // Assessment-funnel signups get a bespoke welcome email (with the
+        // report + PDF) sent from the claim path. The cookie is set by the
+        // assessment auth gate's signIn server actions and survives the OAuth
+        // round-trip (and same-browser magic-link clicks). Cross-browser magic
+        // link clicks miss the cookie → fall through to the newsletter welcome.
+        try {
+          const cookieStore = await cookies();
+          if (cookieStore.get("airisk_pending")?.value) return;
+        } catch {
+          // cookies() outside a request context — proceed with newsletter welcome.
         }
+
+        const unsubscribeUrl = user.id
+          ? generateUnsubscribeUrl(user.id)
+          : undefined;
+        await sendWelcomeEmail({
+          to: user.email,
+          userName: user.name ?? undefined,
+          unsubscribeUrl,
+        });
       } catch (err) {
         console.error("Failed to send welcome email:", err);
       }

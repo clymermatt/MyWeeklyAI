@@ -11,8 +11,6 @@ interface MobileNavProps {
 
 const navLinks = [
   { href: "/dashboard", label: "My Dashboard" },
-  { href: "/dashboard/briefings", label: "My Briefings" },
-  { href: "/dashboard/saved", label: "Saved Articles" },
 ];
 
 export default function MobileNav({
@@ -79,17 +77,25 @@ export default function MobileNav({
                 <span className="text-sm text-gray-600">Hi, {userName}</span>
               </div>
             )}
+            <Link
+              href="/ai-job-risk"
+              onClick={() => setOpen(false)}
+              className="mb-3 block rounded-lg border border-purple-600 bg-white px-4 py-2 text-center text-sm font-semibold text-purple-700 transition-colors hover:bg-purple-50"
+            >
+              Will AI replace my job?
+            </Link>
             <div className="flex flex-col gap-1">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setOpen(false)}
-                  className="rounded-md px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-                >
-                  {link.label}
-                </Link>
-              ))}
+              {isAuthenticated &&
+                navLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setOpen(false)}
+                    className="rounded-md px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                  >
+                    {link.label}
+                  </Link>
+                ))}
               {isAdmin && (
                 <Link
                   href="/admin/jobs"
@@ -105,9 +111,9 @@ export default function MobileNav({
                 <Link
                   href="/auth/signin"
                   onClick={() => setOpen(false)}
-                  className="block rounded-lg bg-purple-600 px-4 py-2 text-center text-sm font-medium text-white hover:bg-purple-700 transition-colors"
+                  className="block px-3 py-2 text-center text-sm text-gray-600 hover:text-gray-900"
                 >
-                  Sign In
+                  Sign in
                 </Link>
               </div>
             )}

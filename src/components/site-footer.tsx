@@ -26,7 +26,7 @@ export default function SiteFooter() {
   return (
     <footer className="border-t border-gray-200 bg-gray-50">
       <div className="mx-auto max-w-5xl px-4 py-12">
-        <div className="grid gap-8 sm:grid-cols-3">
+        <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-4">
           <div>
             <h3 className="text-sm font-semibold text-gray-900">
               AI Topics by Job Role
@@ -60,6 +60,23 @@ export default function SiteFooter() {
                   </Link>
                 </li>
               ))}
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-sm font-semibold text-gray-900">Tools</h3>
+            <ul className="mt-4 space-y-2">
+              <li>
+                <Link
+                  href="/ai-job-risk"
+                  className="text-sm text-gray-600 hover:text-gray-900"
+                >
+                  AI Job Risk Assessment
+                </Link>
+              </li>
+              <li className="text-xs italic text-gray-400">
+                More tools coming soon
+              </li>
             </ul>
           </div>
 

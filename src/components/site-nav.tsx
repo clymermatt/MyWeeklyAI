@@ -34,54 +34,44 @@ export default async function SiteNav() {
             />
           </Link>
           <div className="hidden md:flex gap-6">
-            <Link
-              href="/dashboard"
-              className="text-sm text-gray-600 hover:text-gray-900"
-            >
-              My Dashboard
-            </Link>
-            <Link
-              href="/dashboard/briefings"
-              className="text-sm text-gray-600 hover:text-gray-900"
-            >
-              My Briefings
-            </Link>
-            <Link
-              href="/dashboard/saved"
-              className="text-sm text-gray-600 hover:text-gray-900"
-            >
-              Saved Articles
-            </Link>
+            {session && (
+              <Link
+                href="/dashboard"
+                className="text-sm text-gray-600 hover:text-gray-900"
+              >
+                My Dashboard
+              </Link>
+            )}
           </div>
         </div>
-        {session ? (
-          <div className="hidden md:flex items-center gap-4">
+        <div className="hidden md:flex items-center gap-4">
+          {/* Persistent affordance for the assessment — outlined so it doesn't
+              compete with the hero CTA (spec §2.1 keeps the homepage as the
+              newsletter funnel; assessment lives at /ai-job-risk). */}
+          <Link
+            href="/ai-job-risk"
+            className="inline-flex rounded-lg border border-purple-600 bg-white px-4 py-2 text-sm font-semibold text-purple-700 transition-colors hover:bg-purple-50"
+          >
+            Will AI replace my job?
+          </Link>
+          {session ? (
             <UserMenu
               name={userName!}
               isAdmin={isAdmin}
-            />
-            <form
-              action={async () => {
+              onSignOut={async () => {
                 "use server";
                 await signOut({ redirectTo: "/" });
               }}
+            />
+          ) : (
+            <Link
+              href="/auth/signin"
+              className="text-sm text-gray-600 hover:text-gray-900"
             >
-              <button
-                type="submit"
-                className="text-sm text-gray-500 hover:text-gray-700"
-              >
-                Sign out
-              </button>
-            </form>
-          </div>
-        ) : (
-          <Link
-            href="/auth/signin"
-            className="hidden md:inline-flex rounded-lg bg-purple-600 px-4 py-2 text-sm font-medium text-white hover:bg-purple-700 transition-colors"
-          >
-            Sign In
-          </Link>
-        )}
+              Sign in
+            </Link>
+          )}
+        </div>
         <MobileNav
           isAuthenticated={!!session}
           userName={userName}

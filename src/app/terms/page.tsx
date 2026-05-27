@@ -13,7 +13,7 @@ export default function TermsPage() {
     <SiteNav />
     <div className="mx-auto max-w-3xl px-4 py-16">
       <h1 className="text-3xl font-bold text-gray-900">Terms of Service</h1>
-      <p className="mt-2 text-sm text-gray-500">Last updated: February 26, 2026</p>
+      <p className="mt-2 text-sm text-gray-500">Last updated: May 26, 2026</p>
 
       <div className="mt-8 space-y-8 text-sm leading-relaxed text-gray-700">
         <section>
@@ -59,11 +59,19 @@ export default function TermsPage() {
         <section>
           <h2 className="text-lg font-semibold text-gray-900">5. AI-Generated Content Disclaimer</h2>
           <p className="mt-2">
-            Briefings are generated using artificial intelligence and are provided for informational
-            purposes only. While we strive for accuracy, AI-generated content may contain errors,
-            omissions, or outdated information. You should independently verify any information before
-            making decisions based on it. We are not responsible for actions taken based on
-            AI-generated content.
+            Briefings and AI Job Risk Assessment reports are generated using artificial intelligence and
+            are provided for informational purposes only. While we strive for accuracy, AI-generated
+            content may contain errors, omissions, or outdated information. You should independently
+            verify any information before making decisions based on it. We are not responsible for
+            actions taken based on AI-generated content.
+          </p>
+          <p className="mt-2">
+            <strong>AI Job Risk Assessment specifically:</strong> The assessment is a model, not a
+            prediction. It is designed to give you a clear-eyed view of your situation, not a precise
+            forecast of your career outcome. It is informational only and is not a substitute for
+            professional career advice. Pivot-path recommendations, salary ranges, and timelines are
+            estimates derived from public market data and may not reflect the specific opportunities
+            available to you.
           </p>
         </section>
 

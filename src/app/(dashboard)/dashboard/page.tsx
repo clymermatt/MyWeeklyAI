@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { getTier } from "@/lib/ai-job-risk/tiers";
 import TelegramConnectCard from "@/components/telegram-connect-card";
 import ResubscribeBanner from "@/components/resubscribe-banner";
 
@@ -8,20 +9,48 @@ export default async function DashboardPage() {
   const session = await auth();
   const userId = session!.user!.id!;
 
-  const [profile, recentDigests, user] = await Promise.all([
-    prisma.contextProfile.findUnique({ where: { userId } }),
-    prisma.weeklyDigest.findMany({
-      where: { userId, isFree: false },
-      orderBy: { sentAt: "desc" },
-      take: 3,
-    }),
-    prisma.user.findUniqueOrThrow({
-      where: { id: userId },
-      select: { telegramChatId: true, deliveryChannel: true, unsubscribedAt: true },
-    }),
-  ]);
+  const [profile, recentDigests, user, recentAssessments, bookmarkCount] =
+    await Promise.all([
+      prisma.contextProfile.findUnique({ where: { userId } }),
+      prisma.weeklyDigest.findMany({
+        where: { userId, isFree: false },
+        orderBy: { sentAt: "desc" },
+        take: 3,
+      }),
+      prisma.user.findUniqueOrThrow({
+        where: { id: userId },
+        select: {
+          telegramChatId: true,
+          deliveryChannel: true,
+          unsubscribedAt: true,
+        },
+      }),
+      // Top 2 so we can compute the delta against the prior assessment (spec §11.6).
+      prisma.assessmentResult.findMany({
+        where: { userId },
+        orderBy: { createdAt: "desc" },
+        take: 2,
+        select: {
+          resultId: true,
+          roleAssessed: true,
+          compositeScore: true,
+          tier: true,
+          createdAt: true,
+        },
+      }),
+      prisma.bookmark.count({ where: { userId } }),
+    ]);
 
   const needsProfile = !profile;
+  const latestAssessment = recentAssessments[0];
+  const previousAssessment = recentAssessments[1];
+  // Only compare against the previous result if it was for the same role —
+  // delta between different roles is meaningless.
+  const scoreDelta =
+    latestAssessment && previousAssessment &&
+    latestAssessment.roleAssessed === previousAssessment.roleAssessed
+      ? latestAssessment.compositeScore - previousAssessment.compositeScore
+      : null;
 
   return (
     <div className="space-y-8">
@@ -61,6 +90,128 @@ export default async function DashboardPage() {
       )}
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {/* AI Job Risk Profile Card (spec §11.6) */}
+        <div className="rounded-lg border border-purple-200 bg-purple-50/30 p-6">
+          <h2 className="text-sm font-medium text-gray-500">
+            AI Job Risk Profile
+          </h2>
+          {latestAssessment ? (
+            <div className="mt-2">
+              <div className="flex items-baseline gap-2">
+                <p className="text-2xl font-semibold text-purple-700">
+                  {latestAssessment.compositeScore}
+                  <span className="text-base font-normal text-gray-400">/100</span>
+                </p>
+                {scoreDelta !== null && scoreDelta !== 0 && (
+                  <span
+                    className={`text-xs font-semibold ${
+                      scoreDelta < 0 ? "text-green-600" : "text-amber-600"
+                    }`}
+                    aria-label={`${scoreDelta < 0 ? "Down" : "Up"} ${Math.abs(scoreDelta)} points from previous`}
+                  >
+                    {scoreDelta < 0 ? "▼" : "▲"} {Math.abs(scoreDelta)} pts
+                  </span>
+                )}
+              </div>
+              <p className="mt-1 text-sm text-gray-600">
+                {getTier(latestAssessment.tier).label} · Last assessed{" "}
+                {latestAssessment.createdAt.toLocaleDateString()}
+              </p>
+              <div className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-sm">
+                <Link
+                  href={`/ai-job-risk/${latestAssessment.roleAssessed}/results/${latestAssessment.resultId}`}
+                  className="font-medium text-blue-600 hover:text-blue-700"
+                >
+                  View report &rarr;
+                </Link>
+                <Link
+                  href={`/ai-job-risk/${latestAssessment.roleAssessed}/quiz`}
+                  className="text-gray-600 hover:text-gray-800"
+                >
+                  Retake
+                </Link>
+              </div>
+              <p className="mt-3 text-xs text-gray-500">
+                We recommend retaking every 6 months to see how your situation
+                evolves.
+              </p>
+            </div>
+          ) : (
+            <div className="mt-2">
+              <p className="text-lg font-semibold text-gray-400">Not taken yet</p>
+              <p className="mt-1 text-sm text-gray-600">
+                See exactly which parts of your work are most exposed to AI
+                displacement.
+              </p>
+              <Link
+                href="/ai-job-risk"
+                className="mt-4 inline-block text-sm font-medium text-blue-600 hover:text-blue-700"
+              >
+                Take the assessment &rarr;
+              </Link>
+            </div>
+          )}
+        </div>
+
+        {/* Recent Briefings Card */}
+        <div className="rounded-lg border border-gray-200 bg-white p-6">
+          <h2 className="text-sm font-medium text-gray-500">
+            Recent Briefings
+          </h2>
+          {recentDigests.length > 0 ? (
+            <div className="mt-2">
+              <p className="text-lg font-semibold text-gray-900">
+                {recentDigests.length}
+              </p>
+              <p className="mt-1 text-sm text-gray-600">
+                Latest: {recentDigests[0].sentAt.toLocaleDateString()}
+              </p>
+            </div>
+          ) : (
+            <div className="mt-2">
+              <p className="text-lg font-semibold text-gray-400">None yet</p>
+              <p className="mt-1 text-sm text-gray-600">
+                Complete your profile to get your first brief instantly
+              </p>
+            </div>
+          )}
+          <Link
+            href="/dashboard/briefings"
+            className="mt-4 inline-block text-sm font-medium text-blue-600 hover:text-blue-700"
+          >
+            View all &rarr;
+          </Link>
+        </div>
+
+        {/* Saved Articles Card */}
+        <div className="rounded-lg border border-gray-200 bg-white p-6">
+          <h2 className="text-sm font-medium text-gray-500">Saved Articles</h2>
+          {bookmarkCount > 0 ? (
+            <div className="mt-2">
+              <p className="text-lg font-semibold text-gray-900">
+                {bookmarkCount}
+              </p>
+              <p className="mt-1 text-sm text-gray-600">
+                {bookmarkCount === 1 ? "article" : "articles"} saved
+              </p>
+            </div>
+          ) : (
+            <div className="mt-2">
+              <p className="text-lg font-semibold text-gray-400">None yet</p>
+              <p className="mt-1 text-sm text-gray-600">
+                Bookmark articles from your weekly briefings to revisit them
+                later.
+              </p>
+            </div>
+          )}
+          <Link
+            href="/dashboard/saved"
+            className="mt-4 inline-block text-sm font-medium text-blue-600 hover:text-blue-700"
+          >
+            View all &rarr;
+          </Link>
+        </div>
+
         {/* Context Profile Card */}
         <div className={`rounded-lg p-6 ${needsProfile ? "border-2 border-amber-400 bg-amber-50/30" : "border border-gray-200 bg-white"}`}>
           <div className="flex items-center justify-between">
@@ -109,36 +260,6 @@ export default async function DashboardPage() {
               Personalized briefings delivered every Sunday
             </p>
           </div>
-        </div>
-
-        {/* Recent Digests Card */}
-        <div className="rounded-lg border border-gray-200 bg-white p-6">
-          <h2 className="text-sm font-medium text-gray-500">
-            Recent Briefings
-          </h2>
-          {recentDigests.length > 0 ? (
-            <div className="mt-2">
-              <p className="text-lg font-semibold text-gray-900">
-                {recentDigests.length}
-              </p>
-              <p className="mt-1 text-sm text-gray-600">
-                Latest: {recentDigests[0].sentAt.toLocaleDateString()}
-              </p>
-            </div>
-          ) : (
-            <div className="mt-2">
-              <p className="text-lg font-semibold text-gray-400">None yet</p>
-              <p className="mt-1 text-sm text-gray-600">
-                Complete your profile to get your first brief instantly
-              </p>
-            </div>
-          )}
-          <Link
-            href="/dashboard/briefings"
-            className="mt-4 inline-block text-sm font-medium text-blue-600 hover:text-blue-700"
-          >
-            View all &rarr;
-          </Link>
         </div>
 
         {/* Delivery Channel Card */}

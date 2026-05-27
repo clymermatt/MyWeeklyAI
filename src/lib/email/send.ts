@@ -2,6 +2,7 @@ import { Resend } from "resend";
 import { render } from "@react-email/components";
 import WeeklyBriefEmail from "./weekly-brief-template";
 import WelcomeEmail from "./welcome-template";
+import AssessmentWelcomeEmail from "./assessment-welcome-template";
 import type { BriefOutput } from "@/types/brief";
 import type { JobStatus } from "@/generated/prisma/client";
 
@@ -96,6 +97,73 @@ export async function sendWelcomeEmail({
 
   if (error) {
     throw new Error(`Failed to send welcome email: ${error.message}`);
+  }
+}
+
+/**
+ * Spec §11.5 — the post-assessment welcome email. Distinct from the regular
+ * newsletter welcome: it leads with the report (link + PDF attachment) and
+ * positions the newsletter as the secondary handoff. Triggered from the claim
+ * path after a successful assessment claim.
+ */
+export async function sendAssessmentWelcomeEmail({
+  to,
+  userName,
+  rolePlural,
+  compositeScore,
+  tierLabel,
+  resultUrl,
+  dashboardUrl,
+  pdfBuffer,
+  pdfFilename,
+  unsubscribeUrl,
+}: {
+  to: string;
+  userName?: string;
+  rolePlural: string;
+  compositeScore: number;
+  tierLabel: string;
+  resultUrl: string;
+  dashboardUrl: string;
+  pdfBuffer: Buffer;
+  pdfFilename: string;
+  unsubscribeUrl?: string;
+}) {
+  const html = await render(
+    AssessmentWelcomeEmail({
+      userName,
+      rolePlural,
+      compositeScore,
+      tierLabel,
+      resultUrl,
+      dashboardUrl,
+      unsubscribeUrl,
+    }),
+  );
+
+  const resend = getResend();
+  const headers: Record<string, string> = {};
+  if (unsubscribeUrl) {
+    headers["List-Unsubscribe"] = `<${unsubscribeUrl}>`;
+    headers["List-Unsubscribe-Post"] = "List-Unsubscribe=One-Click";
+  }
+
+  const { error } = await resend.emails.send({
+    from: "My Weekly AI <hello@myweekly.ai>",
+    to,
+    subject: "Your AI Job Risk Report is ready",
+    html,
+    headers,
+    attachments: [
+      {
+        filename: pdfFilename,
+        content: pdfBuffer,
+      },
+    ],
+  });
+
+  if (error) {
+    throw new Error(`Failed to send assessment welcome email: ${error.message}`);
   }
 }
 
