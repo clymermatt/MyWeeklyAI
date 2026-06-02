@@ -24,6 +24,8 @@ interface Persona {
   expectedTaskAutomatability: [number, number];
   /** spec 4.1.2 expected composite tier(s) */
   expectedTiers: RiskTierKey[];
+  /** optional — pivot-path ids that MUST appear in the top 3 */
+  expectedPivotIncludes?: string[];
   responses: UserResponses;
 }
 
@@ -55,7 +57,9 @@ const PERSONAS: Persona[] = [
       decisionStakes: "rarely",
       relationshipImportance: "somewhat",
       novelProblems: "rarely",
-      managerConversations: "brief",
+      // Branch 2 (junior IC + 0-2 years): submit flow auto-assigns E1 = "no"
+      // per spec v1.0.2, so the verification persona reflects that.
+      managerConversations: "no",
       activeLearning: "occasional",
     },
   },
@@ -122,6 +126,38 @@ const PERSONAS: Persona[] = [
     },
   },
   {
+    // Spec v1.0.2 regression check: industry-match bonus should surface
+    // AI Security Engineer for senior cybersecurity ICs (packet §3).
+    name: "Senior cybersecurity engineer",
+    expectedTaskAutomatability: [40, 55],
+    expectedTiers: ["MODERATE"],
+    expectedPivotIncludes: ["ai-security-engineer"],
+    responses: {
+      role: "senior-engineer",
+      industry: "cybersecurity",
+      yearsExperience: "11-15",
+      taskTimes: tasks({
+        "system-design": "25-50",
+        "code-review": "25-50",
+        "debug-novel": "10-25",
+        "cross-functional": "10-25",
+        mentoring: "10-25",
+        "feature-code": "10-25",
+        research: "10-25",
+      }),
+      employerAdoption: "encouraged",
+      toolsUsed: ["chatgpt", "claude", "cursor"],
+      headcountChange: "flat",
+      structuralChange: "yes_somewhat",
+      domainExpertise: "most",
+      decisionStakes: "constant",
+      relationshipImportance: "important",
+      novelProblems: "frequently",
+      managerConversations: "substantial",
+      activeLearning: "regular",
+    },
+  },
+  {
     name: "Engineering manager",
     expectedTaskAutomatability: [25, 35],
     expectedTiers: ["LOW", "MODERATE"],
@@ -168,7 +204,12 @@ for (const persona of PERSONAS) {
   const [lo, hi] = persona.expectedTaskAutomatability;
   const taskAutoOk = taskAuto >= lo && taskAuto <= hi;
   const tierOk = persona.expectedTiers.includes(result.tier);
-  const ok = taskAutoOk && tierOk;
+  const pivotIds = result.topPivotPaths.map((p) => p.pathId);
+  const missingPivots = (persona.expectedPivotIncludes ?? []).filter(
+    (id) => !pivotIds.includes(id),
+  );
+  const pivotOk = missingPivots.length === 0;
+  const ok = taskAutoOk && tierOk && pivotOk;
   if (!ok) failures++;
 
   console.log(
@@ -184,6 +225,11 @@ for (const persona of PERSONAS) {
   if (!tierOk) {
     console.log(
       `   ! Tier ${result.tier} not in expected ${persona.expectedTiers.join("/")}`,
+    );
+  }
+  if (!pivotOk) {
+    console.log(
+      `   ! Missing required pivot path(s): ${missingPivots.join(", ")}`,
     );
   }
   // Surface the selected pivot paths for eyeball review.

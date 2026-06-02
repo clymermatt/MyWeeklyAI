@@ -217,6 +217,8 @@ const softwareEngineers: RoleConfig = {
   },
 
   topRecommendedTool: "Cursor or Claude Code",
+  toolFitHints:
+    "For code-heavy workflows (writing features, refactoring, debugging routine bugs): Cursor, Claude Code, GitHub Copilot, Replit. For design/learning/documentation workflows (research, drafting RFCs, explaining systems): ChatGPT, Claude, Perplexity, Notion AI. For infrastructure/agent workflows (deployment, orchestration): AWS Bedrock, Azure OpenAI, Google Vertex AI, LangChain, Vercel AI SDK.",
   landingToolMentions: "Cursor, Claude Code, and GitHub Copilot",
   landingSamplePersona: "Senior Software Engineer at a SaaS company",
 
@@ -265,8 +267,9 @@ const softwareEngineers: RoleConfig = {
       timeline: "3-6 months of focused learning while in your current role; pivot at your next job change.",
       bestFitsWhen:
         "Strong backend/API experience, comfort with messy production systems, and heavy use of 2-3 AI tools already.",
-      minSeniorityOrdinal: 0,
+      minSeniorityOrdinal: 1,
       maxSeniorityOrdinal: 6,
+      strongContextIndustries: TECH_INDUSTRIES,
       portfolioArtifactTemplate:
         "Build a small RAG application using OpenAI or Anthropic APIs. It doesn't need to be production-quality — it needs to be a learning experience and a portfolio artifact you can talk about.",
       scoringRules: [
@@ -275,7 +278,6 @@ const softwareEngineers: RoleConfig = {
         { label: "You already use 2+ AI tools", points: 20, group: "tools", test: (c) => c.toolCount >= 2 },
         { label: "You already use 3+ AI tools heavily", points: 30, group: "tools", test: (c) => c.toolCount >= 3 },
         { label: "You're at mid-level or above", points: 15, test: (c) => c.seniorityOrdinal >= 1 },
-        { label: "You work in an AI-forward industry", points: 10, test: (c) => TECH_INDUSTRIES.includes(c.industrySlug) },
         { label: "You bring backend / system depth", points: 10, test: (c) => isDeepExpertise(c.responses) },
       ],
     },
@@ -299,8 +301,9 @@ const softwareEngineers: RoleConfig = {
         "6-12 months of focused learning while in your current role; DevOps/SRE backgrounds can pivot in 2-3 months.",
       bestFitsWhen:
         "Distributed-systems background, on-call/incident-response experience, comfort with infrastructure tools.",
-      minSeniorityOrdinal: 0,
+      minSeniorityOrdinal: 1,
       maxSeniorityOrdinal: 6,
+      strongContextIndustries: ["saas-software", "fintech"],
       portfolioArtifactTemplate:
         "Deploy an open-source model (e.g., Llama 3) on a small VM or cloud service. Add basic monitoring. Document the process.",
       scoringRules: [
@@ -333,6 +336,7 @@ const softwareEngineers: RoleConfig = {
         "Strong communication, willingness to work with stakeholders, broad rather than deep technical skill, comfort with ambiguity.",
       minSeniorityOrdinal: 2,
       maxSeniorityOrdinal: 6,
+      strongContextIndustries: ["saas-software"],
       portfolioArtifactTemplate:
         "Identify a real business problem at your current company that could be solved with an LLM. Write a 1-page proposal with a specific implementation approach. Share it with one stakeholder.",
       scoringRules: [
@@ -396,11 +400,11 @@ const softwareEngineers: RoleConfig = {
         "Generalist skill profile, low risk aversion, willingness to work intensely, prior startup experience or strong personal projects.",
       minSeniorityOrdinal: 2,
       maxSeniorityOrdinal: 6,
+      strongContextIndustries: ["saas-software"],
       scoringRules: [
         { label: "You have a broad generalist profile", points: 20, test: (c) => isGeneralist(c.responses) },
         { label: "You're comfortable with novel problems", points: 15, test: (c) => c.responses.novelProblems === "most" || c.responses.novelProblems === "frequently" },
         { label: "You're a heavy adopter of AI tools", points: 15, test: (c) => c.toolCount >= 3 },
-        { label: "You work in software/SaaS", points: 10, test: (c) => c.industrySlug === "saas-software" },
         { label: "You're at senior level or above", points: 10, test: (c) => c.seniorityOrdinal >= 2 },
         { label: "You ship feature code at pace", points: 10, test: (c) => pct(c, "feature-code") > 25 },
       ],
@@ -424,8 +428,9 @@ const softwareEngineers: RoleConfig = {
       timeline: "2-3 months for SRE/DevOps engineers; 4-6 months for backend engineers with on-call experience.",
       bestFitsWhen:
         "On-call/incident-response time, infrastructure background, novel-debugging skill, interest in operating systems over building features.",
-      minSeniorityOrdinal: 0,
+      minSeniorityOrdinal: 1,
       maxSeniorityOrdinal: 6,
+      strongContextIndustries: ["saas-software"],
       scoringRules: [
         { label: "You spend significant time on on-call / incident response", points: 30, test: (c) => pct(c, "on-call") > 15 },
         { label: "You're skilled at complex production debugging", points: 20, test: (c) => pct(c, "debug-novel") > 15 },
@@ -452,8 +457,9 @@ const softwareEngineers: RoleConfig = {
       timeline: "3-6 months; test engineers and QA leads have the shortest path.",
       bestFitsWhen:
         "Strong testing background, debugging skills, systematic thinking, interest in correctness over building features.",
-      minSeniorityOrdinal: 0,
+      minSeniorityOrdinal: 1,
       maxSeniorityOrdinal: 6,
+      strongContextIndustries: ["saas-software"],
       scoringRules: [
         { label: "You spend significant time writing tests", points: 30, test: (c) => pct(c, "tests") > 15 },
         { label: "You're active in routine debugging", points: 15, test: (c) => pct(c, "debug-routine") > 10 },
@@ -481,8 +487,9 @@ const softwareEngineers: RoleConfig = {
       timeline: "3-6 months; developer-advocacy or pre-sales experience accelerates this dramatically.",
       bestFitsWhen:
         "Strong communication, customer-facing work history, broad technical skills, enjoyment of presentation work.",
-      minSeniorityOrdinal: 0,
+      minSeniorityOrdinal: 1,
       maxSeniorityOrdinal: 6,
+      strongContextIndustries: ["saas-software"],
       scoringRules: [
         { label: "You spend significant time on cross-functional work", points: 25, test: (c) => pct(c, "cross-functional") > 15 },
         { label: "Relationships are central to your work", points: 20, test: (c) => isRelationshipStrong(c.responses) },
@@ -513,9 +520,9 @@ const softwareEngineers: RoleConfig = {
         "High decision-stakes score, interest in correctness/safety, adversarial thinking, prior security or compliance work.",
       minSeniorityOrdinal: 2,
       maxSeniorityOrdinal: 6,
+      pathDefiningIndustries: ["cybersecurity"],
       scoringRules: [
         { label: "You regularly make high-stakes decisions", points: 30, test: (c) => isHighStakes(c.responses) },
-        { label: "You work in cybersecurity", points: 20, test: (c) => c.industrySlug === "cybersecurity" },
         { label: "You're at senior level or above", points: 15, test: (c) => c.seniorityOrdinal >= 2 },
         { label: "You bring deep specialist expertise", points: 15, test: (c) => isDeepExpertise(c.responses) },
         { label: "You're skilled at novel-problem debugging", points: 10, test: (c) => pct(c, "debug-novel") > 10 },
@@ -540,8 +547,9 @@ const softwareEngineers: RoleConfig = {
       timeline: "6-12 months; build a portfolio of public content first.",
       bestFitsWhen:
         "A history of writing or speaking, side projects, comfort with public-facing work, a generalist profile.",
-      minSeniorityOrdinal: 0,
+      minSeniorityOrdinal: 1,
       maxSeniorityOrdinal: 6,
+      strongContextIndustries: ["saas-software"],
       scoringRules: [
         { label: "You're comfortable in communication-heavy work", points: 20, test: (c) => pct(c, "cross-functional") > 15 },
         { label: "You spend time learning and explaining tools", points: 15, test: (c) => pct(c, "docs") > 15 },
@@ -571,10 +579,10 @@ const softwareEngineers: RoleConfig = {
       timeline: "6-18 months; pivoting to a vertical AI startup adjacent to your current industry is fastest.",
       bestFitsWhen:
         "Existing industry experience, high differentiation scores, interest in domain depth over breadth.",
-      minSeniorityOrdinal: 0,
+      minSeniorityOrdinal: 1,
       maxSeniorityOrdinal: 6,
+      pathDefiningIndustries: REGULATED_INDUSTRIES,
       scoringRules: [
-        { label: "You already work in a regulated industry", points: 30, test: (c) => REGULATED_INDUSTRIES.includes(c.industrySlug) },
         { label: "You bring deep domain expertise", points: 25, test: (c) => isDeepExpertise(c.responses) },
         { label: "Your work is highly differentiated", points: 15, test: (c) => c.scores.skillDifferentiationRaw > 65 },
         { label: "You regularly make high-stakes decisions", points: 10, test: (c) => isHighStakes(c.responses) },
@@ -608,6 +616,109 @@ const softwareEngineers: RoleConfig = {
         { label: "You bring deep, marketable expertise", points: 20, test: (c) => isDeepExpertise(c.responses) },
         { label: "You spend significant time on cross-functional work", points: 15, test: (c) => pct(c, "cross-functional") > 15 },
         { label: "You have a long professional track record", points: 15, test: (c) => c.responses.yearsExperience === "16+" || c.responses.yearsExperience === "11-15" },
+      ],
+    },
+
+    // ─── Junior-eligible paths (spec v1.0.2 / Section 4 of claude-code-packet.md) ──
+
+    {
+      id: "junior-ai-engineer",
+      number: 13,
+      name: "AI Engineering Apprentice / Junior AI Engineer",
+      provenance: "emerging",
+      type: "ai-engineering-ic",
+      dayToDay:
+        "Entry-level position at an AI-native startup or a larger company's AI division. Work on LLM integrations, RAG pipelines, and AI-powered features under mentorship. Often combines coding with prompt engineering, eval work, and learning AI fundamentals.",
+      whyDurable:
+        "Junior AI engineering roles compound rapidly — the field is so new that 2-3 years of focused AI work creates senior-level expertise. Companies are actively investing in apprenticeship-style programs because senior AI engineering talent is supply-constrained.",
+      requiredExperience:
+        "0-2 years. A strong portfolio of personal AI projects matters more than years.",
+      transferableSkills:
+        "Coding fundamentals, willingness to learn, comfort with ambiguity, ability to read documentation.",
+      skillGaps:
+        "LLM API patterns, prompt engineering, RAG architectures, basic ML concepts, evaluation methodology.",
+      salaryRange:
+        "$95K-$140K base at most companies; higher at AI-native startups + equity. Frontier labs hire junior engineers at $130K+ with significant equity.",
+      timeline:
+        "Can pivot in your next job change with a strong portfolio. Build 2-3 personal AI projects publicly first.",
+      bestFitsWhen:
+        "Junior IC with strong AI tool usage, high learning velocity, and comfort with self-directed learning.",
+      minSeniorityOrdinal: 0,
+      maxSeniorityOrdinal: 1,
+      strongContextIndustries: ["saas-software", "fintech"],
+      portfolioArtifactTemplate:
+        "Build a small RAG application using OpenAI or Anthropic APIs. It doesn't need to be production-quality — it needs to be a learning experience and a portfolio artifact you can talk about.",
+      scoringRules: [
+        { label: "You're a junior IC", points: 25, test: (c) => c.seniorityOrdinal === 0 },
+        { label: "You already use 2+ AI tools", points: 20, group: "tools-13", test: (c) => c.toolCount >= 2 },
+        { label: "You already use 3+ AI tools heavily", points: 30, group: "tools-13", test: (c) => c.toolCount >= 3 },
+        { label: "You're actively learning AI on your own time", points: 20, test: (c) => c.responses.activeLearning === "regular" },
+        { label: "You're comfortable with novel problems", points: 10, test: (c) => c.responses.novelProblems === "most" || c.responses.novelProblems === "frequently" },
+      ],
+    },
+    {
+      id: "ai-trust-safety-analyst",
+      number: 14,
+      name: "AI Trust & Safety Analyst",
+      provenance: "established",
+      type: "specialized-ic",
+      dayToDay:
+        "Test AI systems for harmful outputs, evaluate model responses against safety guidelines, document failure modes, and help develop better guardrails. Work spans red-teaming, content policy, and structured evaluation — combining technical work with policy/judgment work.",
+      whyDurable:
+        "AI safety is among the fastest-growing functions at every major AI company. The work requires human judgment about edge cases, cultural context, and harm potential — durable from automation. OpenAI, Anthropic, Google, and Meta all have rapidly growing trust & safety teams.",
+      requiredExperience:
+        "0-2 years. Background in technical fields, content moderation, or policy helps. Strong writing and judgment skills required.",
+      transferableSkills:
+        "Code reading ability, systematic thinking, attention to detail, writing skills, ethical reasoning.",
+      skillGaps:
+        "Red-teaming methodologies, content policy frameworks, AI safety concepts (alignment, jailbreaking, prompt injection), evaluation rubric design.",
+      salaryRange:
+        "$80K-$130K base for entry-level, climbing quickly. Senior trust & safety engineers clear $200K+.",
+      timeline:
+        "3-6 months. Strong demand and a lower technical bar than other AI roles make this accessible.",
+      bestFitsWhen:
+        "Strong decision-stakes even at junior level, interest in correctness/safety over building features, written communication skills, comfort with judgment calls.",
+      minSeniorityOrdinal: 0,
+      maxSeniorityOrdinal: 1,
+      strongContextIndustries: ["cybersecurity"],
+      scoringRules: [
+        { label: "You regularly make high-stakes decisions", points: 25, test: (c) => isHighStakes(c.responses) },
+        { label: "You're comfortable with novel problems", points: 15, test: (c) => c.responses.novelProblems === "most" || c.responses.novelProblems === "frequently" },
+        { label: "You spend real time on cross-functional / written work", points: 15, test: (c) => pct(c, "cross-functional") > 10 || pct(c, "docs") > 10 },
+        { label: "You're a junior or mid IC", points: 15, test: (c) => c.seniorityOrdinal <= 1 },
+        { label: "You already use at least one AI tool", points: 5, test: (c) => c.toolCount >= 1 },
+      ],
+    },
+    {
+      id: "ai-augmented-developer",
+      number: 15,
+      name: "AI-Augmented Developer (Specialist Track)",
+      provenance: "emerging",
+      type: "ai-engineering-ic",
+      dayToDay:
+        "Junior engineer role specifically positioned around heavy AI tool usage. Often at smaller companies or as a '10x junior' at AI-forward companies. Build features 3-5x faster than traditional juniors by leveraging Cursor, Claude Code, Devin, and similar tools.",
+      whyDurable:
+        "Companies are reorganizing around AI-augmented juniors who can ship at senior IC velocity. The role rewards AI fluency over coding-from-scratch ability. Junior engineers who already use multiple AI tools heavily are well-positioned.",
+      requiredExperience: "0-2 years. AI tool fluency is more important than coding pedigree.",
+      transferableSkills:
+        "Existing AI tool usage, comfort with iteration, debugging skills (validating AI output).",
+      skillGaps:
+        "Advanced patterns with Cursor/Claude Code, agent frameworks, evaluation skills (knowing when AI output is wrong), spec-writing skills.",
+      salaryRange:
+        "$100K-$150K base at AI-forward companies. Higher when role is positioned as 'AI-augmented senior' by 12-18 months.",
+      timeline:
+        "0-3 months. This is often a positioning shift, not a credential shift — you may already be doing this work; reframe it on your resume.",
+      bestFitsWhen:
+        "3+ AI tools currently used, strong willingness to learn, junior IC at a company with permissive AI tool policy.",
+      minSeniorityOrdinal: 0,
+      maxSeniorityOrdinal: 1,
+      strongContextIndustries: ["saas-software", "fintech"],
+      scoringRules: [
+        { label: "You already use 3+ AI tools heavily", points: 30, test: (c) => c.toolCount >= 3 },
+        { label: "Your employer mandates or encourages AI tools", points: 20, test: (c) => c.responses.employerAdoption === "mandated" || c.responses.employerAdoption === "encouraged" },
+        { label: "You're actively learning AI on your own time", points: 20, test: (c) => c.responses.activeLearning === "regular" },
+        { label: "You're a junior or mid IC", points: 15, test: (c) => c.seniorityOrdinal <= 1 },
+        { label: "You ship feature code at pace", points: 10, test: (c) => pct(c, "feature-code") > 25 },
       ],
     },
   ],

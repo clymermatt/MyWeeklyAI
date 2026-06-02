@@ -158,8 +158,9 @@ function computeTimeToImpact(
   else if (skillDifferentiationRaw > 75) modifiers -= 10;
 
   // E1/E2 trajectory-awareness modifiers (spec 3.7 / 3.9, v1.0.1). The junior-IC
-  // conditional branch (spec 5.7) auto-assigns E1 the middle value "brief" at
-  // submit time; a genuinely absent value contributes 0.
+  // conditional branch (spec 5.7) auto-assigns E1 = "no" at submit time
+  // (0 modifier) per spec v1.0.2 — juniors aren't in those conversations,
+  // so 0 is the honest default. A genuinely absent value also contributes 0.
   modifiers += pointsFor(MANAGER_CONVERSATION_OPTIONS, responses.managerConversations);
   modifiers += pointsFor(ACTIVE_LEARNING_OPTIONS, responses.activeLearning);
 

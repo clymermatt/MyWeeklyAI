@@ -183,8 +183,11 @@ export default function AssessmentFlow({ content }: { content: QuizContent }) {
     decisionStakes: isLeadership ? "constant" : state.decisionStakes,
     relationshipImportance: state.relationshipImportance,
     novelProblems: state.novelProblems,
-    // Branch 2: junior ICs skip E1 and are auto-assigned the middle value.
-    managerConversations: isJuniorICBranch ? "brief" : state.managerConversations,
+    // Branch 2: junior ICs skip E1 and are auto-assigned "no" (0 modifier).
+    // Junior ICs generally aren't having those manager conversations, so a
+    // zero contribution is the honest default (spec v1.0.2 correction to
+    // v1.0's "middle value" language that pre-dated the modifier scale).
+    managerConversations: isJuniorICBranch ? "no" : state.managerConversations,
     activeLearning: state.activeLearning,
     openTextWorry: state.openTextWorry.trim() || null,
   });

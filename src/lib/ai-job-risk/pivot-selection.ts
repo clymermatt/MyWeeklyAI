@@ -32,6 +32,29 @@ interface ScoredPath {
   salaryCeiling: number;
 }
 
+const PATH_DEFINING_BONUS = 40;
+const STRONG_CONTEXT_BONUS = 20;
+
+/** Industry match bonus — applied once per path (spec v1.0.2). Path-defining wins. */
+function industryMatchBonus(
+  path: PivotPath,
+  industrySlug: string,
+): { points: number; label: string } | null {
+  if (path.pathDefiningIndustries?.includes(industrySlug)) {
+    return {
+      points: PATH_DEFINING_BONUS,
+      label: "Your industry is a defining fit for this path",
+    };
+  }
+  if (path.strongContextIndustries?.includes(industrySlug)) {
+    return {
+      points: STRONG_CONTEXT_BONUS,
+      label: "Your industry strongly aligns with this path",
+    };
+  }
+  return null;
+}
+
 /** Sum a path's matching scoring rules; grouped rules keep only their best match. */
 function scorePathFit(
   path: PivotPath,
@@ -56,6 +79,13 @@ function scorePathFit(
   for (const best of groupBest.values()) {
     total += best.points;
     reasons.push(best.label);
+  }
+
+  // Apply industry-match bonus, if any (spec v1.0.2).
+  const industryBonus = industryMatchBonus(path, ctx.industrySlug);
+  if (industryBonus) {
+    total += industryBonus.points;
+    reasons.push(industryBonus.label);
   }
 
   return { fitScore: Math.max(0, Math.min(100, total)), matchedReasons: reasons };

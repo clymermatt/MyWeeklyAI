@@ -104,7 +104,7 @@ export interface PivotScoringRule {
 
 export interface PivotPath {
   id: string;
-  /** canonical number in the role's library (1-12) */
+  /** canonical number in the role's library (1-12 originals, 13-15 junior paths) */
   number: number;
   name: string;
   provenance: PathProvenance;
@@ -122,6 +122,17 @@ export interface PivotPath {
   maxSeniorityOrdinal: number;
   /** data-driven fit scoring rules (spec 4.1.7) */
   scoringRules: PivotScoringRule[];
+  /**
+   * Industries where this path is uniquely strong — a user in one of these
+   * receives a +40 industry-match bonus on fit score (spec v1.0.2).
+   */
+  pathDefiningIndustries?: string[];
+  /**
+   * Industries that strongly align with this path (e.g. SaaS for AI Engineer).
+   * Adds +20 to fit score (spec v1.0.2). Ignored if the user's industry is in
+   * pathDefiningIndustries (the larger bonus wins).
+   */
+  strongContextIndustries?: string[];
   /** action-plan portfolio-artifact template, if this path has a bespoke one (spec 6.7) */
   portfolioArtifactTemplate?: string;
 }
@@ -157,6 +168,13 @@ export interface RoleConfig {
   };
   /** top recommended AI tool(s) for the 30-day action plan (spec 6.7 Action 1) */
   topRecommendedTool: string;
+  /**
+   * Role-specific guidance for which AI tools fit which workflows. Passed to
+   * the action-plan prompt so the AI picks a tool from the user's own
+   * selections that matches the action — preventing references to tools the
+   * user didn't select (spec v1.0.2 fix).
+   */
+  toolFitHints: string;
   /** Concrete AI tools to name-drop in the landing-page "What you'll learn" section (spec 7.5) */
   landingToolMentions: string;
   /** Sample-report persona description for the landing-page preview (spec 7.7) */

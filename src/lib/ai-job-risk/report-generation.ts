@@ -208,28 +208,28 @@ For EACH factor below, write 1-2 sentences that:
 3. Use second person ("you", "your").
 4. Be neutral in tone — this is data, not advice.
 
-FACTOR DATA:
+FACTOR DATA (with direction notes — high vs low means different things per factor):
 
-1. Task Automatability — share of time on work AI handles today.
+1. Task Automatability — share of time on work AI handles today. LOWER IS BETTER.
    Score: ${fb.taskAutomatability}/100 (${factorQualitativeLabel(fb.taskAutomatability)}).
    Top tasks: ${topTasks
      .slice(0, 3)
      .map((t) => `${t.name} (${Math.round(t.timePercent)}%)`)
      .join(", ") || "(none reported)"}.
 
-2. Adoption Velocity — how fast displacement is happening in this user's environment.
+2. Adoption Velocity — how fast displacement is happening around this user. LOWER IS BETTER.
    Score: ${fb.adoptionVelocity}/100 (${factorQualitativeLabel(fb.adoptionVelocity)}).
    Industry: ${industry}. Employer posture: ${responses.employerAdoption}. Headcount change: ${responses.headcountChange}. Tools used: ${tools.length}.
 
-3. Skill Differentiation — what makes the user's work hard to replicate (higher = better).
+3. Skill Differentiation — what makes the user's work hard to replicate. HIGHER IS BETTER.
    Raw score: ${fb.skillDifferentiationRaw}/100 (${factorQualitativeLabel(fb.skillDifferentiationRaw)}).
    Domain expertise: ${responses.domainExpertise}. Decision stakes: ${responses.decisionStakes}. Novel problems: ${responses.novelProblems}.
 
-4. Career Portability — how easily this user can pivot to adjacent roles (higher = better).
+4. Career Portability — how easily this user can pivot to adjacent roles. HIGHER IS BETTER.
    Raw score: ${fb.careerPortabilityRaw}/100 (${factorQualitativeLabel(fb.careerPortabilityRaw)}).
    Years experience: ${responses.yearsExperience}.
 
-5. Time-to-Impact Urgency — how soon major changes are likely for this user's situation.
+5. Time-to-Impact Urgency — how soon major change is likely. LOWER IS BETTER (high score = imminent change; low score = stability in the near term).
    Score: ${fb.timeToImpactUrgency}/100 (${factorQualitativeLabel(fb.timeToImpactUrgency)}).
    Seniority bucket: ${scoreResult.seniority.label}. Structural change observed: ${responses.structuralChange}.
 
@@ -450,11 +450,16 @@ USER PROFILE:
 - Top pivot path: ${topPath.name}
 - Top pivot path skill gaps: ${topPath.skillGaps}
 
-ACTION TEMPLATES (use these as the substantive foundation — DO NOT change tool names, pivot-path names, or specific instructions; you may personalize wording):
+TOOL-FIT GUIDANCE (when Action 1 references a specific tool, pick one from the user's selected list above that fits the workflow):
+${input.roleConfig.toolFitHints}
+
+ACTION TEMPLATES (use these as the substantive foundation — keep pivot-path names and specific instructions; you may personalize wording):
 
 Action 1 (Week 1): ${buildAction1Template(input.roleConfig, tools.length)}
 Action 2 (Week 2-3): ${buildAction2Template(topPath)}
 Action 3 (Week 4): ${buildAction3Template(topPath)}
+
+CRITICAL: Action 1 may reference an AI tool. If it does, the tool MUST be one of the user's actually-selected tools (listed above). Do NOT reference a tool the user didn't select. If the user has 0-1 tools, the template names a starter tool — keep that exact tool. If the user has 2+ tools, choose one from their list that fits the workflow you describe, using the tool-fit guidance.
 
 For each action:
 1. Write a clear 1-line header (verb + object).
@@ -532,12 +537,12 @@ function buildProgressLinePrompt(input: GenerateReportInput): string {
   const topPath = topPivotPathName(input);
   return `You are identifying the highest-leverage move a user could make in the next 6 months to lower their AI Job Risk score.
 
-FACTOR SCORES (lower is better for the first two; higher is better for differentiation/portability):
-- Task Automatability: ${fb.taskAutomatability}/100
-- Adoption Velocity: ${fb.adoptionVelocity}/100
-- Skill Differentiation (raw): ${fb.skillDifferentiationRaw}/100
-- Career Portability (raw): ${fb.careerPortabilityRaw}/100
-- Time-to-Impact Urgency: ${fb.timeToImpactUrgency}/100
+FACTOR SCORES with direction notes:
+- Task Automatability: ${fb.taskAutomatability}/100 (LOWER IS BETTER — high score = more of your work is automatable)
+- Adoption Velocity: ${fb.adoptionVelocity}/100 (LOWER IS BETTER — high score = displacement is happening faster around you)
+- Skill Differentiation (raw): ${fb.skillDifferentiationRaw}/100 (HIGHER IS BETTER — high score = harder to replicate)
+- Career Portability (raw): ${fb.careerPortabilityRaw}/100 (HIGHER IS BETTER — high score = more pivot options)
+- Time-to-Impact Urgency: ${fb.timeToImpactUrgency}/100 (LOWER IS BETTER — high score = major change is imminent; low score = stability in the near term)
 
 USER PROFILE:
 - Role: ${input.roleConfig.label}

@@ -10,19 +10,24 @@
 
 import type { PivotPath, RoleConfig } from "./types";
 
-/** Action 1 — audit and deepen tool fluency. Adapts to current tool count. */
+/**
+ * Action 1 — audit and deepen tool fluency. Adapts to current tool count.
+ *
+ * For users with 2+ tools, the template intentionally does NOT name a tool —
+ * the AI prompt fills in a tool from the user's actual selections, guided by
+ * RoleConfig.toolFitHints (spec v1.0.2 fix). Previously this template
+ * hardcoded `roleConfig.topRecommendedTool`, which led to references to tools
+ * the user hadn't selected.
+ */
 export function buildAction1Template(
   roleConfig: RoleConfig,
   toolCount: number,
 ): string {
-  const recommended = roleConfig.topRecommendedTool;
-  // For "Cursor or Claude Code" pick the first name for the more directive variants.
-  const primary = recommended.split(/ or /i)[0];
   if (toolCount <= 1) {
-    return `Spend 2-3 hours getting fluent with ${recommended}.`;
+    return `Spend 2-3 hours getting fluent with ${roleConfig.topRecommendedTool}.`;
   }
   if (toolCount <= 3) {
-    return `Identify one workflow you do manually each week. Rebuild it using ${primary} over the next 7 days.`;
+    return "Identify one workflow you do manually each week. Pick one of your currently used AI tools that fits the workflow, and rebuild it over the next 7 days.";
   }
   return "Pick the AI tool you currently use least. Find 3 concrete use cases for it in your work this week.";
 }
