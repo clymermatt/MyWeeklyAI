@@ -1,10 +1,11 @@
 # AI Job Risk Assessment — Product Specification
 
-**Version:** 1.0.1 (Implementation-Ready)
+**Version:** 1.0.2 (Implementation-Ready)
 **Last updated:** 2026-05-21
 
 **Changelog:**
 - v1.0.1: Resolved spec inconsistency between §3 and §5 — E1 (manager conversations) and E2 (active learning) now explicitly contribute to Factor 5 (Time-to-Impact Urgency) with modest modifier weights. See A.19.
+- v1.0.2: Validation-driven refinements after Persona 1 and Persona 2 testing. Added 3 junior-eligible pivot paths per role (15 new paths total, see §4.X.2); introduced a two-tier industry-match bonus on pivot fit scoring (§4.1.7); tightened the selection algorithm to never recommend a path the user is not eligible for (§4.1.7); corrected Branch 2 (junior-IC) E1 auto-assignment to "no" / 0 modifier (§5.7); clarified that Action 1 must reference a tool the user actually selected (§6.7); added explicit factor-direction notes to prompts §6.9.2 and §6.9.6 to prevent the AI from misreading score direction. See A.20–A.25.
 **Owner:** My Weekly AI
 **Status:** In active development
 
@@ -937,6 +938,66 @@ Timeline to pivot: 12-24 months. Requires building reputation and pipeline befor
 
 Best fits when user shows: Senior experience, strong communication, history of independent work or freelancing, willingness to handle business operations, prior client-facing work.
 
+---
+
+**Path 13: AI Engineering Apprentice / Junior AI Engineer 🟡** *(junior-eligible, added v1.0.2)*
+
+What it looks like day-to-day: Entry-level position at an AI-native startup or larger company's AI division. Work on LLM integrations, RAG pipelines, and AI-powered features under mentorship. Often combines coding with prompt engineering, eval work, and learning AI fundamentals.
+
+Why it's more durable than current role: Junior AI engineering roles compound rapidly — the field is so new that 2-3 years of focused AI work creates senior-level expertise. Companies are actively investing in apprenticeship-style programs because senior AI engineering talent is supply-constrained.
+
+Required experience level: 0-2 years. Strong portfolio of personal AI projects matters more than years.
+
+Transferable skills from software engineering: Coding fundamentals, willingness to learn, comfort with ambiguity, ability to read documentation.
+
+Skill gaps to close: LLM API patterns, prompt engineering, RAG architectures, basic ML concepts, evaluation methodology.
+
+Salary range: $95K-$140K base at most companies. Higher at AI-native startups + equity. Frontier labs (OpenAI, Anthropic) hire junior engineers at $130K+ with significant equity.
+
+Timeline to pivot: Can pivot in next job change with a strong portfolio. Build 2-3 personal AI projects publicly first.
+
+Best fits when user shows: Junior IC with strong AI tool usage, high learning velocity (active learning = "Yes, regularly"), bachelors degree or equivalent, comfort with self-directed learning.
+
+---
+
+**Path 14: AI Trust & Safety Analyst 🟢** *(junior-eligible, added v1.0.2)*
+
+What it looks like day-to-day: Test AI systems for harmful outputs, evaluate model responses against safety guidelines, document failure modes, and help develop better guardrails. Work spans red-teaming, content policy, and structured evaluation. Often combines technical work with policy/judgment work.
+
+Why it's more durable than current role: AI safety is among the fastest-growing functions at every major AI company. The work requires human judgment about edge cases, cultural context, and harm potential — durable from automation. OpenAI, Anthropic, Google, and Meta all have rapidly growing trust & safety teams.
+
+Required experience level: 0-2 years. Background in technical fields, content moderation, or policy helps. Strong writing and judgment skills required.
+
+Transferable skills from software engineering: Code reading ability, systematic thinking, attention to detail, writing skills, ethical reasoning.
+
+Skill gaps to close: Red-teaming methodologies, content policy frameworks, AI safety concepts (alignment, jailbreaking, prompt injection), evaluation rubric design.
+
+Salary range: $80K-$130K base for entry-level, climbing quickly. Senior trust & safety engineers clear $200K+.
+
+Timeline to pivot: 3-6 months. Strong demand and lower technical bar than other AI roles makes this accessible.
+
+Best fits when user shows: Strong decision-stakes scores even at junior level, interest in correctness/safety over building features, written communication skills, comfort with judgment calls.
+
+---
+
+**Path 15: AI-Augmented Developer (Specialist Track) 🟡** *(junior-eligible, added v1.0.2)*
+
+What it looks like day-to-day: Junior engineer role specifically positioned around heavy AI tool usage. Often at smaller companies or as a "10x junior" at AI-forward companies. Build features 3-5x faster than traditional juniors by leveraging Cursor, Claude Code, Devin, and similar tools.
+
+Why it's more durable than current role: Companies are reorganizing around AI-augmented juniors who can ship at senior IC velocity. The role rewards AI fluency over coding-from-scratch ability. Junior engineers who already use multiple AI tools heavily are well-positioned.
+
+Required experience level: 0-2 years. AI tool fluency is more important than coding pedigree.
+
+Transferable skills from software engineering: Existing AI tool usage, comfort with iteration, debugging skills (validating AI output).
+
+Skill gaps to close: Advanced patterns with Cursor/Claude Code, agent frameworks, evaluation skills (knowing when AI output is wrong), spec-writing skills.
+
+Salary range: $100K-$150K base at AI-forward companies. Higher when role is positioned as "AI-augmented senior" by 12-18 months.
+
+Timeline to pivot: 0-3 months. This is often a positioning shift rather than a credential shift — you may already be doing this work; reframe it on your resume.
+
+Best fits when user shows: 3+ AI tools currently used, strong willingness to learn, junior IC at a company with permissive AI tool policy, high active learning score.
+
 #### 4.1.5 Base urgency by seniority
 
 Used in Factor 5 (Time-to-Impact Urgency) calculation. The user's seniority is captured in Section A of the assessment.
@@ -989,6 +1050,15 @@ Software engineers have many viable pivot paths in adjacent durable roles. This 
 #### 4.1.7 Pivot path selection logic
 
 The algorithm selects the top 3 pivot paths from the library for each user based on a scoring system. Each path has eligibility criteria and a fit score derived from the user's assessment responses.
+
+**Strict eligibility (v1.0.2):** A path's `minSeniority` / `maxSeniority` is a hard filter. The algorithm never recommends a path the user is not eligible for, even if it means fewer candidates to choose from. This is why §4.X.2 includes junior-eligible paths (13-15) — without them, a 0-2 year junior would have zero strictly eligible paths.
+
+**Industry-match bonus (v1.0.2):** In addition to per-path scoring rules, each path's fit score receives an industry bonus based on two new arrays on the path config:
+
+- `pathDefiningIndustries`: industries where this path is uniquely strong (e.g., Cybersecurity → AI Security Engineer; regulated industries → Vertical AI Specialist). Bonus: **+40**.
+- `strongContextIndustries`: industries that align well but don't uniquely define the path (e.g., SaaS → AI Engineer). Bonus: **+20**.
+
+The two bonuses do not stack — if a path is both, path-defining wins. The bonus is applied once per path after the path's own scoring rules and before the 0-100 clamp.
 
 **Selection algorithm:**
 
@@ -1179,6 +1249,15 @@ Apply marketing skills to regulated industries that need compliant AI-augmented 
 **Path 12: Independent Marketing Consultant 🟠**
 Solo consulting or fractional CMO work. Higher AI premium for established consultants. Variable income $100K-$400K+. Best fit: senior marketers with network and reputation. Timeline: 12-24 months.
 
+**Path 13: AI Marketing Operations Associate 🟢** *(junior-eligible, added v1.0.2)*
+Support marketing teams by managing AI tools, automating workflows, and producing AI-augmented content (HubSpot AI, Jasper, ChatGPT). Combines content production with tool administration and analytics. Salary: $55K-$85K base; higher at AI-forward marketing teams. Best fit: marketing coordinator/specialist title, 2+ AI tools used, high active-learning score. Timeline: 0-3 months — often the first AI-adjacent role after an internship or junior role.
+
+**Path 14: Junior Prompt Engineer / AI Content Specialist 🟡** *(junior-eligible, added v1.0.2)*
+Design and refine prompts for AI marketing tools at scale. Test prompt variations, document what works, build prompt libraries for teams. Combines creative work with systematic testing. Salary: $95K-$130K at entry-level for prompt engineering roles (median $109K-$126K); $60K-$95K if positioned as "AI content specialist." Best fit: strong writing background, high differentiation on novel problems, multiple AI tools used. Timeline: 3-6 months — build a portfolio of documented prompt experiments first.
+
+**Path 15: AI Marketing Assistant at AI-Native Startup 🟡** *(junior-eligible, added v1.0.2)*
+First or early marketing hire at an early-stage AI company. Wear many hats: content production, social media, email marketing, basic analytics, growth experiments. Equity upside compensates for lower base. Salary: $60K-$90K base + meaningful equity at seed/Series A. Best fit: marketing coordinator/specialist title, generalist skill profile, low risk aversion, interest in AI as a category. Timeline: Can pivot now if willing to take startup risk — AngelList, Y Combinator's job board, and AI-specific startup boards are best.
+
 #### 4.2.3 Base urgency by seniority
 
 | Seniority Level | Base Urgency | Time to Major Impact |
@@ -1269,6 +1348,15 @@ Train AI models on specialized writing — RLHF, eval rubrics for content qualit
 
 **Path 12: Educational Content Creator (Courses, Coaching) 🟠**
 Teach writing or your specialty area through courses, coaching, or community. Variable income. Best fit: writers with teaching instinct and audience. Timeline: 12-24 months.
+
+**Path 13: AI Content Editor / Quality Reviewer 🟡** *(junior-eligible, added v1.0.2)*
+Review and refine AI-generated content for accuracy, voice, and quality. Work across blog posts, marketing copy, social media, and email at content agencies, marketing departments, or AI content platforms. Salary: $50K-$80K base for in-house; $30-60/hour freelance. Best fit: junior writer with editing instinct, attention to detail, willingness to work with AI tools rather than against them. Timeline: 0-3 months — build a small portfolio of "before/after" examples showing AI content you've edited.
+
+**Path 14: Domain-Specialist Content Creator (Apprentice Track) 🟢** *(junior-eligible, added v1.0.2)*
+Junior content creator specifically focused on a specialty area where AI struggles — cybersecurity, healthcare, finance, legal, or another regulated/technical domain. A cybersecurity writer who understands threat assessments, or a medical copywriter with FDA submission familiarity, faces essentially zero AI competition. Salary: $55K-$90K at entry-level, climbing fast as expertise builds (senior specialist writers in regulated industries clear $150K+). Best fit: junior writer with interest in a specific industry, willingness to immerse in unfamiliar territory, prefers depth over breadth. Timeline: 6-12 months for domain immersion — pick one specialty and write 3-5 in-depth pieces first.
+
+**Path 15: AI Content Trainer / Annotator (Writing-Specific) 🟢** *(junior-eligible, added v1.0.2)*
+Train AI models on writing quality. RLHF (Reinforcement Learning from Human Feedback) for content generation, evaluation rubric design, ranking AI-generated content quality. Often at AI labs (OpenAI, Anthropic, Scale AI) or content quality platforms. Salary: $30-65/hour part-time, $80K-$120K full-time at AI labs (specialized domain writers $100+/hour). Best fit: strong writing background, comfort with feedback/critique, willingness to do detail-oriented evaluation work. Timeline: 1-3 months — apply directly through Mercor, Scale AI, Outlier, or Anthropic's contractor programs.
 
 #### 4.3.3 Base urgency by seniority
 
@@ -1362,6 +1450,15 @@ Deep CS expertise in a regulated vertical. Higher barriers, higher compensation.
 **Path 12: Independent CS Consultant 🟠**
 Consult companies on CS strategy, tool selection, team building. Variable income $100K-$300K+. Best fit: senior CSMs with reputation and network. Timeline: 12-24 months.
 
+**Path 13: AI Implementation Specialist / Onboarding Engineer 🟢** *(junior-eligible, added v1.0.2)*
+Help enterprise customers adopt and configure AI tools. Onboarding workflows, integration setup, customer training, troubleshooting. Combines CS skills with technical configuration work. Salary: $55K-$85K base; higher at AI-native companies where implementation is more complex. Best fit: junior CSM/specialist title, technical curiosity, comfort with customer-facing work, attention to detail. Timeline: 0-3 months — junior implementation roles are widely available.
+
+**Path 14: AI Operations Associate (Customer-Facing) 🟢** *(junior-eligible, added v1.0.2)*
+Monitor AI tool performance for customer accounts, resolve escalations, collect feedback for product team, run audits on AI output quality, handle the operational backbone of AI-driven customer experiences. Salary: $50K-$80K base at most companies; higher at AI-native customer experience companies. Best fit: junior CSM or customer service background, interest in systematic improvement work, comfort with metrics. Timeline: 0-3 months — junior ops roles are widely available.
+
+**Path 15: Customer Success Operations Associate (CS Ops) 🟢** *(junior-eligible, added v1.0.2)*
+Support the operational backbone of CS teams — maintain processes, documentation, internal systems, customer health scoring frameworks, retention reporting. Often the first hire on a CS Ops team or a junior role supporting senior CS Ops leaders. Salary: $55K-$85K at entry-level (mid-level CS Ops clears $100K+). Best fit: junior CSM or specialist title, organizational/process orientation, comfort with data and systems. Timeline: 0-3 months — widely available at any SaaS company with mature CS function.
+
 #### 4.4.3 Base urgency by seniority
 
 | Seniority Level | Base Urgency | Time to Major Impact |
@@ -1449,6 +1546,15 @@ Start your own product company. AI tools make solo or small founder teams more v
 
 **Path 12: Independent Product Consultant / Fractional Head of Product 🟠**
 Consult or take fractional leadership roles. Higher hourly rates than employment. Variable income $150K-$400K+. Best fit: senior PMs with reputation and network. Timeline: 12-24 months.
+
+**Path 13: AI Product Operations Associate 🟢** *(junior-eligible, added v1.0.2)*
+Support PM team operations for AI products. Help with roadmap maintenance, OKR tracking, customer feedback synthesis, AI tool admin, cross-functional coordination. Often a stepping stone to APM/PM roles. Salary: $80K-$115K base; higher at AI-native companies. Best fit: Associate PM title or aspiring PM, organizational mindset, AI tool fluency. Timeline: 0-3 months — common stepping stone for new grads or career changers.
+
+**Path 14: Junior AI Product Manager (Apprentice Track) 🟡** *(junior-eligible, added v1.0.2)*
+First PM hire at an early-stage AI startup, or a junior PM role at a larger company's AI division. Define AI features, work with engineers on LLM integrations, talk to early customers, learn product fundamentals under mentorship. Junior PM hires increased by 243% at mid-size companies in 2025. Salary: $110K-$160K base at established companies; lower base + meaningful equity at startups. Best fit: Associate PM with strong AI tool fluency, technical curiosity, willingness to operate without much structure. Timeline: 0-6 months — build 1-2 small AI products yourself first.
+
+**Path 15: AI Solutions Associate / Customer Engineer 🟢** *(junior-eligible, added v1.0.2)*
+Pre-sales and post-sales technical role at AI companies. Work with customers to understand needs, build demos and proofs-of-concept, support sales teams, provide technical input to product. Entry-level into a high-paid track. Salary: $80K-$130K base + commission (OTE often $120K-$180K at entry-level). Best fit: Associate PM with strong communication skills, comfort with customer-facing work, broad rather than deep technical interest. Timeline: 0-3 months — junior solutions roles widely available at AI companies.
 
 #### 4.5.3 Base urgency by seniority
 
@@ -1789,9 +1895,9 @@ ChatGPT, Claude, Gemini, Copilot, Cursor, Midjourney, DALL-E, Stable Diffusion, 
 
 **Trigger:** Question A1 = junior IC role (e.g., "Software Engineer / Developer", "Junior Writer", "CSM Specialist", "Associate Product Manager") AND Question A3 = "0-2 years"
 
-**Action:** Skip Question E1 (manager conversations). Auto-assign middle value (40 points equivalent).
+**Action:** Skip Question E1 (manager conversations). Auto-assign value `"no"` (0 modifier on Factor 5 per the v1.0.1 modifier scale).
 
-**Rationale:** Junior ICs typically don't have detailed strategic conversations with managers about AI displacement. The question yields noise more than signal.
+**Rationale:** Junior ICs typically don't have detailed strategic conversations with managers about AI displacement. The question yields noise more than signal. The "auto-assign middle value (40 points equivalent)" wording in v1.0 pre-dated the v1.0.1 modifier scale (where E1 contributes at most +8); v1.0.2 corrects to "no" (0 modifier) since juniors aren't having those conversations and 0 is the honest default.
 
 #### Branch 3: Transparency soft prompt
 
@@ -2114,8 +2220,10 @@ The three actions follow a consistent pattern across all roles, with role-specif
 
 Adapts based on user's tool count:
 - 0-1 tools: "Spend 2-3 hours getting fluent with [top recommended tool for role]"
-- 2-3 tools: "Identify one workflow you do manually each week. Rebuild it using [tool] over the next 7 days."
+- 2-3 tools: "Identify one workflow you do manually each week. Pick one of your currently used AI tools that fits the workflow, and rebuild it over the next 7 days."
 - 4+ tools: "Pick the tool you use least. Find 3 use cases for it in your work this week."
+
+**v1.0.2 correction:** Action 1 must reference a tool the user actually selected (or "your selected AI tools" generically). The 2-3 tool template previously named a specific tool from the role config — this caused the AI to reference tools the user hadn't selected (e.g., Persona 2's plan said "use Cursor" despite Cursor not being in their selection list). The AI prompt receives the user's selected tools plus a role-specific `toolFitHints` string (e.g., for SWE: "code-heavy workflows: Cursor, Claude Code, GitHub Copilot, Replit; design/learning: ChatGPT, Claude, Perplexity, Notion AI"), and is explicitly instructed to pick a tool from the user's actual list that fits the action's workflow type.
 
 Role-specific top recommended tools:
 - Software Engineer: Cursor or Claude Code
@@ -2266,6 +2374,7 @@ You are generating a personalized explanation of one factor score in an AI Job R
 FACTOR: {factorName}
 USER'S SCORE: {factorScore}/100
 QUALITATIVE LABEL: {qualitativeLabel}
+DIRECTION: {factorDirection}  // "LOWER IS BETTER" or "HIGHER IS BETTER" — see below
 
 CONTRIBUTING INPUTS (top 2-3 things that drove this score for this user):
 {contributingInputs}
@@ -2280,6 +2389,15 @@ Write 1-2 sentences that:
 
 Return only the 1-2 sentences.
 ```
+
+**Factor directions (v1.0.2 — must be included in every factor's prompt):**
+- Task Automatability: LOWER IS BETTER (high score = more of your work is automatable)
+- Adoption Velocity: LOWER IS BETTER (high score = displacement is happening faster around you)
+- Skill Differentiation: HIGHER IS BETTER (high score = harder to replicate)
+- Career Portability: HIGHER IS BETTER (high score = more pivot options)
+- Time-to-Impact Urgency: LOWER IS BETTER (high score = major change is imminent; low score = stability)
+
+Without these explicit direction notes, the AI occasionally misreads which direction the factor moves and writes confusing or wrong narratives (e.g., describing a *low* Time-to-Impact score as "rapidly automating"). The v1.0.2 implementation passes these direction strings in the prompt context.
 
 **Contributing inputs by factor:**
 - *Task Automatability:* Top 2-3 highest-time tasks with their ARs
@@ -2383,12 +2501,12 @@ Return as JSON:
 ```
 You are identifying the highest-leverage action a user could take to improve their AI Job Risk score.
 
-FACTOR SCORES (lower is better for first two, higher is better for the differentiation/portability):
-- Task Automatability: {factor1}/100
-- Adoption Velocity: {factor2}/100  
-- Skill Differentiation (raw): {factor3Raw}/100
-- Career Portability (raw): {factor4Raw}/100
-- Time-to-Impact Urgency: {factor5}/100
+FACTOR SCORES with direction notes (v1.0.2 — directions are required to prevent the AI from misreading factor scores):
+- Task Automatability: {factor1}/100 (LOWER IS BETTER — high score = more of your work is automatable)
+- Adoption Velocity: {factor2}/100 (LOWER IS BETTER — high score = displacement happening faster)
+- Skill Differentiation (raw): {factor3Raw}/100 (HIGHER IS BETTER — high score = harder to replicate)
+- Career Portability (raw): {factor4Raw}/100 (HIGHER IS BETTER — high score = more pivot options)
+- Time-to-Impact Urgency: {factor5}/100 (LOWER IS BETTER — high score = major change is imminent; low score = stability in near term)
 
 USER PROFILE:
 - Role: {role}
@@ -3747,6 +3865,30 @@ Rationale: Essential for shareability (shared link must show consistent content)
 **A.19 E1 and E2 contribute modest modifiers to Factor 5 (Time-to-Impact Urgency)**
 Decision: Surfaced during Claude Code implementation — §5 stated E1 and E2 fed Factor 5 but §3 did not list them as modifiers. Resolved by adding them with modest weights: E1 (manager conversations) up to +8, E2 (active learning) up to -7.
 Rationale: Existing Factor 5 modifiers measure current state (employer adoption, tool count, differentiation). E1 and E2 add trajectory awareness (is change being discussed? are you preparing?) — a genuinely different dimension. Weights are deliberately modest because both are self-reports subject to bias and to avoid disrupting the calibration validation in Section 4.X.2. Combined max modifier from E1+E2 ranges from +11 (worst case) to -7 (best case), meaningful but not dominant.
+
+**A.20 Add 3 junior-eligible pivot paths per role (v1.0.2)**
+Decision: Add 3 new junior-eligible pivot paths (numbered 13-15) to each of the 5 launch role libraries, for 15 new paths total. Each path's `minSeniority` includes the 0-2 year tier.
+Rationale: Persona 1 validation surfaced that all 12 original paths per role required 3+ years experience. A 0-2 year user had zero strictly eligible paths, so the algorithm returned the "least ineligible" options (e.g., "AI Engineer" with a "junior engineers face stiff competition" caveat). The new paths give the algorithm legitimate junior-tier candidates to choose from. Content sourced from Q2 2026 market research with verified hiring demand and salary ranges.
+
+**A.21 Strict pivot-path eligibility — never recommend a path the user is not eligible for (v1.0.2)**
+Decision: Update §4.1.7 selection algorithm to make seniority eligibility a hard filter with no relaxation fallback. The previous behavior of relaxing eligibility when fewer than 3 strictly eligible paths existed is removed.
+Rationale: Combined with A.20 (junior paths now exist), strict eligibility produces accurate recommendations at every seniority level. Recommending an ineligible path actively misleads the user — better to surface fewer paths than to include one the user can't realistically pursue.
+
+**A.22 Two-tier industry-match bonus on pivot fit (v1.0.2)**
+Decision: Add two new arrays to each pivot path config — `pathDefiningIndustries` (+40 fit-score bonus) and `strongContextIndustries` (+20 fit-score bonus). Applied once per path; path-defining wins if both match. Replaces ad-hoc per-path industry rules embedded in `scoringRules`.
+Rationale: Persona 2 validation showed a senior Cybersecurity engineer was a near-perfect match for AI Security Engineer per the spec's written guidance, but the path didn't make the top 3 because the existing +20 industry signal was outscored by other paths' general signals. The two-tier bonus elevates industry-defining matches above general signals while keeping a smaller bonus for paths where industry is supportive but not decisive. The mechanism is data-only (no algorithm complexity added) and easy to A/B tune.
+
+**A.23 Branch 2 (junior IC) auto-assigns E1 = "no" / 0 modifier (v1.0.2)**
+Decision: Update §5.7 Branch 2 from "auto-assign middle value (40 points equivalent)" to "auto-assign 'no' (0 modifier)".
+Rationale: The "40 points equivalent" wording pre-dated v1.0.1's E1 modifier scale (max +8). Under the v1.0.1 scale, the middle of {substantial: +8, brief: +3, no: 0} is "brief" (+3), but the rationale for skipping E1 for junior ICs is that they aren't having those conversations — making "no" (0 modifier) the honest default. Resolves the Persona 1 3-point Time-to-Impact discrepancy.
+
+**A.24 Action 1 must reference a tool the user actually selected (v1.0.2)**
+Decision: §6.7 Action 1 template no longer hardcodes a tool name for the 2-3 tool case. The AI prompt receives the user's selected tools list and a role-specific `toolFitHints` string mapping tool categories to workflow types, with explicit instruction to choose from the user's actual selections.
+Rationale: Persona 2's report said "use Cursor for an engineering workflow" despite Cursor not being in their selected tools list. Hardcoding the role's top tool produces this kind of false-positive reference. The structured tool-fit hints give the AI enough context to pick a sensible tool from the user's actual list (e.g., for a code workflow, prefer Cursor/Copilot/Claude Code; for a design or learning workflow, prefer ChatGPT/Claude/Perplexity).
+
+**A.25 Explicit factor-direction notes in prompts §6.9.2 and §6.9.6 (v1.0.2)**
+Decision: Every prompt that references raw factor scores must include a "DIRECTION" note per factor (LOWER IS BETTER or HIGHER IS BETTER), not just rely on the AI inferring direction from context.
+Rationale: Persona 2's progress-tracking narrative misread Time-to-Impact direction, writing that a score of 8/100 "signals you're in a rapidly automating role" — the opposite of what 8/100 means. The previous prompt's "lower is better for first two, higher is better for differentiation/portability" sentence wasn't sufficient. Explicit per-factor direction strings eliminate this class of bug.
 
 ---
 
