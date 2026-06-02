@@ -1,6 +1,14 @@
 # AI Job Risk Assessment — Validation Findings & Fix Packet
 
-**Status:** Two personas validated (Persona 1: junior IC software engineer, Persona 2: staff/principal software engineer). Core scoring works well across the spectrum. This packet documents what works, what needs fixing, and provides the content needed for fixes.
+> **🗄️ Status: Historical / superseded as of 2026-06-01.** All fixes proposed
+> in this packet have been implemented (commit `6e2f75e`) and the canonical
+> spec has been updated to v1.0.2 (commit `9850639`). For current authoritative
+> content — including the junior pivot paths for all 5 roles, the industry-bonus
+> mechanism, and the Branch 2 / Action 1 / prompt-direction fixes — refer to
+> [ai-job-risk-assessment-spec.md](./ai-job-risk-assessment-spec.md). This
+> packet is kept as a record of how v1.0.2 was decided.
+
+**Status (original):** Two personas validated (Persona 1: junior IC software engineer, Persona 2: staff/principal software engineer). Core scoring works well across the spectrum. This packet documents what works, what needs fixing, and provides the content needed for fixes.
 
 **Spec version this references:** v1.0.1
 
