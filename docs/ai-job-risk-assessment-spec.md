@@ -1,11 +1,12 @@
 # AI Job Risk Assessment — Product Specification
 
-**Version:** 1.0.2 (Implementation-Ready)
-**Last updated:** 2026-05-21
+**Version:** 1.0.3 (Implementation-Ready)
+**Last updated:** 2026-06-03
 
 **Changelog:**
 - v1.0.1: Resolved spec inconsistency between §3 and §5 — E1 (manager conversations) and E2 (active learning) now explicitly contribute to Factor 5 (Time-to-Impact Urgency) with modest modifier weights. See A.19.
 - v1.0.2: Validation-driven refinements after Persona 1 and Persona 2 testing. Added 3 junior-eligible pivot paths per role (15 new paths total, see §4.X.2); introduced a two-tier industry-match bonus on pivot fit scoring (§4.1.7); tightened the selection algorithm to never recommend a path the user is not eligible for (§4.1.7); corrected Branch 2 (junior-IC) E1 auto-assignment to "no" / 0 modifier (§5.7); clarified that Action 1 must reference a tool the user actually selected (§6.7); added explicit factor-direction notes to prompts §6.9.2 and §6.9.6 to prevent the AI from misreading score direction. See A.20–A.25.
+- v1.0.3: Validation-driven refinements after Persona 6 (Director of Engineering) testing surfaced lateral/downward path recommendations. Added 9 executive-tier pivot paths (3 each for Software Engineer §4.1.4, Marketing Manager §4.2.2, Content Creator §4.3.2); added a `tier` attribute (`junior` / `ic` / `executive`) on every pivot path; updated the selection algorithm (§4.1.7) so Director+ users prefer exec-tier paths and only fall back to IC paths with a fit score > 70, surfacing fewer than 3 paths when no strong filler exists; added `pathDefiningIndustries` / `strongContextIndustries` weighting on the existing VP-tier paths in Customer Success (§4.4.2) and Product Manager (§4.5.2) configs; softened overpromising language in 5 specific places (P3, P13, P14, P15 of SWE; P14 of Marketing Manager). See A.26–A.29.
 **Owner:** My Weekly AI
 **Status:** In active development
 
@@ -689,12 +690,20 @@ AI capability changes faster than most software cycles. The task library MUST be
 
 #### 4.1.4 Pivot path library
 
-The pivot path library contains 12 pivot paths. The algorithm selects the top 3 for each user based on their assessment responses (see 4.1.7 for selection logic).
+The pivot path library contains 18 pivot paths organized into three tiers (spec v1.0.3):
+
+- **Paths 1-12** are the original library, mostly senior-IC scope (`tier: "ic"`).
+- **Paths 13-15** are junior-eligible entry-level paths (`tier: "junior"`), added in v1.0.2.
+- **Paths 16-18** are executive-tier paths (`tier: "executive"`) for Director/VP/CTO users, added in v1.0.3 after Persona 6 testing surfaced lateral/downward recommendations for Director-level users.
+
+The algorithm selects up to 3 paths for each user based on their assessment responses (see §4.1.7 for selection logic, including the v1.0.3 tier-preference rule for Director+ users).
 
 **Provenance labels:**
 - 🟢 **Established** — well-defined in the market, salary data is reliable, hiring is broad
 - 🟡 **Emerging** — exists but role definitions still solidifying; high growth but variance
 - 🟠 **Forecast** — anticipated growth area, less defined currently
+
+**Tier attribute (v1.0.3):** Every path declares `tier: "junior" | "ic" | "executive"`. For paths that span tiers (e.g., Engineering Manager spans senior IC into early executive), use the lower tier — the upper-tier reach is captured in `maxSeniorityOrdinal` rather than `tier`. P12 (Independent Consultant) is `ic`, not `executive`, because P18 (Engineering Advisor / Fractional CTO) is the proper executive-tier consulting path; placing them both in the same tier would risk two near-identical consulting paths landing in a Director's top 3.
 
 **Salary data note:** All ranges reflect US market data from Q1-Q2 2026 based on Levels.fyi, Glassdoor, MRJ Recruitment, KORE1, and Second Talent reports. Ranges represent base salary unless marked as total comp (TC). Senior/Staff levels at frontier AI labs (OpenAI, Anthropic, Google DeepMind) can significantly exceed these ranges. See 4.1.8 for 6-month audit process.
 
@@ -752,7 +761,7 @@ Transferable skills from software engineering: Full-stack development, system de
 
 Skill gaps to close: LLM-specific patterns, agent frameworks (LangGraph, CrewAI, DSPy), evaluation engineering, customer-facing communication, comfort with travel (up to 50% in some roles).
 
-Salary range: $180K-$700K total comp (highest variance of any role). $150K-$250K base typical at mid-level. Staff-level at frontier labs (OpenAI, Anthropic) regularly clears $500K+ total comp.
+Salary range: $180K-$700K total comp (highest variance of any role). $150K-$250K base typical at mid-level. Staff-level at frontier labs can reach $500K+ total comp depending on role and equity package. *(Language softened in v1.0.3: replaced "regularly clears" — implies the standard outcome — with "can reach" to reflect actual variance.)*
 
 Timeline to pivot: 6-12 months. Production engineering experience + customer-facing work history accelerates this significantly.
 
@@ -952,7 +961,7 @@ Transferable skills from software engineering: Coding fundamentals, willingness 
 
 Skill gaps to close: LLM API patterns, prompt engineering, RAG architectures, basic ML concepts, evaluation methodology.
 
-Salary range: $95K-$140K base at most companies. Higher at AI-native startups + equity. Frontier labs (OpenAI, Anthropic) hire junior engineers at $130K+ with significant equity.
+Salary range: $95K-$140K base at most companies. Higher at AI-native startups + equity. Frontier labs hire junior engineers in this category at higher bands, often with equity packages that vary substantially by company and role. *(Language softened in v1.0.3.)*
 
 Timeline to pivot: Can pivot in next job change with a strong portfolio. Build 2-3 personal AI projects publicly first.
 
@@ -972,7 +981,7 @@ Transferable skills from software engineering: Code reading ability, systematic 
 
 Skill gaps to close: Red-teaming methodologies, content policy frameworks, AI safety concepts (alignment, jailbreaking, prompt injection), evaluation rubric design.
 
-Salary range: $80K-$130K base for entry-level, climbing quickly. Senior trust & safety engineers clear $200K+.
+Salary range: $80K-$130K base for entry-level. Senior trust & safety engineers at established companies typically reach $150K-$200K+; ceiling varies by employer. *(Language softened in v1.0.3.)*
 
 Timeline to pivot: 3-6 months. Strong demand and lower technical bar than other AI roles makes this accessible.
 
@@ -982,9 +991,9 @@ Best fits when user shows: Strong decision-stakes scores even at junior level, i
 
 **Path 15: AI-Augmented Developer (Specialist Track) 🟡** *(junior-eligible, added v1.0.2)*
 
-What it looks like day-to-day: Junior engineer role specifically positioned around heavy AI tool usage. Often at smaller companies or as a "10x junior" at AI-forward companies. Build features 3-5x faster than traditional juniors by leveraging Cursor, Claude Code, Devin, and similar tools.
+What it looks like day-to-day: Junior engineer role specifically positioned around heavy AI tool usage. Found at AI-forward companies that organize work around engineers who use AI tools extensively. Ship features and complete tasks notably faster than traditional juniors by leveraging Cursor, Claude Code, and similar tools — exact productivity gains vary by task and team. *(Language softened in v1.0.3: dropped "3-5x" multiplier and "10x junior" framing.)*
 
-Why it's more durable than current role: Companies are reorganizing around AI-augmented juniors who can ship at senior IC velocity. The role rewards AI fluency over coding-from-scratch ability. Junior engineers who already use multiple AI tools heavily are well-positioned.
+Why it's more durable than current role: Companies are increasingly hiring junior engineers who can ship more independently by leveraging AI tools. The role rewards AI fluency and judgment about when to trust AI output — skills that traditional juniors are still building. *(Language softened in v1.0.3: dropped "senior IC velocity" claim.)*
 
 Required experience level: 0-2 years. AI tool fluency is more important than coding pedigree.
 
@@ -992,11 +1001,77 @@ Transferable skills from software engineering: Existing AI tool usage, comfort w
 
 Skill gaps to close: Advanced patterns with Cursor/Claude Code, agent frameworks, evaluation skills (knowing when AI output is wrong), spec-writing skills.
 
-Salary range: $100K-$150K base at AI-forward companies. Higher when role is positioned as "AI-augmented senior" by 12-18 months.
+Salary range: $100K-$150K base at AI-forward companies. Compensation typically increases with demonstrated AI fluency and impact, though specific timeline varies by company. *(Language softened in v1.0.3.)*
 
 Timeline to pivot: 0-3 months. This is often a positioning shift rather than a credential shift — you may already be doing this work; reframe it on your resume.
 
 Best fits when user shows: 3+ AI tools currently used, strong willingness to learn, junior IC at a company with permissive AI tool policy, high active learning score.
+
+---
+
+**Path 16: VP Engineering / CTO at AI-Native Company 🟢** *(executive-tier, added v1.0.3)*
+
+What it looks like day-to-day: Lead engineering organization at a venture-funded or growth-stage AI company. Set technical strategy, hire and develop engineering leaders, work directly with founders and board, make decisions about infrastructure, AI model strategy, and team scaling. The premium tier of engineering leadership.
+
+Why it's more durable than current role: VP/CTO roles at AI-native companies are among the highest-leverage positions in tech. The work requires technical depth, organizational judgment, and external visibility — a combination AI cannot replicate. Compensation reflects this: total comp regularly clears $1M at funded companies, with frontier AI labs and hyperscalers pushing higher.
+
+Required experience level: 12+ years engineering experience, with prior Director-level leadership (3+ years) and management of multiple teams.
+
+Transferable skills from software engineering: Cross-functional collaboration, technical strategy, mentorship and team development, architectural decision-making, business judgment.
+
+Skill gaps to close: Board-level communication, fundraising fluency, fast hiring at scale, AI-specific technical depth (LLM systems, ML infrastructure), executive presence in customer settings.
+
+Salary range: VP Engineering base $330K-$475K at recognizable enterprise software employers; total comp clears $1M at most public-traded tech companies with equity refresh and LTIs. CTO base $183K-$390K with total comp typically $600K+ at funded companies. Frontier AI labs and hyperscalers push significantly higher.
+
+Timeline to pivot: 12-24 months. Most successful pivots happen via internal promotion or strategic external hire. Network and reputation matter more than credentials at this level.
+
+Best fits when user shows: Director-level role with 12+ years experience, strong cross-functional collaboration time, critical relationships rating, history of leading multiple teams.
+
+Industry weighting: `pathDefiningIndustries: ["saas-software", "fintech"]`; `strongContextIndustries: ["cybersecurity", "healthcare", "media-entertainment"]`.
+
+---
+
+**Path 17: Founder / Technical Co-founder at AI Startup 🟡** *(executive-tier, added v1.0.3)*
+
+What it looks like day-to-day: Start your own AI-native company, or join as technical co-founder. Set product direction, build initial team, raise capital, navigate early customer development. Higher risk, higher equity upside than employed leadership roles.
+
+Why it's more durable than current role: Founders shape their own role entirely — by definition not subject to displacement from below. Founder-CEO and founder-CTO outcomes at AI-native companies in 2024-2026 have produced significant compensation events. The work draws on technical judgment, business judgment, and execution — all human work.
+
+Required experience level: 8+ years engineering experience, ideally with prior Staff+ or Director-level role. Risk tolerance and personal financial runway matter as much as credentials.
+
+Transferable skills from software engineering: Technical depth, architectural decision-making, ability to hire, cross-functional collaboration, comfort with ambiguity.
+
+Skill gaps to close: Fundraising and investor communication, go-to-market strategy, hiring outside of engineering, financial modeling, comfort with personal financial risk.
+
+Salary range: Variable and stage-dependent. Pre-seed/seed founders often pay themselves $50K-$120K with significant equity (15-50% as cofounder). After Series A, typical founder comp $150K-$250K base + ongoing equity. Exit outcomes range from $0 to $50M+ depending on company outcome.
+
+Timeline to pivot: Can pivot immediately if willing to commit. Most founders take 18-36 months to reach product-market fit.
+
+Best fits when user shows: Senior or above experience, high differentiation scores, low risk aversion (inferred from open-text responses), prior startup experience or strong personal projects, willingness to work intensely.
+
+Industry weighting: `pathDefiningIndustries: []` — industry-agnostic; `strongContextIndustries: ["saas-software", "fintech", "healthcare"]`.
+
+---
+
+**Path 18: Engineering Advisor / Board Member / Fractional CTO 🟠** *(executive-tier, added v1.0.3)*
+
+What it looks like day-to-day: Senior advisory role to multiple companies. Board seats at startups, fractional CTO engagements with growth-stage companies, paid advisor relationships with AI companies. Lower time commitment than full executive roles, higher rate per hour, multiple concurrent engagements.
+
+Why it's more durable than current role: Advisory and board work depends entirely on reputation and judgment — work AI does not perform. This is often where senior engineering leaders go after Director/VP roles, either as a bridge to retirement or as a portfolio career.
+
+Required experience level: 15+ years engineering experience, with prior Director-level role (3+ years) and demonstrable network in the AI ecosystem.
+
+Transferable skills from software engineering: Cross-functional collaboration, strategic judgment, technical pattern recognition, mentorship of other leaders.
+
+Skill gaps to close: Building advisor network, contract and equity negotiation, time management across multiple engagements, comfort with not running day-to-day operations.
+
+Salary range: Variable. Fractional CTO engagements run $8K-$25K/month per company; typical portfolio of 2-4 companies. Board seats at startups typically pay $25K-$75K cash annually plus 0.25-1% equity. Paid advisor relationships vary widely. Total annual revenue commonly $300K-$700K for established advisors; ceiling pushes higher with strong network.
+
+Timeline to pivot: 12-24 months to build a sustainable advisor practice. Often starts as side engagements while still in full-time role.
+
+Best fits when user shows: Senior leadership history, high differentiation, critical relationships, willingness to handle business operations, 15+ years experience. *(Distinction from P12 Independent Consultant: P12 sits in the IC tier and is reachable from Staff+ at 8+ years; P18 sits in the executive tier and requires Director-level history at 15+ years. A Director's top 3 should never surface both.)*
+
+Industry weighting: `pathDefiningIndustries: []`; `strongContextIndustries: ["saas-software", "fintech"]`.
 
 #### 4.1.5 Base urgency by seniority
 
@@ -1049,67 +1124,79 @@ Software engineers have many viable pivot paths in adjacent durable roles. This 
 
 #### 4.1.7 Pivot path selection logic
 
-The algorithm selects the top 3 pivot paths from the library for each user based on a scoring system. Each path has eligibility criteria and a fit score derived from the user's assessment responses.
+The algorithm selects **up to 3** pivot paths from the library for each user based on a scoring system. Each path has eligibility criteria and a fit score derived from the user's assessment responses. In v1.0.3, for users at Director level or above, the selection may surface fewer than 3 paths rather than recommend a weak fit (see "Tier-preference rule" below).
 
 **Strict eligibility (v1.0.2):** A path's `minSeniority` / `maxSeniority` is a hard filter. The algorithm never recommends a path the user is not eligible for, even if it means fewer candidates to choose from. This is why §4.X.2 includes junior-eligible paths (13-15) — without them, a 0-2 year junior would have zero strictly eligible paths.
 
-**Industry-match bonus (v1.0.2):** In addition to per-path scoring rules, each path's fit score receives an industry bonus based on two new arrays on the path config:
+**Industry-match bonus (v1.0.2):** In addition to per-path scoring rules, each path's fit score receives an industry bonus based on two arrays on the path config:
 
 - `pathDefiningIndustries`: industries where this path is uniquely strong (e.g., Cybersecurity → AI Security Engineer; regulated industries → Vertical AI Specialist). Bonus: **+40**.
 - `strongContextIndustries`: industries that align well but don't uniquely define the path (e.g., SaaS → AI Engineer). Bonus: **+20**.
 
 The two bonuses do not stack — if a path is both, path-defining wins. The bonus is applied once per path after the path's own scoring rules and before the 0-100 clamp.
 
+**Tier-preference rule for Director+ users (v1.0.3):** Every path now declares `tier: "junior" | "ic" | "executive"`. When the role's `resolveSeniority` returns `isExecutive: true` (Director, VP, CTO equivalents):
+
+1. **Exec-tier paths fill the top 3 first.** Among eligible candidates, paths with `tier: "executive"` are ranked by fit score and selected before any IC-tier path is considered.
+2. **IC-tier paths only fill remaining slots if `fitScore > 70`.** Senior IC paths remain eligible (Directors can still pivot to Forward Deployed or Independent Consultant) but they must score genuinely high. The threshold prevents lateral/downward recommendations from filling out the list just because no strong exec fit exists.
+3. **Fewer than 3 paths is acceptable.** If steps 1-2 leave fewer than 3 paths, the algorithm returns the shorter list. The report renders a note explaining that additional options below this list weren't strong enough fits to confidently recommend.
+
+Non-executive users (everyone below Director) use the existing logic: diversify, then top up if the diversification cap left fewer than 3.
+
 **Selection algorithm:**
 
 ```
 function selectPivotPaths(userResponses, scores):
-  
+
+  // Step 1: Strict eligibility filter
   candidatePaths = []
-  
   for each path in pivotPathLibrary:
-    
-    // Step 1: Eligibility check
     if path.minSeniority > userResponses.seniority: continue
     if path.maxSeniority < userResponses.seniority: continue
-    
-    // Step 2: Calculate fit score (0-100)
-    fitScore = 0
-    
-    // Base alignment to user's strengths
-    fitScore += skillAlignmentScore(path, userResponses) * 0.40
-    
-    // Task profile match
-    fitScore += taskProfileMatchScore(path, userResponses.taskTimes) * 0.25
-    
-    // Differentiation alignment
-    fitScore += differentiationMatchScore(path, scores.skillDifferentiation_raw) * 0.20
-    
-    // Risk profile match (high-risk users get more aggressive pivots)
-    fitScore += riskAppropriatenessScore(path, scores.compositeScore) * 0.15
-    
+    fitScore = computeFitScore(path, userResponses, scores)
     candidatePaths.append({path, fitScore})
-  
-  // Step 3: Diversification rule — don't recommend 3 paths of same type
-  // (e.g., not all 3 should be IC paths, or all 3 should be management paths)
-  selectedPaths = []
-  for path in candidatePaths sorted by fitScore desc:
-    if pathTypeAlreadySelected(selectedPaths, path.type) >= 2: continue
-    selectedPaths.append(path)
-    if len(selectedPaths) == 3: break
-  
-  return selectedPaths
+
+  // Sort by fit (ties → higher salary ceiling → lower path number)
+  sort candidatePaths by fitScore desc, salaryCeiling desc, path.number asc
+
+  selected = []
+  typeCount = {}
+
+  // Step 2: Tier-preference (v1.0.3) — Director+ users prefer executive-tier
+  if userResponses.isExecutive:
+    execPool = candidatePaths where path.tier == "executive"
+    icPool   = candidatePaths where path.tier == "ic" and fitScore > 70
+
+    selected = pickWithDiversification(execPool, limit=3, typeCount)
+    if len(selected) < 3:
+      remaining = 3 - len(selected)
+      selected += pickWithDiversification(icPool, limit=remaining, typeCount)
+    // Intentional: no final top-up. Better to return 2 paths with a note
+    // than to recommend a weak ic fit just to hit the quota.
+  else:
+    // Non-exec users: existing behavior
+    selected = pickWithDiversification(candidatePaths, limit=3, typeCount)
+    if len(selected) < 3:
+      // Cap fallback: top up ignoring the type cap
+      for c in candidatePaths not in selected:
+        selected.append(c); if len(selected) == 3: break
+
+  return selected  // may be length 0, 1, 2, or 3
 ```
+
+`pickWithDiversification` applies the existing type-cap rule (max 2 paths of the same `PivotPathType`) to a sorted candidate pool, returning up to `limit` survivors. The shared `typeCount` map carries across the exec pass and the IC fallback so an exec pick still counts against its type.
+
+**Filler threshold rationale:** 70 was chosen as the floor below which an IC path looks meaningfully like "best of what's left" rather than a positive recommendation. In Persona 6 (Director of Engineering) validation, the IC paths that previously crowded out exec recommendations scored in the 75-90 range — they were the highest available, but the absolute number flagged that they were lateral/downward moves dressed up by the relative comparison. The threshold encodes that intuition: an exec user should only see an IC path when the fit is unambiguously strong on its own terms.
 
 **Path type categorization (for diversification):**
 
-| Path Type | Paths |
+| Path Type | SWE Paths (v1.0.3 library) |
 |---|---|
-| AI Engineering IC | 1 (AI Engineer), 2 (ML/AI Platform), 6 (AI/Agent Ops), 7 (AI Eval) |
+| AI Engineering IC | 1 (AI Engineer), 2 (ML/AI Platform), 6 (AI/Agent Ops), 7 (AI Eval), 13 (Junior AI Engineer), 15 (AI-Augmented Developer) |
 | Customer-Facing Technical | 3 (Forward Deployed), 8 (Solutions Engineer), 10 (DevRel) |
-| Leadership | 4 (Engineering Manager) |
-| Entrepreneurial | 5 (Founding Engineer), 12 (Independent Consultant) |
-| Specialized IC | 9 (AI Security), 11 (Vertical AI Specialist) |
+| Leadership | 4 (Engineering Manager), 16 (VP/CTO) |
+| Entrepreneurial | 5 (Founding Engineer), 12 (Independent Consultant), 17 (Founder), 18 (Advisor / Fractional CTO) |
+| Specialized IC | 9 (AI Security), 11 (Vertical AI Specialist), 14 (AI Trust & Safety) |
 
 **Skill alignment scoring (example for Path 1: AI Engineer):**
 
@@ -1131,9 +1218,9 @@ Build the scoring as data-driven (each path has a scoring rules JSON/object) rat
 
 **Edge cases:**
 
-1. **Fewer than 3 eligible paths:** This shouldn't happen with 12 paths and reasonable eligibility criteria, but if it does, surface available paths and note "Based on your profile, these are the strongest fits available."
+1. **Fewer than 3 paths returned (v1.0.3):** For Director+ users, the tier-preference rule may legitimately surface 0, 1, or 2 paths if there aren't enough strong exec-tier fits and no IC fillers clear the >70 fit floor. The report renders the dynamic heading "Your top N pivot path(s)" and appends an italic note: *"We're showing fewer than 3 paths because additional options below this list weren't strong enough fits to confidently recommend."* This appears in both the on-screen report (`full-report.tsx`) and the PDF (`pdf.tsx`). For non-exec users, fewer-than-3 should not happen with a healthy library; if it does, surface what's available with the same note.
 
-2. **Tied fit scores:** Break ties by preferring paths with higher salary potential (gives the user more upside in their pivot consideration).
+2. **Tied fit scores:** Break ties by preferring paths with higher salary potential (gives the user more upside in their pivot consideration), then by lower path number (deterministic).
 
 3. **User explicitly tags interest in management vs IC track:** This can be captured in an optional question. If present, override diversification to honor user preference.
 
@@ -1253,10 +1340,19 @@ Solo consulting or fractional CMO work. Higher AI premium for established consul
 Support marketing teams by managing AI tools, automating workflows, and producing AI-augmented content (HubSpot AI, Jasper, ChatGPT). Combines content production with tool administration and analytics. Salary: $55K-$85K base; higher at AI-forward marketing teams. Best fit: marketing coordinator/specialist title, 2+ AI tools used, high active-learning score. Timeline: 0-3 months — often the first AI-adjacent role after an internship or junior role.
 
 **Path 14: Junior Prompt Engineer / AI Content Specialist 🟡** *(junior-eligible, added v1.0.2)*
-Design and refine prompts for AI marketing tools at scale. Test prompt variations, document what works, build prompt libraries for teams. Combines creative work with systematic testing. Salary: $95K-$130K at entry-level for prompt engineering roles (median $109K-$126K); $60K-$95K if positioned as "AI content specialist." Best fit: strong writing background, high differentiation on novel problems, multiple AI tools used. Timeline: 3-6 months — build a portfolio of documented prompt experiments first.
+Design and refine prompts for AI marketing tools at scale. Test prompt variations, document what works, build prompt libraries for teams. Combines creative work with systematic testing. Salary: entry-level prompt engineering roles typically range $80K-$130K, with reported medians around $109K-$126K. Roles positioned as "AI content specialist" or similar tend toward the lower end ($60K-$95K). Salary varies substantially by employer and how "prompt engineering" is defined. *(Language softened in v1.0.3.)* Best fit: strong writing background, high differentiation on novel problems, multiple AI tools used. Timeline: 3-6 months — build a portfolio of documented prompt experiments first.
 
 **Path 15: AI Marketing Assistant at AI-Native Startup 🟡** *(junior-eligible, added v1.0.2)*
 First or early marketing hire at an early-stage AI company. Wear many hats: content production, social media, email marketing, basic analytics, growth experiments. Equity upside compensates for lower base. Salary: $60K-$90K base + meaningful equity at seed/Series A. Best fit: marketing coordinator/specialist title, generalist skill profile, low risk aversion, interest in AI as a category. Timeline: Can pivot now if willing to take startup risk — AngelList, Y Combinator's job board, and AI-specific startup boards are best.
+
+**Path 16: VP Marketing / CMO at AI-Native Company 🟢** *(executive-tier, added v1.0.3)*
+Lead marketing organization at venture-funded or growth-stage AI company. Set positioning and brand strategy, build marketing team, own pipeline and revenue marketing, work directly with CEO and board. The work involves making positioning bets, building executive relationships, and developing a marketing organization — all human work AI does not replicate. Required experience: 12+ years marketing experience, with prior Director-level role (3+ years) and demonstrated revenue accountability. Skill gaps: board-level communication, comfort with venture-backed financial models, AI product positioning fluency, executive presence with technical co-founders. Salary: Full-time CMO base typically $225K-$375K at growth-stage companies; total comp commonly $275K-$500K with equity. At public tech companies and frontier AI labs, total comp pushes substantially higher. Timeline: 12-24 months. Best fit: Director of Marketing role with 12+ years experience, cross-functional history, critical relationships, revenue accountability. `pathDefiningIndustries: ["saas-software", "marketing-advertising"]`; `strongContextIndustries: ["fintech", "ecommerce-retail", "media-entertainment"]`.
+
+**Path 17: Fractional CMO / Independent Marketing Executive 🟢** *(executive-tier, added v1.0.3)*
+Serve as part-time marketing executive for 2-4 companies simultaneously. Provide strategic marketing leadership, build marketing infrastructure, hire and manage team, own revenue outcomes — but on 8-40 hours per month per client. Operates with the authority of a full executive, not a consultant. The number of fractional leadership professionals in the US doubled from 60K (2022) to 120K (2024). Required experience: 10+ years marketing experience, with prior VP/CMO or Director-level role. Skill gaps: business development, contract negotiation, pricing strategy, self-marketing, comfort with income variability. Salary: monthly retainers $5K-$20K per client; growth-stage companies ($10M-$200M revenue) pay $10K-$40K monthly. Hourly rates $500-$750. Established fractional CMOs commonly run portfolios producing $300K-$600K annually; top tier exceeds. Timeline: 12-24 months to build a sustainable practice. Best fit: senior marketing leader with 10+ years, strong network, willingness to do business development, comfort with variable income. `pathDefiningIndustries: []`; `strongContextIndustries: ["saas-software", "marketing-advertising", "consulting"]`.
+
+**Path 18: Chief Growth Officer / Head of Revenue Marketing 🟡** *(executive-tier, added v1.0.3)*
+Lead the integration of marketing and revenue functions at a growth-stage company. Own pipeline, revenue marketing, sometimes sales enablement and customer marketing. Common role at PLG and AI-native companies that have collapsed traditional marketing/sales boundaries. Required experience: 12+ years, with prior Director-level role and demonstrated growth/revenue ownership. Skill gaps: deep funnel analytics, revenue operations frameworks, comfort with sales-side metrics, board-level revenue forecasting. Salary: base $250K-$400K at growth-stage companies. Total comp commonly $400K-$700K with equity. Timeline: 12-24 months, often involves first taking on growth or revenue marketing responsibility in current role. Best fit: senior marketing leader with strong analytical orientation, revenue accountability history, cross-functional collaboration time. `pathDefiningIndustries: ["saas-software"]`; `strongContextIndustries: ["fintech", "ecommerce-retail"]`.
 
 #### 4.2.3 Base urgency by seniority
 
@@ -1358,6 +1454,15 @@ Junior content creator specifically focused on a specialty area where AI struggl
 **Path 15: AI Content Trainer / Annotator (Writing-Specific) 🟢** *(junior-eligible, added v1.0.2)*
 Train AI models on writing quality. RLHF (Reinforcement Learning from Human Feedback) for content generation, evaluation rubric design, ranking AI-generated content quality. Often at AI labs (OpenAI, Anthropic, Scale AI) or content quality platforms. Salary: $30-65/hour part-time, $80K-$120K full-time at AI labs (specialized domain writers $100+/hour). Best fit: strong writing background, comfort with feedback/critique, willingness to do detail-oriented evaluation work. Timeline: 1-3 months — apply directly through Mercor, Scale AI, Outlier, or Anthropic's contractor programs.
 
+**Path 16: Head of Content / VP Content at AI-Native Company 🟢** *(executive-tier, added v1.0.3)*
+Lead content function at a venture-funded or growth-stage company. Set editorial strategy, manage content production team (often a mix of human writers and AI-augmented workflows), build brand authority through thought leadership, own content's contribution to revenue and brand outcomes. Required experience: 10+ years content experience, with prior Director-level role (3+ years) and demonstrated team leadership. Skill gaps: AI content tool orchestration, revenue attribution for content, GEO/AI search strategy, executive communication. Salary: VP Content base $180K-$300K; total comp $230K-$370K with equity at growth-stage companies. Head of Content base $125K-$230K; top earners $300K+ at major platforms. Timeline: 12-24 months via internal promotion or strategic external hire. Best fit: Content Strategist / Content Director title with 10+ years experience, strong editorial judgment, team leadership history. `pathDefiningIndustries: ["media-entertainment", "saas-software", "marketing-advertising"]`; `strongContextIndustries: ["education-edtech", "fintech"]`.
+
+**Path 17: Independent Publisher / Newsletter Operator (Mature) 🟠** *(executive-tier, added v1.0.3)*
+Run your own content business as a senior operator. Newsletter, podcast, video channel, or hybrid. Generate revenue through subscriptions, sponsorships, or productized services tied to your content. Unlike the junior newsletter path, this is for established content leaders monetizing built audiences. Required experience: 10+ years content experience, ideally with existing audience or strong personal brand. Skill gaps: business operations (taxes, contracts, accounting), audience growth strategy, sponsorship and partnership development, comfort with income variability. Salary: variable and trajectory-dependent. Established niche newsletters and content businesses commonly generate $200K-$600K annually for solo operators. Top tier exceeds $1M for established names in valuable verticals. Timeline: 24-48 months to reach replacement-level income; most successful publishers build for 2-3 years on the side first. Best fit: senior content creator with existing personal brand or audience, strong consistency in content production, niche expertise that can support a publishing business. `pathDefiningIndustries: []`; `strongContextIndustries: ["media-entertainment"]`.
+
+**Path 18: Chief Content Officer / Editorial Director (Enterprise/Agency) 🟢** *(executive-tier, added v1.0.3)*
+Senior editorial leadership at a content-focused enterprise (publication, media company, agency) or a content-heavy enterprise function (marketing-led B2B, education). Set editorial standards, lead distributed teams of writers and editors, ensure brand consistency across high content volumes. Required experience: 12+ years editorial experience, with prior Director-level role and demonstrated brand-building or publication leadership. Skill gaps: AI-augmented editorial workflows at scale, content attribution and analytics, executive-level brand strategy. Salary: Editorial Director and Head of Content roles typically $130K-$230K. VP/Chief Content Officer roles at major publishers and agencies $200K-$350K base; total comp can exceed $400K at large enterprises. Timeline: 12-24 months, often involves moving between organizations to reach senior editorial leadership. Best fit: Content Director or Editor in Chief title with 12+ years, team leadership history, strong brand voice development experience. `pathDefiningIndustries: ["media-entertainment"]`; `strongContextIndustries: ["marketing-advertising", "education-edtech", "nonprofit"]`.
+
 #### 4.3.3 Base urgency by seniority
 
 | Seniority Level | Base Urgency | Time to Major Impact |
@@ -1432,8 +1537,8 @@ Move from CS into RevOps — own the systems and processes across sales, marketi
 **Path 6: Customer Marketing Manager 🟡**
 Bridge CS and marketing — case studies, advocacy programs, customer-led growth. Salary: $90K-$170K. Best fit: CSMs with content/marketing interest. Timeline: 6-12 months.
 
-**Path 7: VP / Director of Customer Success 🟢**
-Leadership track — own CS strategy at org level. Most AI-resistant CS path because of cross-functional and people leadership. Salary: $200K-$400K total comp. Best fit: senior CSMs with management interest. Timeline: 12-24 months.
+**Path 7: VP / Director of Customer Success 🟢** *(executive-tier — `tier: "executive"` set in v1.0.3)*
+Leadership track — own CS strategy at org level. Most AI-resistant CS path because of cross-functional and people leadership. Salary: $200K-$400K total comp. Best fit: senior CSMs with management interest. Timeline: 12-24 months. *Industry weighting (added v1.0.3):* `pathDefiningIndustries: ["saas-software"]`; `strongContextIndustries: ["fintech", "healthcare"]`.
 
 **Path 8: Account Executive (Sales) 🟢**
 Pivot from CS to sales. Existing customer knowledge is huge advantage. Higher upside via commission. Salary: $120K-$300K+ OTE. Best fit: CSMs with high expansion success and outgoing personality. Timeline: 6-12 months.
@@ -1447,8 +1552,8 @@ Move into product, specifically focused on customer-facing products. CS backgrou
 **Path 11: Vertical CS Specialist (Healthcare/Legal/Financial) 🟡**
 Deep CS expertise in a regulated vertical. Higher barriers, higher compensation. Salary: $110K-$190K. Best fit: CSMs with existing industry experience. Timeline: 6-18 months.
 
-**Path 12: Independent CS Consultant 🟠**
-Consult companies on CS strategy, tool selection, team building. Variable income $100K-$300K+. Best fit: senior CSMs with reputation and network. Timeline: 12-24 months.
+**Path 12: Independent CS Consultant 🟠** *(executive-tier — `tier: "executive"` set in v1.0.3)*
+Consult companies on CS strategy, tool selection, team building. Variable income $100K-$300K+. Best fit: senior CSMs with reputation and network. Timeline: 12-24 months. *Industry weighting (added v1.0.3):* `pathDefiningIndustries: []`; `strongContextIndustries: ["saas-software", "consulting"]`.
 
 **Path 13: AI Implementation Specialist / Onboarding Engineer 🟢** *(junior-eligible, added v1.0.2)*
 Help enterprise customers adopt and configure AI tools. Onboarding workflows, integration setup, customer training, troubleshooting. Combines CS skills with technical configuration work. Salary: $55K-$85K base; higher at AI-native companies where implementation is more complex. Best fit: junior CSM/specialist title, technical curiosity, comfort with customer-facing work, attention to detail. Timeline: 0-3 months — junior implementation roles are widely available.
@@ -1529,8 +1634,8 @@ First or solo PM at early-stage AI company. Define product from scratch. Salary:
 **Path 6: Product Operations / ProductOps Lead 🟡**
 Run the systems, processes, and tooling that PMs use. AI-augmented but architect role is durable. Salary: $120K-$220K. Best fit: process-oriented PMs. Timeline: 6-12 months.
 
-**Path 7: VP Product / CPO 🟢**
-Leadership track — own product strategy at company level. Most AI-resistant PM path. Salary: $300K-$600K+ total comp. Best fit: senior PMs (10+ years) with management experience. Timeline: 18-36 months.
+**Path 7: VP Product / CPO 🟢** *(executive-tier — `tier: "executive"` set in v1.0.3)*
+Leadership track — own product strategy at company level. Most AI-resistant PM path. Salary: $300K-$600K+ total comp. Best fit: senior PMs (10+ years) with management experience. Timeline: 18-36 months. *Industry weighting (added v1.0.3):* `pathDefiningIndustries: ["saas-software"]`; `strongContextIndustries: ["fintech", "ecommerce-retail", "healthcare"]`.
 
 **Path 8: Technical Program Manager (TPM) 🟢**
 Cross between PM and engineering management. Coordinate complex technical initiatives. Salary: $150K-$280K. Best fit: technical PMs with strong execution skills. Timeline: 6-12 months.
@@ -1541,11 +1646,11 @@ Pre-sales technical role at AI companies. Customer-facing + technical work. Sala
 **Path 10: Vertical Product Manager (HealthTech, FinTech, LegalTech) 🟢**
 PM at a regulated vertical AI company. Domain expertise + product skills are highly durable. Salary: $140K-$260K. Best fit: PMs with existing industry experience. Timeline: 6-18 months.
 
-**Path 11: Founder of AI-Native Product Startup 🟠**
-Start your own product company. AI tools make solo or small founder teams more viable. Variable income (often zero for 1-2 years then potentially significant). Best fit: PMs with strong execution and product instincts. Timeline: 18-36 months.
+**Path 11: Founder of AI-Native Product Startup 🟠** *(executive-tier — `tier: "executive"` set in v1.0.3)*
+Start your own product company. AI tools make solo or small founder teams more viable. Variable income (often zero for 1-2 years then potentially significant). Best fit: PMs with strong execution and product instincts. Timeline: 18-36 months. *Industry weighting (added v1.0.3):* `pathDefiningIndustries: []`; `strongContextIndustries: ["saas-software"]`.
 
-**Path 12: Independent Product Consultant / Fractional Head of Product 🟠**
-Consult or take fractional leadership roles. Higher hourly rates than employment. Variable income $150K-$400K+. Best fit: senior PMs with reputation and network. Timeline: 12-24 months.
+**Path 12: Independent Product Consultant / Fractional Head of Product 🟠** *(executive-tier — `tier: "executive"` set in v1.0.3)*
+Consult or take fractional leadership roles. Higher hourly rates than employment. Variable income $150K-$400K+. Best fit: senior PMs with reputation and network. Timeline: 12-24 months. *Industry weighting (added v1.0.3):* `pathDefiningIndustries: []`; `strongContextIndustries: ["saas-software", "consulting"]`.
 
 **Path 13: AI Product Operations Associate 🟢** *(junior-eligible, added v1.0.2)*
 Support PM team operations for AI products. Help with roadmap maintenance, OKR tracking, customer feedback synthesis, AI tool admin, cross-functional coordination. Often a stepping stone to APM/PM roles. Salary: $80K-$115K base; higher at AI-native companies. Best fit: Associate PM title or aspiring PM, organizational mindset, AI tool fluency. Timeline: 0-3 months — common stepping stone for new grads or career changers.
@@ -2061,7 +2166,7 @@ The on-screen results page and the PDF both contain the same 7 sections in this 
 1. **Headline Score** — Composite score, tier, percentile context, opening summary
 2. **Score Breakdown** — Five factors with personal values and explanations
 3. **Task-by-Task Analysis** — User's reported tasks with personalized analysis
-4. **Top 3 Pivot Paths** — Personalized recommendations with full metadata
+4. **Top Pivot Paths** — Up to 3 personalized recommendations with full metadata (may be fewer for Director+ users; see §4.1.7 tier-preference rule and §6.6)
 5. **30-Day Action Plan** — Three specific, doable actions
 6. **Progress Tracking** — How the score can change over time
 7. **What's Next** — Newsletter handoff and future product teasers
@@ -2162,9 +2267,18 @@ What's left for humans: [Static content from task library]
 
 **Tasks shown:** Only tasks where user reported >0% time. If user selected "None" for a task, don't show that task in the analysis.
 
-### 6.6 Report Section 4: Top 3 Pivot Paths
+### 6.6 Report Section 4: Top Pivot Paths
 
-**Layout:** Three pivot paths shown in order of fit score (highest first). Each path is a substantial block.
+**Layout:** Up to three pivot paths shown in order of fit score (highest first). Each path is a substantial block.
+
+**Section heading is dynamic (v1.0.3).** Render as:
+- "Your top 3 pivot paths" when the selection algorithm returned 3 paths
+- "Your top N pivot path(s)" when the algorithm returned fewer than 3 (Director+ tier-preference edge case; see §4.1.7)
+
+When fewer than 3 paths are returned, render an italic note below the list:
+*"We're showing fewer than 3 paths because additional options below this list weren't strong enough fits to confidently recommend."*
+
+Both behaviors apply to the on-screen report (`full-report.tsx`) and the PDF (`pdf.tsx`).
 
 **Per-path content structure:**
 
@@ -3890,6 +4004,22 @@ Rationale: Persona 2's report said "use Cursor for an engineering workflow" desp
 Decision: Every prompt that references raw factor scores must include a "DIRECTION" note per factor (LOWER IS BETTER or HIGHER IS BETTER), not just rely on the AI inferring direction from context.
 Rationale: Persona 2's progress-tracking narrative misread Time-to-Impact direction, writing that a score of 8/100 "signals you're in a rapidly automating role" — the opposite of what 8/100 means. The previous prompt's "lower is better for first two, higher is better for differentiation/portability" sentence wasn't sufficient. Explicit per-factor direction strings eliminate this class of bug.
 
+**A.26 Add 9 executive-tier pivot paths (v1.0.3)**
+Decision: Add 3 executive-tier paths each to Software Engineer (§4.1.4: VP/CTO, Founder, Advisor/Fractional CTO), Marketing Manager (§4.2.2: CMO, Fractional CMO, CGO), and Content Creator (§4.3.2: Head of Content, Independent Publisher Mature, Chief Content Officer). For Customer Success and Product Manager, the existing libraries already include VP-tier paths (CS §4.4.2 Path 7/12; PM §4.5.2 Path 7/11/12); apply industry weighting refinements rather than new paths.
+Rationale: Persona 6 (Director of Engineering, 16+ years SaaS) validation surfaced top-3 paths of Forward Deployed Engineer, Independent Consultant, and Engineering Manager — two of which are lateral/downward moves for a Director. The algorithm worked correctly; the library lacked executive-tier options. Without this addition, every Director/VP taking the assessment across the five roles would get similarly mismatched recommendations.
+
+**A.27 Tier-preference selection rule for Director+ users (v1.0.3)**
+Decision: Add `tier: "junior" | "ic" | "executive"` to every pivot path. When `SeniorityResolution.isExecutive === true` (Director and above), the selection algorithm fills the top 3 from `tier: "executive"` paths first; `tier: "ic"` paths only fill remaining slots if their `fitScore > 70`. Senior IC paths remain eligible — Directors can still pivot to Forward Deployed or Independent Consultant — but they have to score genuinely high to displace what is, for a Director, the more appropriate executive option.
+Rationale: Eligibility (`minSeniorityOrdinal` / `maxSeniorityOrdinal`) is too coarse to express "this path is reachable, but it's a downward move." Tier preference is a layer above eligibility that says "for this user, prefer paths designed for their level when available, and only suggest reachable lower-tier paths when the fit is strong on its own terms." Encoding this as a separate `tier` attribute keeps the eligibility window honest while letting the selector apply seniority-appropriate ranking.
+
+**A.28 May return fewer than 3 paths rather than recommend weak fits (v1.0.3)**
+Decision: The selection algorithm is permitted to return 0, 1, 2, or 3 paths. The report renders a dynamic heading ("Your top N pivot path(s)") and an italic note when fewer than 3 are surfaced: *"We're showing fewer than 3 paths because additional options below this list weren't strong enough fits to confidently recommend."* No filler logic pads the list to 3 below the IC-tier `fitScore > 70` threshold.
+Rationale: A weak third path actively hurts the report: it dilutes the credibility of the first two, and a Director can tell when a recommendation is "best of what's left" versus a positive recommendation. Surfacing fewer paths with an honest explanation is more trust-preserving than hitting a quota with a path that scores 40. The threshold of 70 was chosen because, in Persona 6 validation, the IC paths that crowded out exec recommendations scored 75-90 — high enough to look reasonable relative to the alternatives, but low enough on absolute terms to flag the underlying mismatch.
+
+**A.29 Language softening in 5 specific places (v1.0.3)**
+Decision: Soften overpromising language in the salary range / "what it looks like" / "why durable" sections of: SWE P3 Forward Deployed Engineer ("regularly clears $500K+" → "can reach $500K+ depending on role and equity package"); SWE P13 Junior AI Engineer (drop named-frontier-lab salary specifics); SWE P14 AI Trust & Safety Analyst (replace "climbing quickly" with a concrete senior range and "ceiling varies by employer"); SWE P15 AI-Augmented Developer (drop "3-5x faster", "10x junior", and "senior IC velocity" framings); Marketing Manager P14 Junior Prompt Engineer (widen the range to $80K-$130K and qualify with "salary varies substantially by employer and how 'prompt engineering' is defined"). All other path language audited in the packet was left unchanged — the spec's qualifier patterns ("typically", "with equity", "at top companies") are generally well-calibrated.
+Rationale: After full audit of the 60 original paths plus 15 junior paths plus 9 new executive paths, overpromising language was concentrated in these 5 specific sections — mostly multipliers and unconditional ceiling claims that wouldn't survive a market-data audit. The principle going forward: keep specific, defensible claims; soften unverifiable multipliers, percentages, or promises about future outcomes.
+
 ---
 
 ## Appendix B: Open questions and parking lot
@@ -3904,6 +4034,9 @@ Rationale: Persona 2's progress-tracking narrative misread Time-to-Impact direct
 - Welcome email subject line A/B test plan — defer to launch
 - Should the existing `/auth/signin` page mention "or take an assessment to sign up" as an alternative entry path?
 - After 6+ months of usage data, consider whether Topics to Avoid could be intelligently suggested (not auto-populated) based on observed patterns
+
+**Resolved in v1.0.3:**
+- ~~Executive-tier pivot path coverage for Director/VP/CTO users~~ — addressed by A.26 (9 new exec-tier paths) and A.27 (tier-preference selection rule). Persona 6 (Director of Engineering) regression test in `scripts/verify-ai-job-risk-scoring.ts` asserts `expectedExecutiveCount: 2` and currently passes with all 3 exec paths at fit 100.
 
 ---
 
