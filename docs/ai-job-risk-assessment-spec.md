@@ -1,12 +1,13 @@
 # AI Job Risk Assessment — Product Specification
 
-**Version:** 1.0.3 (Implementation-Ready)
+**Version:** 1.0.4 (Implementation-Ready)
 **Last updated:** 2026-06-03
 
 **Changelog:**
 - v1.0.1: Resolved spec inconsistency between §3 and §5 — E1 (manager conversations) and E2 (active learning) now explicitly contribute to Factor 5 (Time-to-Impact Urgency) with modest modifier weights. See A.19.
 - v1.0.2: Validation-driven refinements after Persona 1 and Persona 2 testing. Added 3 junior-eligible pivot paths per role (15 new paths total, see §4.X.2); introduced a two-tier industry-match bonus on pivot fit scoring (§4.1.7); tightened the selection algorithm to never recommend a path the user is not eligible for (§4.1.7); corrected Branch 2 (junior-IC) E1 auto-assignment to "no" / 0 modifier (§5.7); clarified that Action 1 must reference a tool the user actually selected (§6.7); added explicit factor-direction notes to prompts §6.9.2 and §6.9.6 to prevent the AI from misreading score direction. See A.20–A.25.
 - v1.0.3: Validation-driven refinements after Persona 6 (Director of Engineering) testing surfaced lateral/downward path recommendations. Added 9 executive-tier pivot paths (3 each for Software Engineer §4.1.4, Marketing Manager §4.2.2, Content Creator §4.3.2); added a `tier` attribute (`junior` / `ic` / `executive`) on every pivot path; updated the selection algorithm (§4.1.7) so Director+ users prefer exec-tier paths and only fall back to IC paths with a fit score > 70, surfacing fewer than 3 paths when no strong filler exists; added `pathDefiningIndustries` / `strongContextIndustries` weighting on the existing VP-tier paths in Customer Success (§4.4.2) and Product Manager (§4.5.2) configs; softened overpromising language in 5 specific places (P3, P13, P14, P15 of SWE; P14 of Marketing Manager). See A.26–A.29.
+- v1.0.4: Marketing Manager assessment shipped to production (commit `2cfadf6`). Replaced one-line Path 1-12 summaries in §4.2.2 with full 8-field path content from packet-3-mm at the same depth as the SWE library. Extended the `PivotPathType` diversification taxonomy with `marketing-strategy-ic` and `marketing-ops-ic` rather than refactoring to a generic taxonomy — shared types (`leadership`, `entrepreneurial`, `specialized-ic`) reuse across roles; role-specific types are added as new roles are built. Added an optional `caveat?: string` field on `PivotPath` for emerging paths whose role definition is still being established (MM Path 7 GEO/AI Search Strategist is the first user). Expanded the shared assessment tool preset list from 18 to 23 entries (HubSpot AI, Adobe Firefly, Canva AI, Gamma, Grammarly) to broaden cross-role coverage; A.10 invariant preserved by mirroring the additions into the newsletter profile's Tools & Platforms presets. Added 'CMO / VP Marketing' to the profile-form ROLES preset list. Classified MM Path 10 (Marketing Director / VP Marketing) as `tier: "ic"` per the same logic as SWE Path 4 — targets a role that's upward for Managers but lateral/downward for Directors, so tier-preference deprioritizes it for Director+ users in favor of P16-P18. See A.30–A.34.
 **Owner:** My Weekly AI
 **Status:** In active development
 
@@ -1300,41 +1301,277 @@ Schedule alongside the quarterly task library review:
 
 #### 4.2.2 Pivot path library
 
-**Path 1: AI Marketing Manager / AI Marketing Strategist 🟢**
-Lead AI tool adoption across marketing org. Design AI-augmented workflows, evaluate vendors, train team on AI tools. Salary: $110K-$200K. Best fit: existing marketing managers with high adoption velocity scores. Timeline: 3-6 months upskilling.
+The Marketing Manager pivot path library contains 18 pivot paths (Paths 1-12 senior IC; 13-15 junior; 16-18 executive). Paths 1-12 were authored at full depth in v1.0.4 from packet-3-mm against Q2 2026 market data (Robert Half, Wellfound AI Startup data, Glassdoor, ZipRecruiter, Digital Marketing Salary Guide 2026, Murray Resources 2026 AI Marketing report, Built In, KORE1).
 
-**Path 2: Marketing Operations / Marketing Ops Lead 🟢**
-Own the marketing tech stack, data, attribution, lifecycle automation. Less creative work, more systems thinking. Increasingly AI-augmented but architect role is durable. Salary: $100K-$180K. Best fit: analytical marketers, those with strong A/B testing time. Timeline: 6-12 months.
+---
 
-**Path 3: Product Marketing Manager 🟢**
-Position products, lead launches, work closely with sales and product. Heavy stakeholder and strategy work that AI can't easily replicate. Salary: $90K-$200K. Best fit: marketers with strong communication and cross-functional history. Timeline: 6-12 months.
+**Path 1: AI Marketing Manager / AI Marketing Strategist 🟢** *(`tier: "ic"`, `type: "marketing-strategy-ic"`)*
 
-**Path 4: Demand Generation Lead 🟡**
-Drive pipeline through paid, organic, and ABM strategies. AI-heavy but human strategy remains valuable. Salary: $120K-$220K. Best fit: performance-oriented marketers. Timeline: 6-12 months.
+What it looks like day-to-day: Lead AI tool adoption across the marketing organization. Design AI-augmented workflows for content production, campaign optimization, and customer segmentation. Evaluate and onboard new AI vendors. Train marketing teammates on prompt engineering and AI tool fluency. Bridge the gap between marketing strategy and AI capability — translating business goals into AI implementation plans.
 
-**Path 5: Customer Insights / Voice of Customer Analyst 🟡**
-Synthesize customer research, run user interviews, generate strategic insights. AI augments but customer empathy is durable. Salary: $90K-$160K. Best fit: marketers with research time and customer-facing experience. Timeline: 6-12 months.
+Why it's more durable than current role: AI Marketing Manager is the fastest-growing role in marketing by compensation. The work requires judgment about which AI tools fit which workflows, how to maintain brand voice across AI-generated content, and where AI accelerates vs. degrades marketing outcomes. Companies need this glue role between AI tools and marketing strategy.
 
-**Path 6: Brand Strategist 🟢**
-High-level brand work that depends on cultural understanding and creative judgment. Salary: $100K-$200K. Best fit: senior marketers with strong creative direction and brand voice experience. Timeline: 12-18 months.
+Required experience level: Mid-level (3-5 years marketing experience), with demonstrated AI tool fluency. Existing marketing managers with strong adoption velocity scores have the shortest path.
 
-**Path 7: GEO/AI Search Strategist 🟡**
-New specialty: optimizing for AI-generated search results (Google AI Overviews, Perplexity, ChatGPT citations). Salary: $90K-$170K. Best fit: SEO-experienced marketers, content-focused. Timeline: 3-6 months. *Highly emerging — verify before recommending heavily.*
+Transferable skills from marketing: Marketing fundamentals (positioning, segmentation, campaign management), existing tool fluency, cross-functional collaboration, comfort with iteration and testing.
 
-**Path 8: Content Operations Director 🟡**
-Run AI-augmented content production at scale. Oversee both AI tools and human editors. Salary: $110K-$190K. Best fit: marketers with high content calendar time and editor instincts. Timeline: 6-12 months.
+Skill gaps to close: Advanced prompt engineering, AI workflow design (chained prompts, agents, evals), vendor evaluation frameworks for AI tools, AI cost management, basic understanding of how LLMs differ from rules-based automation.
 
-**Path 9: Founding Marketer at AI Startup 🟡**
-Be the first or solo marketer at an early-stage AI company. High equity upside. Salary: $90K-$160K base + meaningful equity. Best fit: generalist marketers with startup tolerance. Timeline: Can pivot in next job change.
+Salary range: $105K-$155K base at the mid-level; senior positions exceed $180K. AI-skilled marketers earn 15-22% premiums across every marketing role per Q1 2026 data. Top-paying AI marketing roles at well-funded companies push $180K-$250K total comp.
 
-**Path 10: Marketing Director / VP Marketing 🟢**
-Leadership track — manage marketing org, set strategy, work with exec team. Most AI-resistant marketing path. Salary: $180K-$350K. Best fit: senior marketers with management experience. Timeline: 12-24 months.
+Timeline to pivot: 3-6 months of focused upskilling while in current role. Most successful pivots happen as internal expansion of responsibility before formal title change.
 
-**Path 11: Vertical AI Marketing Specialist (FinTech/HealthTech/LegalTech) 🟡**
-Apply marketing skills to regulated industries that need compliant AI-augmented marketing. Salary: $110K-$200K. Best fit: marketers with existing industry experience. Timeline: 6-18 months.
+Best fits when user shows: Marketing Manager or Senior Marketing Manager title; 3+ AI tools currently used; encouraged or mandated employer AI posture; significant time on copywriting, performance analysis, or research; active learning rating regular.
 
-**Path 12: Independent Marketing Consultant 🟠**
-Solo consulting or fractional CMO work. Higher AI premium for established consultants. Variable income $100K-$400K+. Best fit: senior marketers with network and reputation. Timeline: 12-24 months.
+Industry weighting: `pathDefiningIndustries: ["marketing-advertising", "saas-software"]`; `strongContextIndustries: ["ecommerce-retail", "fintech", "media-entertainment"]`.
+
+---
+
+**Path 2: Marketing Operations / Marketing Ops Lead 🟢** *(`tier: "ic"`, `type: "marketing-ops-ic"`)*
+
+What it looks like day-to-day: Own the marketing technology stack. Build and maintain attribution models, lifecycle automation, lead scoring, CRM integrations, and data pipelines that connect marketing tools to revenue systems. Run experiments in marketing automation platforms. Increasingly involves orchestrating AI-augmented workflows alongside traditional MarTech. Less creative work, more systems thinking and revenue operations alignment.
+
+Why it's more durable than current role: Marketing Ops is the architecture layer of modern marketing — and the architect role is durable even as execution gets automated. Companies hire Marketing Ops Leads specifically to make the AI tools work together coherently. The work depends on judgment about data quality, attribution decisions, and trade-offs that AI systems can implement but not design.
+
+Required experience level: Mid-level (3-5 years), ideally with strong analytics background. Marketers with significant A/B testing or campaign analysis time have the most natural transition. SQL and basic data modeling skills are increasingly expected.
+
+Transferable skills from marketing: Analytical thinking, campaign performance analysis, systems orientation, comfort with marketing tools and CRM platforms.
+
+Skill gaps to close: SQL fundamentals, attribution modeling (multi-touch, MMM), marketing automation platform administration (HubSpot, Marketo, Pardot), data warehouse fundamentals (Snowflake, BigQuery), basic Python or no-code automation, revenue operations frameworks.
+
+Salary range: Mid-level Marketing Operations Manager base typically $98K-$130K. Senior roles at growth-stage SaaS companies push $130K-$180K. AI-skilled MarOps professionals at AI-native companies clear $138K+.
+
+Timeline to pivot: 6-12 months of skill building. Often involves moving laterally from a Marketing Manager role to a Marketing Ops Specialist role first, then upward to Marketing Ops Manager / Lead.
+
+Best fits when user shows: Marketing Manager with strong analytical orientation; significant time on performance analysis or A/B testing; SaaS or B2B industry; tools list includes a marketing-automation platform; novel-problems rating high.
+
+Industry weighting: `pathDefiningIndustries: ["saas-software", "marketing-advertising"]`; `strongContextIndustries: ["fintech", "ecommerce-retail"]`.
+
+---
+
+**Path 3: Product Marketing Manager 🟢** *(`tier: "ic"`, `type: "marketing-strategy-ic"`)*
+
+What it looks like day-to-day: Own product positioning, messaging, and go-to-market for one or more products. Work closely with sales (enabling them with positioning, training, content), product (informing roadmap with customer feedback and market data), and customer success (helping retain and expand accounts). Run product launches, competitive intelligence, and pricing analysis. Less performance marketing, more strategic communication.
+
+Why it's more durable than current role: Product marketing depends on synthesis across product, sales, and customer data — work that requires judgment about what matters and why. The role is among the most cross-functional in marketing, with strategic stakeholder management that AI tools augment but don't replace. AI-skilled PMMs command 20-30% premiums.
+
+Required experience level: Mid-level (3-5 years marketing experience) with strong communication and cross-functional history. Marketers with significant cross-functional time have the most natural transition. Technical aptitude helps for B2B SaaS PMM.
+
+Transferable skills from marketing: Stakeholder management, written communication, marketing fundamentals (positioning, messaging), customer-facing comfort, comfort with structured analysis.
+
+Skill gaps to close: Sales enablement frameworks, competitive positioning methodologies, pricing strategy, B2B sales cycle understanding, product analytics interpretation, customer interview practice for product research.
+
+Salary range: Mid-level PMM typically $89K-$137K base; senior PMM at major SaaS companies reaches $140K-$200K base. PMM at well-funded AI startups commonly $130K-$180K base + equity.
+
+Timeline to pivot: 6-12 months. PMM experience compounds — second PMM role typically pays 25-40% more than the first.
+
+Best fits when user shows: Marketing Manager or Senior Marketing Manager; strong cross-functional collaboration time; B2B industry experience; high decision-stakes scores; relationship importance critical or important.
+
+Industry weighting: `pathDefiningIndustries: ["saas-software"]`; `strongContextIndustries: ["fintech", "healthcare", "cybersecurity"]`.
+
+---
+
+**Path 4: Demand Generation Lead / Performance Marketing Manager 🟡** *(`tier: "ic"`, `type: "marketing-ops-ic"`)*
+
+What it looks like day-to-day: Drive pipeline and revenue through paid channels (search, social, programmatic), organic growth experiments, ABM campaigns, and lifecycle marketing. Own the marketing-sourced pipeline number. Run experiments at scale and read attribution data to allocate budget. Increasingly involves managing AI-augmented bidding systems and AI-generated creative variants while maintaining performance accountability.
+
+Why it's more durable than current role: While AI handles more bid optimization and creative generation, the strategic judgment — what audiences to test, what creative concepts to validate, what budget to allocate where, when to pause campaigns — remains human work.
+
+Required experience level: Mid-level to senior (4-8 years marketing experience), with demonstrated performance accountability. Marketers from agency backgrounds often transition well. Strong analytical skills required.
+
+Transferable skills from marketing: Campaign management, performance analysis, budget management, comfort with experimentation.
+
+Skill gaps to close: Modern attribution methodologies (multi-touch, incrementality testing, MMM), AI-powered ad platform administration (Google Performance Max, Meta Advantage+), agentic ad workflows, ABM platform fluency (6sense, Demandbase), predictive analytics interpretation.
+
+Salary range: Performance Marketing Manager typically $126K-$192K total comp. Demand Gen Lead at growth-stage SaaS companies $130K-$190K base. Top-paying performance marketing roles at AI-skilled companies reach $200K+ total comp.
+
+Timeline to pivot: 6-12 months. Performance marketers with strong attribution experience have the shortest path; generalist marketers need to build analytical foundation first.
+
+Best fits when user shows: Marketing Manager with strong analytics orientation; significant performance-analysis time; B2B or DTC e-commerce experience; tools list includes ad platforms or attribution tools.
+
+Industry weighting: `pathDefiningIndustries: ["saas-software", "ecommerce-retail"]`; `strongContextIndustries: ["marketing-advertising", "fintech"]`.
+
+---
+
+**Path 5: Customer Insights / Voice of Customer Analyst 🟡** *(`tier: "ic"`, `type: "specialized-ic"`)*
+
+What it looks like day-to-day: Synthesize customer research across surveys, interviews, support tickets, sales calls, and product usage data. Generate strategic insights that inform marketing, product, and customer success decisions. Run regular customer interviews and behavioral studies. Often combines qualitative research skills with AI-augmented synthesis tools that process large volumes of unstructured customer data.
+
+Why it's more durable than current role: AI tools can summarize customer feedback at scale, but the strategic interpretation — what patterns matter, what they imply, how to act on them — remains human judgment work. As AI commoditizes generic marketing, deep customer understanding becomes the differentiator.
+
+Required experience level: Mid-level (3-6 years marketing or research experience). Marketers with significant customer-research time or strong customer-facing background have the most natural transition.
+
+Transferable skills from marketing: Customer empathy, qualitative research methods, synthesis and pattern recognition, written communication.
+
+Skill gaps to close: Modern research synthesis tools (Dovetail, Reduct), AI-augmented research workflows, survey methodology, statistical literacy for quantitative research, customer behavioral analytics platforms.
+
+Salary range: Customer Insights / VoC roles typically $90K-$160K base. Senior insights roles at consumer brands and B2B SaaS push $150K-$200K. Wide variance based on whether the role is positioned as research, marketing, or strategy.
+
+Timeline to pivot: 6-12 months. Strong existing customer-research time accelerates this substantially.
+
+Best fits when user shows: Marketing Manager with high customer-research time; relationship importance critical or important; B2B SaaS or consumer brand experience; novel-problems rating high.
+
+Industry weighting: `pathDefiningIndustries: []`; `strongContextIndustries: ["saas-software", "ecommerce-retail", "healthcare", "education"]`.
+
+---
+
+**Path 6: Brand Strategist 🟢** *(`tier: "ic"`, `type: "marketing-strategy-ic"`)*
+
+What it looks like day-to-day: Lead brand positioning, brand voice development, and creative direction. Work at the intersection of marketing, product, and design. Define how the brand shows up across all touchpoints. Lead brand research, identity development, and strategic creative briefs.
+
+Why it's more durable than current role: Brand strategy depends on cultural understanding, judgment about meaning, and creative direction that AI tools cannot replicate at senior levels. While AI can generate brand expressions once direction is set, the strategic decisions about brand positioning, voice, and meaning remain among the most defensible marketing work. AI proficiency adds 16-20% to senior brand roles per 2026 data.
+
+Required experience level: Senior (6-10 years marketing experience), with demonstrated brand voice development and creative direction history. Strong portfolio of brand work matters more than years.
+
+Transferable skills from marketing: Brand voice, strategic positioning, creative judgment, written communication, cross-functional collaboration.
+
+Skill gaps to close: Modern brand identity frameworks, brand architecture for product suites, AI-augmented creative workflows (using AI without losing brand voice), brand measurement frameworks, executive-level brand storytelling.
+
+Salary range: Brand Strategist roles typically $100K-$200K base. Senior brand strategists at established brands and agencies push $180K-$250K. Top-paying brand roles at premium consumer brands and growth-stage tech reach higher.
+
+Timeline to pivot: 12-18 months. Brand work is reputation-driven; portfolio building matters as much as title transitions.
+
+Best fits when user shows: Senior Marketing Manager or above; significant brand-voice time; high decision-stakes; consumer brand, agency, or premium B2B background.
+
+Industry weighting: `pathDefiningIndustries: ["marketing-advertising", "media-entertainment"]`; `strongContextIndustries: ["ecommerce-retail", "saas-software"]`.
+
+---
+
+**Path 7: GEO / AI Search Strategist 🟡** *(`tier: "ic"`, `type: "marketing-ops-ic"`, includes `caveat`)*
+
+What it looks like day-to-day: Optimize content and brand presence for AI-generated search results — Google AI Overviews, Perplexity citations, ChatGPT references, Claude citations. Build strategies for being recommended by AI systems when users ask questions in your domain. Combines traditional SEO with new disciplines: structured data for AI consumption, citation worthiness, and content patterns that AI systems favor.
+
+Why it's more durable than current role: As AI-mediated search grows, organizations need specialists who understand both how AI systems retrieve and cite content and how to position brands within that retrieval. This is genuinely new territory with limited established expertise, creating opportunities for marketers who develop the specialty early.
+
+Required experience level: Mid-level (3-6 years marketing or SEO experience). SEO professionals have the shortest path; content marketers with strong analytical orientation also transition well.
+
+Transferable skills from marketing: SEO fundamentals, content strategy, analytical thinking, comfort with new tooling, willingness to test and iterate.
+
+Skill gaps to close: Understanding LLM retrieval patterns (RAG, citation behavior), structured data and schema markup for AI consumption, AI search analytics tools (still emerging), citation-worthy content frameworks, awareness of how different AI systems (OpenAI, Anthropic, Google, Perplexity) treat sources differently.
+
+Salary range: $90K-$170K base, with wide variance because the role is still being defined. Some companies position this as SEO+ ($85K-$130K); others position it as a strategic new role ($130K-$170K+).
+
+Timeline to pivot: 3-6 months. The specialty is new enough that visible expertise (writing publicly, building case studies) can establish credibility faster than traditional career paths.
+
+Best fits when user shows: Marketing Manager or content-focused marketer with SEO background; meaningful market-research time; willingness to operate in nascent territory; active learning rating regular.
+
+Caveat (rendered to the report and passed into the §6.9.4 AI prompt — see A.31): *"This is a highly emerging specialty. The role definition and best practices are still being established. Strong fit for marketers comfortable in nascent territory; less fit for those who need established career frameworks."*
+
+Industry weighting: `pathDefiningIndustries: []`; `strongContextIndustries: ["saas-software", "marketing-advertising", "media-entertainment", "ecommerce-retail"]`.
+
+---
+
+**Path 8: Content Operations Director / Manager 🟡** *(`tier: "ic"`, `type: "marketing-ops-ic"`)*
+
+What it looks like day-to-day: Run AI-augmented content production at scale. Oversee a mix of human writers, AI tools, and editorial workflows. Build quality control processes that catch AI hallucinations and voice inconsistencies. Manage content briefing, production, optimization, and distribution workflows. Often combines team management with systems design.
+
+Why it's more durable than current role: As AI content generation scales, the production layer becomes critical. Companies need operators who can extract real value from AI tools while maintaining brand quality and editorial standards. Content Operations roles are among the strongest survival paths for content-heavy marketers, with AI proficiency adding 16-20% to compensation.
+
+Required experience level: Mid-level to senior (4-8 years marketing or content experience). Marketers with significant content-calendar time and team-management experience have the shortest path.
+
+Transferable skills from marketing: Content calendar management, editorial judgment, team coordination, project management, brand voice understanding.
+
+Skill gaps to close: AI content workflow design, evaluation rubric development for AI output, content operations tools (Contentful, Sanity, Storyblok with AI integrations), content attribution and analytics, governance frameworks for AI-generated content.
+
+Salary range: Content Operations Manager $110K-$160K typical. Content Operations Director at growth-stage companies $140K-$200K. Senior roles at content-heavy AI companies push higher.
+
+Timeline to pivot: 6-12 months. Often a natural progression from Senior Content Manager or Content Strategist roles.
+
+Best fits when user shows: Senior Marketing Manager or content-focused marketer; significant content-calendar time; team leadership history; mid-to-large company background where content production scale matters.
+
+Industry weighting: `pathDefiningIndustries: ["media-entertainment", "marketing-advertising"]`; `strongContextIndustries: ["saas-software", "ecommerce-retail", "education"]`.
+
+---
+
+**Path 9: Founding Marketer at AI Startup 🟡** *(`tier: "ic"`, `type: "entrepreneurial"`)*
+
+What it looks like day-to-day: First or solo marketing hire at an early-stage AI company. Wear many hats: positioning, content production, growth experiments, lifecycle automation, basic analytics, sometimes sales support. High variance work — some weeks heavy on content, others on growth experiments, others on product launches. Direct working relationship with founders.
+
+Why it's more durable than current role: Founding/early marketers at AI-native companies gain rare experience that compounds. The role rewards generalist skills and judgment about positioning, customer empathy, and rapid experimentation — work that AI itself cannot replicate. Equity upside compensates for moderate base salaries.
+
+Required experience level: 3-8 years marketing experience. Startup tolerance and generalist skill profile matter as much as years. Wide range of acceptable backgrounds.
+
+Transferable skills from marketing: Marketing fundamentals, comfort with ambiguity, generalist skill profile, written communication, willingness to do unglamorous work.
+
+Skill gaps to close: Growth marketing for early-stage companies, lifecycle automation from scratch, building basic marketing infrastructure, working without senior marketing peers, sometimes basic SQL/analytics.
+
+Salary range: Marketing Manager at AI startups averages around $135K base, with range $72K-$275K depending on company stage and location. Pre-seed/seed founding marketers typically $90K-$130K base + meaningful equity (0.25-1.5% common). Series A+ founding marketers $130K-$180K base + smaller equity.
+
+Timeline to pivot: Can pivot immediately if willing to take startup risk. AngelList, Y Combinator's job board, and AI-specific startup job boards are best entry points.
+
+Best fits when user shows: Marketing Manager with generalist skill profile; low risk aversion; interest in AI as a category; comfortable with ambiguity; active learning rating regular.
+
+Industry weighting: `pathDefiningIndustries: []`; `strongContextIndustries: ["saas-software", "fintech"]`.
+
+---
+
+**Path 10: Marketing Director / VP Marketing 🟢** *(`tier: "ic"`, `type: "leadership"`)*
+
+What it looks like day-to-day: Lead marketing organization or major function. Set strategy, manage marketing org (typically 5-30 people), own pipeline/revenue accountability, work with executive team on go-to-market planning. Bridge between hands-on tactical work and executive strategy. Increasingly involves making decisions about AI investments at team and budget level.
+
+Why it's more durable than current role: Marketing leadership is among the most AI-resistant marketing work. The premium for AI/ML skills is lower at leadership level — not because the skills don't matter, but because the work is inherently human (strategic judgment, organizational leadership, executive communication). As more tactical work gets automated, leverage shifts to those who decide what to do.
+
+Required experience level: Senior (8-12 years marketing experience), with demonstrated team leadership and revenue accountability. Significant team-leadership time helps. Cross-functional history important.
+
+Transferable skills from marketing: Marketing strategy, cross-functional collaboration, budget management, team development, executive communication.
+
+Skill gaps to close: Hiring at scale, performance management, budget allocation across channels, executive presence with founders/CEO, board-level marketing reporting, AI investment frameworks at team level.
+
+Salary range: Marketing Director typically $180K-$280K base. VP Marketing $250K-$400K base; total comp $300K-$500K with equity. Top-paying VP Marketing roles at growth-stage tech and AI-native companies reach higher.
+
+Timeline to pivot: 12-24 months from Senior Marketing Manager. Internal promotion is faster; external moves take longer but often pay more.
+
+Best fits when user shows: Senior Marketing Manager; significant team-leadership time; relationship importance critical; decision stakes constant; 8+ years experience.
+
+Tier classification note (A.32): Deliberately `tier: "ic"`, not `executive`. From a Senior Marketing Manager's perspective this is an aspirational upward move; from a Director's perspective it's lateral; from a VP's perspective it's downward. The v1.0.3 tier-preference rule (§4.1.7) deprioritizes it for Director+ users in favor of P16-P18. Same rationale as SWE Path 4 (Engineering Manager).
+
+Industry weighting: `pathDefiningIndustries: ["saas-software"]`; `strongContextIndustries: ["ecommerce-retail", "fintech", "marketing-advertising"]`.
+
+---
+
+**Path 11: Vertical AI Marketing Specialist (Regulated Industries) 🟡** *(`tier: "ic"`, `type: "specialized-ic"`)*
+
+What it looks like day-to-day: Apply marketing expertise to a regulated vertical (fintech, healthtech, legaltech, pharma) where AI adoption is slower but specialization premium is higher. Lead marketing for products that need compliance-aware messaging, regulatory-sensitive content, and industry-specific positioning. Often combines marketing skills with deep domain immersion.
+
+Why it's more durable than current role: Regulated industries adopt AI more slowly but with higher specialization premiums. Top-paying marketing manager industries include Pharmaceutical & Biotech, Legal, Financial Services, Energy, and Information Technology. Domain expertise + AI fluency is a rare and durable combination — and AI tools struggle with regulated-industry nuance.
+
+Required experience level: Mid-level to senior (4-10 years), with existing industry experience strongly preferred but not strictly required. Marketing professionals willing to immerse in a specific vertical can transition with patience.
+
+Transferable skills from marketing: Marketing fundamentals, willingness to learn industry context, comfort with compliance constraints, written communication.
+
+Skill gaps to close: Industry-specific regulatory knowledge (HIPAA for healthcare, FINRA for finance, etc.), vertical SaaS ecosystem fluency, technical product marketing for the chosen vertical, AI tool usage within compliance constraints.
+
+Salary range: $110K-$200K base typically. Pharmaceutical & Biotech, Legal, and Financial Services command the highest premiums. Senior specialists with established vertical reputation reach $200K-$300K base at top employers.
+
+Timeline to pivot: 6-18 months. Pivoting to a vertical SaaS startup in your existing industry's adjacent space is the fastest path.
+
+Best fits when user shows: Marketing Manager with existing industry experience in fintech/healthtech/legaltech/pharma; or generalist marketer willing to specialize; high decision-stakes; significant marketing-strategy time.
+
+Industry weighting: `pathDefiningIndustries: ["healthcare", "fintech", "legal", "government"]`; `strongContextIndustries: ["cybersecurity"]`.
+
+---
+
+**Path 12: Independent Marketing Consultant 🟠** *(`tier: "ic"`, `type: "entrepreneurial"`)*
+
+What it looks like day-to-day: Solo or small-team consulting practice helping companies adopt AI in marketing, restructure marketing operations, or solve specific strategic problems (positioning, launches, marketing audits). Project or retainer-based revenue. Mix of strategic advisory and hands-on implementation depending on engagement.
+
+Why it's more durable than current role: Senior independent consultants in AI-augmented marketing command premium rates because the value is judgment, not execution. Established consultants with strong networks generate significant revenue. The AI consulting market in marketing is wide open and most enterprises are willing to pay for credible experts.
+
+Required experience level: 8+ years marketing experience, ideally with prior senior or leadership roles. Personal network and reputation matter as much as credentials. Specialization in a category (positioning, demand gen, AI marketing transformation) helps.
+
+Transferable skills from marketing: Marketing strategy, project management, cross-functional collaboration, business judgment, written and verbal communication.
+
+Skill gaps to close: Business development, contract negotiation, pricing strategy (often the hardest skill), self-marketing, comfort with income variability, basic operations (taxes, accounting, contracts).
+
+Salary range: Variable. Hourly rates $150-$400+ for senior marketing consultants. Annual revenue $100K-$400K achievable for established practices. Top tier exceeds $500K but typically requires 5+ years of consulting practice building.
+
+Timeline to pivot: 12-24 months to build a sustainable practice. Most successful consultants start with one anchor client while wrapping up a previous role.
+
+Best fits when user shows: Senior Marketing Manager with 8+ years; strong network in their industry; willingness to do business development; comfort with variable income; demonstrated specialization in a marketing discipline.
+
+Tier note: `ic` not `executive` — the v1.0.3 Path 17 Fractional CMO is the proper executive-tier consulting path for Director+ users; this is senior IC consulting.
+
+Industry weighting: `pathDefiningIndustries: []`; `strongContextIndustries: ["marketing-advertising", "consulting", "saas-software"]`.
 
 **Path 13: AI Marketing Operations Associate 🟢** *(junior-eligible, added v1.0.2)*
 Support marketing teams by managing AI tools, automating workflows, and producing AI-augmented content (HubSpot AI, Jasper, ChatGPT). Combines content production with tool administration and analytics. Salary: $55K-$85K base; higher at AI-forward marketing teams. Best fit: marketing coordinator/specialist title, 2+ AI tools used, high active-learning score. Timeline: 0-3 months — often the first AI-adjacent role after an internship or junior role.
@@ -4020,6 +4257,26 @@ Rationale: A weak third path actively hurts the report: it dilutes the credibili
 Decision: Soften overpromising language in the salary range / "what it looks like" / "why durable" sections of: SWE P3 Forward Deployed Engineer ("regularly clears $500K+" → "can reach $500K+ depending on role and equity package"); SWE P13 Junior AI Engineer (drop named-frontier-lab salary specifics); SWE P14 AI Trust & Safety Analyst (replace "climbing quickly" with a concrete senior range and "ceiling varies by employer"); SWE P15 AI-Augmented Developer (drop "3-5x faster", "10x junior", and "senior IC velocity" framings); Marketing Manager P14 Junior Prompt Engineer (widen the range to $80K-$130K and qualify with "salary varies substantially by employer and how 'prompt engineering' is defined"). All other path language audited in the packet was left unchanged — the spec's qualifier patterns ("typically", "with equity", "at top companies") are generally well-calibrated.
 Rationale: After full audit of the 60 original paths plus 15 junior paths plus 9 new executive paths, overpromising language was concentrated in these 5 specific sections — mostly multipliers and unconditional ceiling claims that wouldn't survive a market-data audit. The principle going forward: keep specific, defensible claims; soften unverifiable multipliers, percentages, or promises about future outcomes.
 
+**A.30 Per-role extension of the PivotPathType diversification taxonomy (v1.0.4)**
+Decision: Extend the `PivotPathType` union with role-specific types as new roles are built, rather than refactoring to a generic role-agnostic taxonomy. Shared types (`leadership`, `entrepreneurial`, `specialized-ic`) reuse across roles. Software Engineer added `ai-engineering-ic` and `customer-facing-technical` in v1.0. Marketing Manager added `marketing-strategy-ic` and `marketing-ops-ic` in v1.0.4. Customer Success, Content Creator, and Product Manager will follow the same pattern when built.
+Rationale: A generic taxonomy would be a larger diff today (every existing role would need migration and re-testing) and would weaken diversification because per-role categories collapse into a few generic buckets. Per-role extension keeps each role's "max 2 of same type" rule meaningful at the role level, leaves existing roles undisturbed, and matches how diversification actually plays out in production (an IC marketer's "same type" feels different from an IC engineer's "same type"). The MM library was specifically validated against this taxonomy in packet-3 — a Senior Marketing Manager persona surfaced one strategy IC, one entrepreneurial IC, and one leadership path, which would be impossible if everything collapsed into `specialized-ic`.
+
+**A.31 Per-path optional `caveat` field for emerging paths (v1.0.4)**
+Decision: Add `caveat?: string` to the `PivotPath` interface. When set, the report renders an amber-bordered italic block beneath the path's facts grid in both `full-report.tsx` and `pdf.tsx`, prefixed with "Note about this path:". The caveat string is also passed into the §6.9.4 "Why this fits you" AI prompt as structured context (`Caveat to acknowledge: ...`) with explicit instruction to weave the uncertainty into the framing rather than paste verbatim. Marketing Manager Path 7 (GEO/AI Search Strategist) is the first user.
+Rationale: Some paths are genuinely high-value recommendations that come with real uncertainty about role definition or market maturity. Burying that uncertainty inside the `whyDurable` prose makes it easy for the AI to skim past and produce overconfident framing; embedding it in the path-data structure makes it machine-readable, visually prominent, and explicitly addressable by the prompt. Future emerging paths in CS / CC / PM will use the same field rather than each role re-inventing a disclaimer pattern.
+
+**A.32 MM Path 10 classified as `ic`, not `executive` (v1.0.4)**
+Decision: MM Path 10 (Marketing Director / VP Marketing) is `tier: "ic"`. The v1.0.3 tier-preference rule deprioritizes it for Director+ users in favor of Paths 16-18.
+Rationale: From a Senior Marketing Manager's perspective, Director/VP is an aspirational upward move and should surface in the top 3. From a Director's perspective it's lateral, and from a VP's perspective it's downward — exactly the problem v1.0.3 fixed for SWE Persona 6. Same rationale as SWE Path 4 (Engineering Manager): classify by the perspective of the user the path is designed *for*, then let tier preference handle the rest. Validation: MM Persona 3 (Senior Marketing Manager) surfaces marketing-director-vp at fit 100 in the top 3; MM Persona 4 (Director of Marketing) surfaces Paths 16/17/18 at fit 100 and does not show Path 10.
+
+**A.33 Tool preset list expanded from 18 to 23 (v1.0.4)**
+Decision: Added HubSpot AI, Adobe Firefly, Canva AI, Gamma, and Grammarly to both `AI_TOOLS` in `src/lib/ai-job-risk/questions.ts` and the `TOOLS` preset list in `src/components/context-profile-form.tsx`. Selected for cross-role applicability (Marketing + CS + PM + Content) rather than role-specific depth — Mailchimp and Marketo were considered but ruled out as too narrow.
+Rationale: The previous 18-tool list leaned engineering-heavy (8 of 18 were SWE-specific). Marketing Manager users now have first-class chip support for the tools they actually use, while existing SWE users see the same 18 tools they always saw plus 5 new cross-role tools. A.10 invariant (assessment tool list must match the profile Tools & Platforms field) preserved by mirroring the additions into the profile form. Existing newsletter subscribers' profiles are unaffected — they keep their current selections; the new tools simply become available options.
+
+**A.34 'CMO / VP Marketing' added to profile-form ROLES preset (v1.0.4)**
+Decision: Add 'CMO / VP Marketing' to the profile-form `ROLES` list. Director of Marketing + VP/CMO assessment seniorities pre-populate to this preset rather than plain 'Marketing Manager'. Mirrors SWE's 'CTO / VP Engineering' pattern.
+Rationale: A new Director or VP subscriber arriving via the assessment should land in the newsletter profile with their actual seniority pre-selected. Without this preset, both Director and VP/CMO seniorities collapsed onto 'Marketing Manager', losing useful targeting signal for the weekly brief content selection. This pattern will be applied to future role builds — CS will need 'VP Customer Success / Chief Customer Officer' or similar; PM has 'Product Manager' but may need a 'CPO' equivalent.
+
 ---
 
 ## Appendix B: Open questions and parking lot
@@ -4037,6 +4294,9 @@ Rationale: After full audit of the 60 original paths plus 15 junior paths plus 9
 
 **Resolved in v1.0.3:**
 - ~~Executive-tier pivot path coverage for Director/VP/CTO users~~ — addressed by A.26 (9 new exec-tier paths) and A.27 (tier-preference selection rule). Persona 6 (Director of Engineering) regression test in `scripts/verify-ai-job-risk-scoring.ts` asserts `expectedExecutiveCount: 2` and currently passes with all 3 exec paths at fit 100.
+
+**Resolved in v1.0.4:**
+- ~~Marketing Manager assessment shipped~~ — full 18-path library at SWE-tier depth (commit `2cfadf6`). Calibration script extended with 4 MM personas (Coordinator / Manager / Senior Manager / Director); all pass. Hub page tile auto-activates via `getRoleConfig()`. Third launch role (Content Creator vs Customer Success vs Product Manager) is now the next pivot question — content libraries exist in §4.3 / §4.4 / §4.5 at v1.0.3 depth and can be lifted into role configs following the MM template.
 
 ---
 

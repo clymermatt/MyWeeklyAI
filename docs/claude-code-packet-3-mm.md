@@ -1,6 +1,18 @@
 # AI Job Risk Assessment — Packet 3: Marketing Manager Pivot Paths 1-12
 
-**Status:** Marketing Manager assessment is being built. The spec §4.2.2 contains one-line summaries for Paths 1-12 that need to be authored at full SWE-tier depth (the same 8-field structure used in §4.1.4 for Software Engineer paths).
+> **🗄️ Status: Historical / superseded as of 2026-06-03.** All 12 path
+> entries proposed in this packet have been authored into the Marketing
+> Manager role config (commit `2cfadf6`) and the canonical spec has been
+> updated to v1.0.4 (commit pending). For current authoritative content —
+> including the implemented tier classifications, path types
+> (`marketing-strategy-ic` / `marketing-ops-ic`), the `caveat` field on
+> P7 GEO/AI Search Strategist, and the calibrated scoring rules per path —
+> refer to [ai-job-risk-assessment-spec.md](./ai-job-risk-assessment-spec.md)
+> §4.2 and the live role config at
+> `src/lib/ai-job-risk/roles/marketing-managers.ts`. This packet is kept as
+> a record of how v1.0.4 was decided.
+
+**Status (original):** Marketing Manager assessment is being built. The spec §4.2.2 contains one-line summaries for Paths 1-12 that need to be authored at full SWE-tier depth (the same 8-field structure used in §4.1.4 for Software Engineer paths).
 
 **Scope of this packet:** 12 paths (Paths 1-12 for Marketing Manager only). Junior paths (13-15) from Packet 1 and executive paths (16-18) from Packet 2 are already at full depth.
 
