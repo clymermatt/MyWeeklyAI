@@ -75,8 +75,15 @@ export const EMPLOYER_ADOPTION_OPTIONS: Option[] = [
 // ─── C2: AI tools used (Adoption Velocity Q-B) ───────────────────────────────
 
 /**
- * The 18 preset AI tools — must match the newsletter profile's Tools &
+ * The 23 preset AI tools — must match the newsletter profile's Tools &
  * Platforms field exactly (spec 11.3.3 / A.10).
+ *
+ * v1.0.4 added 5 tools (HubSpot AI, Adobe Firefly, Canva AI, Gamma, Grammarly)
+ * to broaden coverage across the 5 launch roles — the previous 18 leaned
+ * engineering-heavy. New entries were selected for cross-role applicability
+ * (Marketing + CS + PM + Content) rather than role-specific depth. Adding to
+ * this list also requires the same entry in `context-profile-form.tsx`
+ * TOOLS to preserve the A.10 invariant.
  */
 export const AI_TOOLS: Option[] = [
   { value: "chatgpt", label: "ChatGPT" },
@@ -97,6 +104,12 @@ export const AI_TOOLS: Option[] = [
   { value: "aws-bedrock", label: "AWS Bedrock" },
   { value: "azure-openai", label: "Azure OpenAI" },
   { value: "google-vertex-ai", label: "Google Vertex AI" },
+  // v1.0.4 cross-role additions
+  { value: "hubspot-ai", label: "HubSpot AI" },
+  { value: "adobe-firefly", label: "Adobe Firefly" },
+  { value: "canva-ai", label: "Canva AI" },
+  { value: "gamma", label: "Gamma" },
+  { value: "grammarly", label: "Grammarly" },
 ];
 
 /** Tool-count -> Adoption Velocity points (spec 3.4 Q-B / 5.4 C2). */

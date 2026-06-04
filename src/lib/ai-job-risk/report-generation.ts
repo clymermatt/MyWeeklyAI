@@ -373,10 +373,17 @@ function buildPivotPathFitsPrompt(input: GenerateReportInput): string {
     .map((sel, i) => {
       const path = roleConfig.pivotPaths.find((p) => p.id === sel.pathId);
       if (!path) return null;
+      // Surface the optional `caveat` (spec v1.0.4) so the AI can weave the
+      // uncertainty into its framing rather than letting it read later in the
+      // report as a disconnected warning. The caveat block is also rendered
+      // visually in full-report.tsx / pdf.tsx.
+      const caveatLine = path.caveat
+        ? `\n   Caveat to acknowledge: ${path.caveat}`
+        : "";
       return `${i + 1}. ${path.name} (id: ${path.id})
    What it is: ${path.dayToDay}
    Why durable: ${path.whyDurable}
-   Best fits when: ${path.bestFitsWhen}`;
+   Best fits when: ${path.bestFitsWhen}${caveatLine}`;
     })
     .filter(Boolean)
     .join("\n\n");
@@ -399,6 +406,7 @@ Requirements:
 3. Use second person.
 4. Avoid generic statements like "great fit for your skills".
 5. If there are clear gaps, acknowledge them briefly.
+6. If a path has a "Caveat to acknowledge", incorporate that uncertainty naturally into your framing (e.g., reference that the role is still defining itself, frame as a calculated bet rather than a settled path). Do NOT just paste the caveat verbatim.
 
 PATHS:
 ${paths}

@@ -222,6 +222,25 @@ const styles = StyleSheet.create({
     fontSize: 10,
     color: C.text600,
   },
+  pathCaveatBox: {
+    marginTop: 8,
+    padding: 8,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: "#fcd34d",
+    backgroundColor: "#fffbeb",
+  },
+  pathCaveatLabel: {
+    fontFamily: "Helvetica-Bold",
+    color: "#78350f",
+    fontSize: 10,
+  },
+  pathCaveatText: {
+    fontStyle: "italic",
+    color: "#78350f",
+    fontSize: 10,
+    lineHeight: 1.4,
+  },
   actionItem: {
     marginBottom: 12,
   },
@@ -522,6 +541,14 @@ export function ReportPDF(props: ReportPDFProps) {
                 <PathFact label="Timeline to pivot" value={path.timeline} />
                 <PathFact label="Skill gaps to close" value={path.skillGaps} />
               </View>
+              {path.caveat && (
+                <View style={styles.pathCaveatBox}>
+                  <Text>
+                    <Text style={styles.pathCaveatLabel}>Note about this path: </Text>
+                    <Text style={styles.pathCaveatText}>{path.caveat}</Text>
+                  </Text>
+                </View>
+              )}
             </View>
           );
         })}

@@ -43,6 +43,7 @@ const ROLES = [
   "CTO / VP Engineering",
   "CEO / Founder",
   "Marketing Manager",
+  "CMO / VP Marketing",
   "Content Strategist",
   "Sales / Revenue",
   "DevOps / Platform Engineer",
@@ -70,6 +71,8 @@ const GOALS = [
   "Reduce costs with AI automation",
 ];
 
+// Must match `AI_TOOLS` in src/lib/ai-job-risk/questions.ts label-for-label
+// (spec A.10). v1.0.4 added 5 cross-role tools.
 const TOOLS = [
   "ChatGPT",
   "Claude",
@@ -89,6 +92,11 @@ const TOOLS = [
   "AWS Bedrock",
   "Azure OpenAI",
   "Google Vertex AI",
+  "HubSpot AI",
+  "Adobe Firefly",
+  "Canva AI",
+  "Gamma",
+  "Grammarly",
 ];
 
 const FOCUS_TOPICS = [

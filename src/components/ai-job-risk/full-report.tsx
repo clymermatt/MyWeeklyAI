@@ -208,6 +208,12 @@ export default function FullReport({
                   <PathFact label="Timeline to pivot" value={path.timeline} />
                   <PathFact label="Skill gaps to close" value={path.skillGaps} />
                 </dl>
+                {path.caveat && (
+                  <p className="mt-3 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-xs italic leading-relaxed text-amber-900">
+                    <span className="font-semibold not-italic">Note about this path:</span>{" "}
+                    {path.caveat}
+                  </p>
+                )}
               </div>
             );
           })}

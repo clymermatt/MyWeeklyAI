@@ -12,13 +12,27 @@ export type TaskTimeRange = "none" | "0-10" | "10-25" | "25-50" | "50+";
 
 export type PathProvenance = "established" | "emerging" | "forecast";
 
-/** Diversification buckets — selection avoids 3 paths of the same type (spec 4.1.7). */
+/**
+ * Diversification buckets — selection avoids 3 paths of the same type (spec 4.1.7).
+ *
+ * Taxonomy extends per-role rather than forcing a generic taxonomy across roles
+ * (spec v1.0.4 / Appendix A). Shared types (`leadership`, `entrepreneurial`,
+ * `specialized-ic`) reuse across roles; role-specific types are added as new
+ * roles are built. Software Engineer types added in v1.0; Marketing Manager
+ * types added in v1.0.4. Future role builds (CS, CC, PM) will follow the same
+ * pattern.
+ */
 export type PivotPathType =
-  | "ai-engineering-ic"
-  | "customer-facing-technical"
+  // Shared types — reused across roles
   | "leadership"
   | "entrepreneurial"
-  | "specialized-ic";
+  | "specialized-ic"
+  // Software Engineer (v1.0)
+  | "ai-engineering-ic"
+  | "customer-facing-technical"
+  // Marketing Manager (v1.0.4)
+  | "marketing-strategy-ic"
+  | "marketing-ops-ic";
 
 /**
  * Career tier the path targets (spec v1.0.3). Used by selection to surface
@@ -149,6 +163,18 @@ export interface PivotPath {
   strongContextIndustries?: string[];
   /** action-plan portfolio-artifact template, if this path has a bespoke one (spec 6.7) */
   portfolioArtifactTemplate?: string;
+  /**
+   * Optional per-path disclaimer surfaced in the report when the path is
+   * recommended (spec v1.0.4). Use for emerging paths where the role definition
+   * and best practices are still being established (e.g., MM Path 7
+   * GEO/AI Search Strategist). When present:
+   *   - Rendered as an italic "Note about this path" block in full-report.tsx
+   *     and pdf.tsx beneath the path's facts grid.
+   *   - Passed into the "Why this fits you" AI prompt (§6.9.4) as structured
+   *     context so the AI weaves the uncertainty into the framing rather than
+   *     the caveat reading as a disconnected warning.
+   */
+  caveat?: string;
 }
 
 export interface RoleConfig {

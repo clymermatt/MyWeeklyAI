@@ -4,10 +4,12 @@
  */
 
 import type { RoleConfig } from "../types";
+import marketingManagers from "./marketing-managers";
 import softwareEngineers from "./software-engineers";
 
 export const ROLE_CONFIGS: Record<string, RoleConfig> = {
   [softwareEngineers.slug]: softwareEngineers,
+  [marketingManagers.slug]: marketingManagers,
 };
 
 /** All registered role slugs (drives static generation of role pages). */
