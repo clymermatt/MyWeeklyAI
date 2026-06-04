@@ -487,8 +487,12 @@ export function ReportPDF(props: ReportPDFProps) {
           </>
         )}
 
-        {/* Section 4: Top 3 pivot paths */}
-        <Text style={styles.sectionHeading} minPresenceAhead={100}>Your top 3 pivot paths</Text>
+        {/* Section 4: Top pivot paths (up to 3; may be fewer for Director+ — spec v1.0.3) */}
+        <Text style={styles.sectionHeading} minPresenceAhead={100}>
+          {props.selectedPivots.length === 3
+            ? "Your top 3 pivot paths"
+            : `Your top ${props.selectedPivots.length} pivot path${props.selectedPivots.length === 1 ? "" : "s"}`}
+        </Text>
         {props.selectedPivots.map((sel, i) => {
           const path = pathById.get(sel.pathId);
           if (!path) return null;
@@ -521,6 +525,12 @@ export function ReportPDF(props: ReportPDFProps) {
             </View>
           );
         })}
+        {props.selectedPivots.length < 3 && (
+          <Text style={[styles.bodyText, { fontStyle: "italic", color: C.text600 }]}>
+            We&apos;re showing fewer than 3 paths because additional options below
+            this list weren&apos;t strong enough fits to confidently recommend.
+          </Text>
+        )}
 
         {/* Section 5: 30-day action plan */}
         <Text style={styles.sectionHeading} minPresenceAhead={100}>Your 30-day action plan</Text>

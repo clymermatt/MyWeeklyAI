@@ -226,24 +226,24 @@ const softwareEngineers: RoleConfig = {
     switch (r.role) {
       case "engineer":
         return r.yearsExperience === "0-2"
-          ? { levelKey: "junior", label: "Junior Engineer", ordinal: 0 }
-          : { levelKey: "mid", label: "Mid-level Engineer", ordinal: 1 };
+          ? { levelKey: "junior", label: "Junior Engineer", ordinal: 0, isExecutive: false }
+          : { levelKey: "mid", label: "Mid-level Engineer", ordinal: 1, isExecutive: false };
       case "senior-engineer":
         return isDeepExpertise(r)
-          ? { levelKey: "senior-specialized", label: "Senior IC, specialized", ordinal: 2 }
-          : { levelKey: "senior-generalist", label: "Senior IC, generalist", ordinal: 2 };
+          ? { levelKey: "senior-specialized", label: "Senior IC, specialized", ordinal: 2, isExecutive: false }
+          : { levelKey: "senior-generalist", label: "Senior IC, generalist", ordinal: 2, isExecutive: false };
       case "staff":
-        return { levelKey: "staff", label: "Staff / Principal Engineer", ordinal: 3 };
+        return { levelKey: "staff", label: "Staff / Principal Engineer", ordinal: 3, isExecutive: false };
       case "architect":
-        return { levelKey: "staff", label: "Software Architect", ordinal: 3 };
+        return { levelKey: "staff", label: "Software Architect", ordinal: 3, isExecutive: false };
       case "manager":
-        return { levelKey: "manager", label: "Engineering Manager", ordinal: 4 };
+        return { levelKey: "manager", label: "Engineering Manager", ordinal: 4, isExecutive: false };
       case "director":
-        return { levelKey: "exec", label: "Director of Engineering", ordinal: 5 };
+        return { levelKey: "exec", label: "Director of Engineering", ordinal: 5, isExecutive: true };
       case "vp-cto":
-        return { levelKey: "exec", label: "VP Engineering / CTO", ordinal: 6 };
+        return { levelKey: "exec", label: "VP Engineering / CTO", ordinal: 6, isExecutive: true };
       default:
-        return { levelKey: "mid", label: "Mid-level Engineer", ordinal: 1 };
+        return { levelKey: "mid", label: "Mid-level Engineer", ordinal: 1, isExecutive: false };
     }
   },
 
@@ -254,6 +254,7 @@ const softwareEngineers: RoleConfig = {
       name: "AI Engineer (LLM-focused)",
       provenance: "established",
       type: "ai-engineering-ic",
+      tier: "ic",
       dayToDay:
         "Build production features powered by LLMs. Integrate APIs from Anthropic, OpenAI, and Google. Design RAG pipelines, prompt systems, and evaluation frameworks. Ship customer-facing AI features in standard application contexts.",
       whyDurable:
@@ -287,6 +288,7 @@ const softwareEngineers: RoleConfig = {
       name: "ML/AI Platform Engineer (MLOps)",
       provenance: "established",
       type: "ai-engineering-ic",
+      tier: "ic",
       dayToDay:
         "Build and maintain the platforms that serve ML models in production: data pipelines, model serving infrastructure, observability, evaluation harnesses, and cost monitoring.",
       whyDurable:
@@ -321,6 +323,7 @@ const softwareEngineers: RoleConfig = {
       name: "Forward Deployed Engineer",
       provenance: "emerging",
       type: "customer-facing-technical",
+      tier: "ic",
       dayToDay:
         "Embed with enterprise customers to deploy AI solutions in their environments. Customize, integrate, and ship AI applications that solve real business problems — heavy customer-facing work combined with deep technical implementation.",
       whyDurable:
@@ -330,7 +333,7 @@ const softwareEngineers: RoleConfig = {
         "Full-stack development, system design, working across multiple languages/frameworks, comfort with ambiguous requirements.",
       skillGaps:
         "LLM-specific patterns, agent frameworks (LangGraph, CrewAI, DSPy), evaluation engineering, customer-facing communication, comfort with travel.",
-      salaryRange: "$180K-$700K total comp (highest variance of any path); $150K-$250K base typical at mid-level.",
+      salaryRange: "$180K-$700K total comp (highest variance of any path); $150K-$250K base typical at mid-level. Staff-level at frontier labs can reach $500K+ total comp depending on role and equity package.",
       timeline: "6-12 months; production engineering plus customer-facing history accelerates this significantly.",
       bestFitsWhen:
         "Strong communication, willingness to work with stakeholders, broad rather than deep technical skill, comfort with ambiguity.",
@@ -354,6 +357,7 @@ const softwareEngineers: RoleConfig = {
       name: "Engineering Manager / Tech Lead",
       provenance: "established",
       type: "leadership",
+      tier: "ic",
       dayToDay:
         "Lead a team of engineers: hiring, coaching, technical strategy, organizational navigation, cross-functional work — and increasingly, deciding which AI tools your team adopts and how to evolve team practices.",
       whyDurable:
@@ -385,6 +389,7 @@ const softwareEngineers: RoleConfig = {
       name: "Founding Engineer at an AI-Native Startup",
       provenance: "emerging",
       type: "entrepreneurial",
+      tier: "ic",
       dayToDay:
         "Be one of the first 1-5 engineers at an early-stage AI company. Build product from scratch, wear many hats, and make architectural decisions that shape the company. Equity upside is the primary compensation play.",
       whyDurable:
@@ -415,6 +420,7 @@ const softwareEngineers: RoleConfig = {
       name: "AI/Agent Operations Engineer",
       provenance: "emerging",
       type: "ai-engineering-ic",
+      tier: "ic",
       dayToDay:
         "Run the infrastructure under deployed agent systems: model versioning, prompt deployment pipelines, evaluation cadence, and incident response when an agent misbehaves in production. 'DevOps for AI agents.'",
       whyDurable:
@@ -445,6 +451,7 @@ const softwareEngineers: RoleConfig = {
       name: "AI Evaluation & Testing Engineer",
       provenance: "emerging",
       type: "ai-engineering-ic",
+      tier: "ic",
       dayToDay:
         "Build evaluation systems for AI products: design eval sets, write rubrics, run regression testing against model updates, and catch hallucinations before production. The 'QA engineering' for AI systems.",
       whyDurable:
@@ -474,6 +481,7 @@ const softwareEngineers: RoleConfig = {
       name: "Solutions Engineer / Sales Engineer at an AI Company",
       provenance: "established",
       type: "customer-facing-technical",
+      tier: "ic",
       dayToDay:
         "Pre-sales technical work for AI products: demo capabilities to prospects, build proofs-of-concept, partner with sales to close deals, and feed customer needs back to product. Heavy communication, less coding.",
       whyDurable:
@@ -504,6 +512,7 @@ const softwareEngineers: RoleConfig = {
       name: "AI Security Engineer",
       provenance: "emerging",
       type: "specialized-ic",
+      tier: "ic",
       dayToDay:
         "Build security infrastructure around AI systems: red-team LLM applications, design guardrails, evaluate prompt-injection risk, and work on AI safety controls in production.",
       whyDurable:
@@ -534,6 +543,7 @@ const softwareEngineers: RoleConfig = {
       name: "Developer Advocate / DevRel for AI Tools",
       provenance: "established",
       type: "customer-facing-technical",
+      tier: "ic",
       dayToDay:
         "Be the public face of an AI developer product: write technical content, build sample apps, speak at conferences, support the developer community, and feed product insights back to engineering.",
       whyDurable:
@@ -565,6 +575,7 @@ const softwareEngineers: RoleConfig = {
       name: "Vertical AI Specialist (Healthcare / Legal / Fintech AI)",
       provenance: "emerging",
       type: "specialized-ic",
+      tier: "ic",
       dayToDay:
         "Apply AI to a specific regulated industry, combining engineering with deep domain knowledge to build AI products that handle the unique requirements of healthcare, legal, financial services, or government.",
       whyDurable:
@@ -595,6 +606,7 @@ const softwareEngineers: RoleConfig = {
       name: "Independent AI Consultant / Boutique Founder",
       provenance: "forecast",
       type: "entrepreneurial",
+      tier: "ic",
       dayToDay:
         "Run a solo or small-team consulting practice helping businesses adopt AI — enterprise AI integration, AI strategy advisory, fractional AI engineering, or specialized boutique consulting. Often hourly or project-based revenue.",
       whyDurable:
@@ -627,6 +639,7 @@ const softwareEngineers: RoleConfig = {
       name: "AI Engineering Apprentice / Junior AI Engineer",
       provenance: "emerging",
       type: "ai-engineering-ic",
+      tier: "junior",
       dayToDay:
         "Entry-level position at an AI-native startup or a larger company's AI division. Work on LLM integrations, RAG pipelines, and AI-powered features under mentorship. Often combines coding with prompt engineering, eval work, and learning AI fundamentals.",
       whyDurable:
@@ -638,7 +651,7 @@ const softwareEngineers: RoleConfig = {
       skillGaps:
         "LLM API patterns, prompt engineering, RAG architectures, basic ML concepts, evaluation methodology.",
       salaryRange:
-        "$95K-$140K base at most companies; higher at AI-native startups + equity. Frontier labs hire junior engineers at $130K+ with significant equity.",
+        "$95K-$140K base at most companies. Higher at AI-native startups + equity. Frontier labs hire junior engineers in this category at higher bands, often with equity packages that vary substantially by company and role.",
       timeline:
         "Can pivot in your next job change with a strong portfolio. Build 2-3 personal AI projects publicly first.",
       bestFitsWhen:
@@ -662,6 +675,7 @@ const softwareEngineers: RoleConfig = {
       name: "AI Trust & Safety Analyst",
       provenance: "established",
       type: "specialized-ic",
+      tier: "junior",
       dayToDay:
         "Test AI systems for harmful outputs, evaluate model responses against safety guidelines, document failure modes, and help develop better guardrails. Work spans red-teaming, content policy, and structured evaluation — combining technical work with policy/judgment work.",
       whyDurable:
@@ -673,7 +687,7 @@ const softwareEngineers: RoleConfig = {
       skillGaps:
         "Red-teaming methodologies, content policy frameworks, AI safety concepts (alignment, jailbreaking, prompt injection), evaluation rubric design.",
       salaryRange:
-        "$80K-$130K base for entry-level, climbing quickly. Senior trust & safety engineers clear $200K+.",
+        "$80K-$130K base for entry-level. Senior trust & safety engineers at established companies typically reach $150K-$200K+; ceiling varies by employer.",
       timeline:
         "3-6 months. Strong demand and a lower technical bar than other AI roles make this accessible.",
       bestFitsWhen:
@@ -695,17 +709,18 @@ const softwareEngineers: RoleConfig = {
       name: "AI-Augmented Developer (Specialist Track)",
       provenance: "emerging",
       type: "ai-engineering-ic",
+      tier: "junior",
       dayToDay:
-        "Junior engineer role specifically positioned around heavy AI tool usage. Often at smaller companies or as a '10x junior' at AI-forward companies. Build features 3-5x faster than traditional juniors by leveraging Cursor, Claude Code, Devin, and similar tools.",
+        "Junior engineer role specifically positioned around heavy AI tool usage. Found at AI-forward companies that organize work around engineers who use AI tools extensively. Ship features and complete tasks notably faster than traditional juniors by leveraging Cursor, Claude Code, and similar tools — exact productivity gains vary by task and team.",
       whyDurable:
-        "Companies are reorganizing around AI-augmented juniors who can ship at senior IC velocity. The role rewards AI fluency over coding-from-scratch ability. Junior engineers who already use multiple AI tools heavily are well-positioned.",
+        "Companies are increasingly hiring junior engineers who can ship more independently by leveraging AI tools. The role rewards AI fluency and judgment about when to trust AI output — skills that traditional juniors are still building.",
       requiredExperience: "0-2 years. AI tool fluency is more important than coding pedigree.",
       transferableSkills:
         "Existing AI tool usage, comfort with iteration, debugging skills (validating AI output).",
       skillGaps:
         "Advanced patterns with Cursor/Claude Code, agent frameworks, evaluation skills (knowing when AI output is wrong), spec-writing skills.",
       salaryRange:
-        "$100K-$150K base at AI-forward companies. Higher when role is positioned as 'AI-augmented senior' by 12-18 months.",
+        "$100K-$150K base at AI-forward companies. Compensation typically increases with demonstrated AI fluency and impact, though specific timeline varies by company.",
       timeline:
         "0-3 months. This is often a positioning shift, not a credential shift — you may already be doing this work; reframe it on your resume.",
       bestFitsWhen:
@@ -719,6 +734,114 @@ const softwareEngineers: RoleConfig = {
         { label: "You're actively learning AI on your own time", points: 20, test: (c) => c.responses.activeLearning === "regular" },
         { label: "You're a junior or mid IC", points: 15, test: (c) => c.seniorityOrdinal <= 1 },
         { label: "You ship feature code at pace", points: 10, test: (c) => pct(c, "feature-code") > 25 },
+      ],
+    },
+
+    // ─── Executive-tier paths (spec v1.0.3 / Section 2.1 of claude-code-packet-2.md) ──
+
+    {
+      id: "vp-engineering-cto",
+      number: 16,
+      name: "VP Engineering / CTO at AI-Native Company",
+      provenance: "established",
+      type: "leadership",
+      tier: "executive",
+      dayToDay:
+        "Lead engineering organization at a venture-funded or growth-stage AI company. Set technical strategy, hire and develop engineering leaders, work directly with founders and board, make decisions about infrastructure, AI model strategy, and team scaling. The premium tier of engineering leadership.",
+      whyDurable:
+        "VP/CTO roles at AI-native companies are among the highest-leverage positions in tech. The work requires technical depth, organizational judgment, and external visibility — a combination AI cannot replicate. Compensation reflects this: total comp regularly clears $1M at funded companies, with frontier AI labs and hyperscalers pushing higher.",
+      requiredExperience:
+        "12+ years engineering experience, with prior Director-level leadership (3+ years) and management of multiple teams.",
+      transferableSkills:
+        "Cross-functional collaboration, technical strategy, mentorship and team development, architectural decision-making, business judgment.",
+      skillGaps:
+        "Board-level communication, fundraising fluency, fast hiring at scale, AI-specific technical depth (LLM systems, ML infrastructure), executive presence in customer settings.",
+      salaryRange:
+        "VP Engineering base $330K-$475K at recognizable enterprise software employers; total comp clears $1M at most public-traded tech companies with equity refresh and LTIs. CTO base $183K-$390K with total comp typically $600K+ at funded companies. Frontier AI labs and hyperscalers push significantly higher.",
+      timeline:
+        "12-24 months. Most successful pivots happen via internal promotion or strategic external hire. Network and reputation matter more than credentials at this level.",
+      bestFitsWhen:
+        "Director-level role with 12+ years experience, strong cross-functional collaboration time, critical relationships rating, history of leading multiple teams.",
+      minSeniorityOrdinal: 5,
+      maxSeniorityOrdinal: 6,
+      pathDefiningIndustries: ["saas-software", "fintech"],
+      strongContextIndustries: ["cybersecurity", "healthcare", "media-entertainment"],
+      scoringRules: [
+        { label: "You're at Director level or above", points: 30, test: (c) => c.seniorityOrdinal >= 5 },
+        { label: "You have a long professional track record (12+ years)", points: 20, test: (c) => c.responses.yearsExperience === "16+" || c.responses.yearsExperience === "11-15" },
+        { label: "You spend significant time on cross-functional work", points: 15, test: (c) => pct(c, "cross-functional") > 15 },
+        { label: "Relationships are critical to your work", points: 15, test: (c) => c.responses.relationshipImportance === "critical" },
+        { label: "You already spend time mentoring", points: 10, test: (c) => pct(c, "mentoring") > 5 },
+        { label: "You already use 2+ AI tools", points: 10, test: (c) => c.toolCount >= 2 },
+      ],
+    },
+    {
+      id: "founder-technical-cofounder",
+      number: 17,
+      name: "Founder / Technical Co-founder at AI Startup",
+      provenance: "emerging",
+      type: "entrepreneurial",
+      tier: "executive",
+      dayToDay:
+        "Start your own AI-native company, or join as technical co-founder. Set product direction, build initial team, raise capital, navigate early customer development. Higher risk, higher equity upside than employed leadership roles.",
+      whyDurable:
+        "Founders shape their own role entirely — by definition not subject to displacement from below. Founder-CEO and founder-CTO outcomes at AI-native companies in 2024-2026 have produced significant compensation events. The work draws on technical judgment, business judgment, and execution — all human work.",
+      requiredExperience:
+        "8+ years engineering experience, ideally with prior Staff+ or Director-level role. Risk tolerance and personal financial runway matter as much as credentials.",
+      transferableSkills:
+        "Technical depth, architectural decision-making, ability to hire, cross-functional collaboration, comfort with ambiguity.",
+      skillGaps:
+        "Fundraising and investor communication, go-to-market strategy, hiring outside of engineering, financial modeling, comfort with personal financial risk.",
+      salaryRange:
+        "Variable and stage-dependent. Pre-seed/seed founders often pay themselves $50K-$120K with significant equity (15-50% as cofounder). After Series A, typical founder comp $150K-$250K base + ongoing equity. Exit outcomes range from $0 to $50M+ depending on company outcome.",
+      timeline:
+        "Can pivot immediately if willing to commit. Most founders take 18-36 months to reach product-market fit.",
+      bestFitsWhen:
+        "Senior or above experience, high differentiation scores, low risk aversion, prior startup experience or strong personal projects, willingness to work intensely.",
+      minSeniorityOrdinal: 5,
+      maxSeniorityOrdinal: 6,
+      strongContextIndustries: ["saas-software", "fintech", "healthcare"],
+      scoringRules: [
+        { label: "You're at Director level or above", points: 25, test: (c) => c.seniorityOrdinal >= 5 },
+        { label: "Your work is highly differentiated", points: 15, test: (c) => c.scores.skillDifferentiationRaw > 65 },
+        { label: "You're comfortable with novel problems", points: 15, test: (c) => c.responses.novelProblems === "most" || c.responses.novelProblems === "frequently" },
+        { label: "You're a heavy adopter of AI tools", points: 15, test: (c) => c.toolCount >= 3 },
+        { label: "You have a broad generalist profile", points: 10, test: (c) => isGeneralist(c.responses) },
+        { label: "You have a long professional track record", points: 10, test: (c) => c.responses.yearsExperience === "16+" || c.responses.yearsExperience === "11-15" },
+      ],
+    },
+    {
+      id: "engineering-advisor-fractional-cto",
+      number: 18,
+      name: "Engineering Advisor / Board Member / Fractional CTO",
+      provenance: "forecast",
+      type: "entrepreneurial",
+      tier: "executive",
+      dayToDay:
+        "Senior advisory role to multiple companies. Board seats at startups, fractional CTO engagements with growth-stage companies, paid advisor relationships with AI companies. Lower time commitment than full executive roles, higher rate per hour, multiple concurrent engagements.",
+      whyDurable:
+        "Advisory and board work depends entirely on reputation and judgment — work AI does not perform. This is often where senior engineering leaders go after Director/VP roles, either as a bridge to retirement or as a portfolio career.",
+      requiredExperience:
+        "15+ years engineering experience, with prior Director-level role (3+ years) and demonstrable network in the AI ecosystem.",
+      transferableSkills:
+        "Cross-functional collaboration, strategic judgment, technical pattern recognition, mentorship of other leaders.",
+      skillGaps:
+        "Building advisor network, contract and equity negotiation, time management across multiple engagements, comfort with not running day-to-day operations.",
+      salaryRange:
+        "Variable. Fractional CTO engagements run $8K-$25K/month per company; typical portfolio of 2-4 companies. Board seats at startups typically pay $25K-$75K cash annually plus 0.25-1% equity. Paid advisor relationships vary widely. Total annual revenue commonly $300K-$700K for established advisors; ceiling pushes higher with strong network.",
+      timeline:
+        "12-24 months to build a sustainable advisor practice. Often starts as side engagements while still in full-time role.",
+      bestFitsWhen:
+        "Senior leadership history, high differentiation, critical relationships, willingness to handle business operations, 15+ years experience.",
+      minSeniorityOrdinal: 5,
+      maxSeniorityOrdinal: 6,
+      strongContextIndustries: ["saas-software", "fintech"],
+      scoringRules: [
+        { label: "You're at Director level or above", points: 25, test: (c) => c.seniorityOrdinal >= 5 },
+        { label: "You have 15+ years of experience", points: 25, test: (c) => c.responses.yearsExperience === "16+" },
+        { label: "Relationships are critical to your work", points: 20, test: (c) => c.responses.relationshipImportance === "critical" },
+        { label: "Your work is highly differentiated", points: 15, test: (c) => c.scores.skillDifferentiationRaw > 65 },
+        { label: "You spend significant time on cross-functional work", points: 10, test: (c) => pct(c, "cross-functional") > 15 },
       ],
     },
   ],

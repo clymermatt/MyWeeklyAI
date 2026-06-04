@@ -172,10 +172,12 @@ export default function FullReport({
         </section>
       )}
 
-      {/* Section 4 — Top 3 Pivot Paths */}
+      {/* Section 4 — Top Pivot Paths (up to 3; may return fewer for Director+ if no strong filler — spec v1.0.3) */}
       <section className="mb-6 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
         <h2 className="text-lg font-semibold text-gray-900">
-          Your top 3 pivot paths
+          {selectedPivots.length === 3
+            ? "Your top 3 pivot paths"
+            : `Your top ${selectedPivots.length} pivot path${selectedPivots.length === 1 ? "" : "s"}`}
         </h2>
         <div className="mt-4 space-y-7">
           {selectedPivots.map((sel, i) => {
@@ -210,6 +212,12 @@ export default function FullReport({
             );
           })}
         </div>
+        {selectedPivots.length < 3 && (
+          <p className="mt-5 text-sm italic leading-relaxed text-gray-500">
+            We&apos;re showing fewer than 3 paths because additional options below
+            this list weren&apos;t strong enough fits to confidently recommend.
+          </p>
+        )}
       </section>
 
       {/* Section 5 — 30-day Action Plan */}

@@ -227,6 +227,7 @@ export function calculateAIDisruptionScore(
     taskTimePercents: normalizedTaskTimes,
     toolCount: toolCount(responses),
     seniorityOrdinal: seniority.ordinal,
+    isExecutive: seniority.isExecutive,
     scores: factors,
     compositeScore,
     industrySlug: responses.industry,

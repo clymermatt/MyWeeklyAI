@@ -20,6 +20,18 @@ export type PivotPathType =
   | "entrepreneurial"
   | "specialized-ic";
 
+/**
+ * Career tier the path targets (spec v1.0.3). Used by selection to surface
+ * tier-appropriate paths for users at the extremes of seniority:
+ *   - `junior`     → 0-2 year entry-level paths
+ *   - `ic`         → senior IC / middle-management paths (default)
+ *   - `executive`  → Director/VP/C-suite roles and senior independent advisory
+ *
+ * For Director+ users, selection prefers `executive` paths in the top 3 and
+ * only falls back to `ic` paths if their fit score is genuinely high (>70).
+ */
+export type PivotPathTier = "junior" | "ic" | "executive";
+
 // ─── Raw quiz input ──────────────────────────────────────────────────────────
 
 /**
@@ -117,6 +129,8 @@ export interface PivotPath {
   salaryRange: string;
   timeline: string;
   bestFitsWhen: string;
+  /** Career tier this path targets — drives selection preference (spec v1.0.3) */
+  tier: PivotPathTier;
   /** inclusive seniority ordinal eligibility window */
   minSeniorityOrdinal: number;
   maxSeniorityOrdinal: number;
@@ -193,6 +207,11 @@ export interface SeniorityResolution {
   label: string;
   /** effective seniority ordinal (0 = most junior) for pivot-path eligibility */
   ordinal: number;
+  /**
+   * True for Director/VP/C-suite roles. Drives the v1.0.3 tier-preference in
+   * pivot selection — exec-tier paths fill slots first for these users.
+   */
+  isExecutive: boolean;
 }
 
 // ─── Scoring output (Section 3) ──────────────────────────────────────────────
@@ -270,6 +289,8 @@ export interface PivotScoringContext {
   toolCount: number;
   /** ordinal seniority rank from the chosen role title */
   seniorityOrdinal: number;
+  /** True for Director+ users — used by tier-preference selection (spec v1.0.3) */
+  isExecutive: boolean;
   scores: FactorScores;
   compositeScore: number;
   industrySlug: string;

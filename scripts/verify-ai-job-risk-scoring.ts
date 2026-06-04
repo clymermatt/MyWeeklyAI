@@ -26,8 +26,17 @@ interface Persona {
   expectedTiers: RiskTierKey[];
   /** optional — pivot-path ids that MUST appear in the top 3 */
   expectedPivotIncludes?: string[];
+  /** spec v1.0.3 — minimum number of executive-tier paths in the result */
+  expectedExecutiveCount?: number;
   responses: UserResponses;
 }
+
+/** Pivot-path ids whose `tier === "executive"` in the SWE config (spec v1.0.3). */
+const SWE_EXECUTIVE_PATH_IDS = new Set([
+  "vp-engineering-cto",
+  "founder-technical-cofounder",
+  "engineering-advisor-fractional-cto",
+]);
 
 const tasks = (entries: Record<string, TaskTimeRange>) => entries;
 
@@ -184,6 +193,38 @@ const PERSONAS: Persona[] = [
       activeLearning: "regular",
     },
   },
+  {
+    // Spec v1.0.3 regression check: Director+ users should see executive-tier
+    // pivot paths surface (packet-2 §2.1). Persona 6 from validation testing.
+    name: "Director of Engineering (exec-tier check)",
+    expectedTaskAutomatability: [20, 35],
+    expectedTiers: ["LOW", "MODERATE"],
+    expectedExecutiveCount: 2,
+    responses: {
+      role: "director",
+      industry: "saas-software",
+      yearsExperience: "16+",
+      taskTimes: tasks({
+        "cross-functional": "50+",
+        mentoring: "25-50",
+        "system-design": "10-25",
+        "code-review": "10-25",
+        research: "10-25",
+      }),
+      employerAdoption: "encouraged",
+      toolsUsed: ["chatgpt", "claude", "cursor"],
+      headcountChange: "flat",
+      structuralChange: "yes_somewhat",
+      domainExpertise: "significant",
+      // Branch 1 (leadership) auto-assigns decisionStakes = "constant"; we set
+      // it explicitly here for clarity.
+      decisionStakes: "constant",
+      relationshipImportance: "critical",
+      novelProblems: "frequently",
+      managerConversations: "substantial",
+      activeLearning: "regular",
+    },
+  },
 ];
 
 let failures = 0;
@@ -209,7 +250,11 @@ for (const persona of PERSONAS) {
     (id) => !pivotIds.includes(id),
   );
   const pivotOk = missingPivots.length === 0;
-  const ok = taskAutoOk && tierOk && pivotOk;
+  const execCount = pivotIds.filter((id) => SWE_EXECUTIVE_PATH_IDS.has(id)).length;
+  const execOk =
+    persona.expectedExecutiveCount === undefined ||
+    execCount >= persona.expectedExecutiveCount;
+  const ok = taskAutoOk && tierOk && pivotOk && execOk;
   if (!ok) failures++;
 
   console.log(
@@ -230,6 +275,11 @@ for (const persona of PERSONAS) {
   if (!pivotOk) {
     console.log(
       `   ! Missing required pivot path(s): ${missingPivots.join(", ")}`,
+    );
+  }
+  if (!execOk) {
+    console.log(
+      `   ! Expected ≥${persona.expectedExecutiveCount} executive-tier path(s) in top 3, got ${execCount}`,
     );
   }
   // Surface the selected pivot paths for eyeball review.

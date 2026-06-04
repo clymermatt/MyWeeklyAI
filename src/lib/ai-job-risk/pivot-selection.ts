@@ -91,9 +91,38 @@ function scorePathFit(
   return { fitScore: Math.max(0, Math.min(100, total)), matchedReasons: reasons };
 }
 
+/** Minimum fit score required for a non-executive path to fill an exec user's
+ * slot (spec v1.0.3). Below this threshold we'd rather surface fewer than 3
+ * paths than recommend a weak fit. */
+const EXEC_FILLER_FIT_THRESHOLD = 70;
+
+/**
+ * Apply the type-diversification rule (max 2 paths of the same `PivotPathType`)
+ * to an already-sorted candidate list, taking the top `limit` survivors.
+ */
+function pickWithDiversification(
+  pool: ScoredPath[],
+  limit: number,
+  typeCount: Record<string, number>,
+): ScoredPath[] {
+  const selected: ScoredPath[] = [];
+  for (const candidate of pool) {
+    if ((typeCount[candidate.path.type] ?? 0) >= 2) continue;
+    selected.push(candidate);
+    typeCount[candidate.path.type] = (typeCount[candidate.path.type] ?? 0) + 1;
+    if (selected.length === limit) break;
+  }
+  return selected;
+}
+
 /**
  * Select the top 3 pivot paths: filter by seniority eligibility, score fit,
  * then apply the diversification rule (max 2 paths of the same type).
+ *
+ * Director+ users (ctx.isExecutive) prefer `executive`-tier paths first; we
+ * fall back to `ic` paths only when they score above EXEC_FILLER_FIT_THRESHOLD
+ * (spec v1.0.3). When no qualifying filler exists, we surface fewer than 3
+ * paths and let the report explain why.
  */
 export function selectPivotPaths(
   roleConfig: RoleConfig,
@@ -123,22 +152,33 @@ export function selectPivotPaths(
       a.path.number - b.path.number,
   );
 
-  // Diversification: no more than 2 paths of the same type (spec 4.1.7).
   const selected: ScoredPath[] = [];
   const typeCount: Record<string, number> = {};
-  for (const candidate of candidates) {
-    if ((typeCount[candidate.path.type] ?? 0) >= 2) continue;
-    selected.push(candidate);
-    typeCount[candidate.path.type] = (typeCount[candidate.path.type] ?? 0) + 1;
-    if (selected.length === 3) break;
-  }
 
-  // Fallback: if the type cap left us short, top up ignoring it (spec 4.1.7 edge case 1).
-  if (selected.length < 3) {
-    for (const candidate of candidates) {
-      if (selected.includes(candidate)) continue;
-      selected.push(candidate);
-      if (selected.length === 3) break;
+  if (ctx.isExecutive) {
+    // Director+ tier preference: fill from executive-tier first, then top up
+    // from ic-tier only if the next-best ic path scores genuinely high.
+    const execPool = candidates.filter((c) => c.path.tier === "executive");
+    const icPool = candidates.filter(
+      (c) => c.path.tier === "ic" && c.fitScore > EXEC_FILLER_FIT_THRESHOLD,
+    );
+
+    selected.push(...pickWithDiversification(execPool, 3, typeCount));
+    if (selected.length < 3) {
+      const remaining = 3 - selected.length;
+      selected.push(...pickWithDiversification(icPool, remaining, typeCount));
+    }
+    // Intentional: no final top-up. Better to return 2 paths with a note than
+    // to recommend a weak ic fit just to hit the quota.
+  } else {
+    // Non-exec users: existing logic — diversify, then top up if cap left short.
+    selected.push(...pickWithDiversification(candidates, 3, typeCount));
+    if (selected.length < 3) {
+      for (const candidate of candidates) {
+        if (selected.includes(candidate)) continue;
+        selected.push(candidate);
+        if (selected.length === 3) break;
+      }
     }
   }
 
