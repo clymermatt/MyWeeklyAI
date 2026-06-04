@@ -1,6 +1,17 @@
 # AI Job Risk Assessment — Packet 2: Executive-Tier Paths & Language Audit
 
-**Status:** Three personas validated (Junior IC, Senior IC, Director). Algorithm and prompt fixes from Packet 1 all working. This packet addresses two remaining issues before launching the other 4 roles.
+> **🗄️ Status: Historical / superseded as of 2026-06-03.** All fixes proposed
+> in this packet have been implemented (commit `1182571`) and the canonical
+> spec has been updated to v1.0.3 (commit `993af8d`). For current authoritative
+> content — including the 9 new executive-tier pivot paths (SWE, Marketing
+> Manager, Content Creator), the `tier` attribute on every path, the Director+
+> tier-preference selection rule, the IC-filler `fitScore > 70` threshold, the
+> "may return fewer than 3 paths" semantics, and the v1.0.3 language softening
+> in SWE P3/P13/P14/P15 and MM P14 — refer to
+> [ai-job-risk-assessment-spec.md](./ai-job-risk-assessment-spec.md). This
+> packet is kept as a record of how v1.0.3 was decided.
+
+**Status (original):** Three personas validated (Junior IC, Senior IC, Director). Algorithm and prompt fixes from Packet 1 all working. This packet addresses two remaining issues before launching the other 4 roles.
 
 **Spec version this references:** v1.0.2 (after Packet 1 fixes applied)
 
